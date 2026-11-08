@@ -4174,7 +4174,8 @@ function allResults(q){
  const out=[];
  for(const [group,key,target] of sources){
   if(!key)continue;
-  const items=key==='travel_v10'&&typeof travelStore==='function'?travelStore():read(key);
+  const items=key==='travel_v10'&&typeof travelStore==='function'?travelStore():
+    key==='nexoRecipes'&&typeof recipeList==='function'?recipeList():read(key);
   if(!Array.isArray(items))continue;
   items.forEach((item,index)=>{
    const searchable=group==='Voyages'
@@ -4220,15 +4221,25 @@ window.nxSearchRender=function(query){
 window.nxSearchGo=function(i){
  const r=results[i];if(!r)return;
  if(r.group==='Voyages'&&typeof travelOpen==='function'){
-   const trips=typeof travelStore==='function'?travelStore():[];
-   const trip=trips.find(x=>String(x.id)===String(r.id))||trips[r.index];
-   if(trip){openTool('travel');Promise.resolve(typeof nxTravelStartup!=='undefined'?nxTravelStartup:null).then(()=>travelOpen(trip.id));return}
+   const tripId=r.id;
+   openTool('travel');
+   // travel() launches an asynchronous list render. Wait for it before opening
+   // the selected trip, otherwise the list can overwrite the detail screen.
+   Promise.resolve(typeof nxTravelStartup!=='undefined'?nxTravelStartup:null)
+     .then(()=>typeof travelList==='function'?travelList():null)
+     .then(()=>{
+       const trips=typeof travelStore==='function'?travelStore():[];
+       const trip=trips.find(x=>String(x.id)===String(tripId))||trips[r.index];
+       if(trip)travelOpen(trip.id);
+     }).catch(err=>console.error('Ouverture directe voyage',err));
+   return;
  }
  if(r.group==='Recettes'&&typeof recipeView==='function'){
    openTool('recipes');
    const recipesNow=typeof recipeList==='function'?recipeList():[];
    const recipe=recipesNow.find(x=>String(x.id)===String(r.id))||recipesNow[r.index];
    if(recipe){recipeView(recipe.id);return}
+   return;
  }
  if(r.group==='Notes'){
    openTool('notes');
