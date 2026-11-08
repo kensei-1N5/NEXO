@@ -1221,7 +1221,19 @@ body.moto-gps-fullscreen .moto-gps-actions button{padding:8px 4px}
 .nxpdf-filename-label{display:flex!important;flex-direction:column!important;gap:11px!important}
 .nxpdf-filename-label .field{margin-top:0!important}
 @media(max-width:370px){.nxpdf-toolbar .btn{font-size:12px!important;padding:8px 5px!important}}
-</style></head><body><header><div class="header-top"><div><div class="nexo-wordmark" aria-label="NEXO"><span>NE</span><span class="nexo-x">X</span><span>O</span></div><h1 id="heading" class="page-heading">NEXO</h1><p id="subtitle">Tout, au même endroit.</p></div></div></header><main id="app"></main><nav><button id="nav-home" class="active" onclick="gen2Home()"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21v-8h6v8"/></svg></span>Accueil</button><button id="nav-favs" onclick="gen2Modules(false)"><span class="nav-icon"><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="7" cy="7" r="2.7"/><circle cx="17" cy="7" r="2.7"/><circle cx="7" cy="17" r="2.7"/><circle cx="17" cy="17" r="2.7"/></svg></span>Modules</button><span id="custom-nav-slots"></span><button id="nav-settings" onclick="openSettings()"><span class="nav-icon"><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"><path d="M10 2h4l.7 2.4 2 .9 2.2-1.1 2.8 2.8-1.1 2.2.9 2L24 12l-2.5 1-.9 2 1.1 2.2-2.8 2.8-2.2-1.1-2 .9L14 22h-4l-.7-2.4-2-.9-2.2 1.1-2.8-2.8 1.1-2.2-.9-2L0 12l2.5-1 .9-2-1.1-2.2 2.8-2.8 2.2 1.1 2-.9z" transform="translate(2.5 2.5) scale(.79)"/><circle cx="12" cy="12" r="3"/></svg></span>Paramètres</button></nav><div id="toast"></div><script>/* Kazuhiko Arase QRCode — MIT license, bundled for offline use. */
+
+.header-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.nexo-universal-trigger{display:none;align-items:center;justify-content:center;width:43px;height:43px;flex:none;border:1px solid var(--border,#34465d);border-radius:13px;background:var(--card,#1b2c42);color:#3299ff;cursor:pointer}
+body.gen264-home .nexo-universal-trigger{display:flex}
+.nexo-universal-trigger svg{width:23px;height:23px}
+.nx-search-page{padding:14px 0 32px}
+.nx-search-input-row{display:flex;align-items:center;gap:10px;background:var(--card,#1b2c42);border:1px solid var(--border,#34465d);border-radius:16px;padding:10px 14px}
+.nx-search-input-row input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--text,#fff);font:inherit;font-size:16px}
+.nx-search-group{margin-top:22px}.nx-search-group h3{margin:0 0 10px;font-size:16px}
+.nx-search-hit{width:100%;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 15px;margin:7px 0;border:1px solid var(--border,#34465d);border-radius:13px;background:var(--card,#1b2c42);color:var(--text,#fff);cursor:pointer}
+.nx-search-hit small{display:block;opacity:.65;margin-top:4px;font-size:12px}
+.nx-search-empty{opacity:.7;padding:20px 4px}
+</style></head><body><header><div class="header-top"><div><div class="nexo-wordmark" aria-label="NEXO"><span>NE</span><span class="nexo-x">X</span><span>O</span></div><h1 id="heading" class="page-heading">NEXO</h1><p id="subtitle">Tout, au même endroit.</p></div><button class="nexo-universal-trigger" type="button" aria-label="Recherche universelle" title="Rechercher dans NEXO" onclick="nxSearchOpen()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="10.8" cy="10.8" r="7.2"/><path d="m16.3 16.3 5 5"/></svg></button></div></header><main id="app"></main><nav><button id="nav-home" class="active" onclick="gen2Home()"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21v-8h6v8"/></svg></span>Accueil</button><button id="nav-favs" onclick="gen2Modules(false)"><span class="nav-icon"><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="7" cy="7" r="2.7"/><circle cx="17" cy="7" r="2.7"/><circle cx="7" cy="17" r="2.7"/><circle cx="17" cy="17" r="2.7"/></svg></span>Modules</button><span id="custom-nav-slots"></span><button id="nav-settings" onclick="openSettings()"><span class="nav-icon"><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"><path d="M10 2h4l.7 2.4 2 .9 2.2-1.1 2.8 2.8-1.1 2.2.9 2L24 12l-2.5 1-.9 2 1.1 2.2-2.8 2.8-2.2-1.1-2 .9L14 22h-4l-.7-2.4-2-.9-2.2 1.1-2.8-2.8 1.1-2.2-.9-2L0 12l2.5-1 .9-2-1.1-2.2 2.8-2.8 2.2 1.1 2-.9z" transform="translate(2.5 2.5) scale(.79)"/><circle cx="12" cy="12" r="3"/></svg></span>Paramètres</button></nav><div id="toast"></div><script>/* Kazuhiko Arase QRCode — MIT license, bundled for offline use. */
 (function(){const modules={"QRMode":function(require,module,exports){
 module.exports = {
     MODE_NUMBER :       1 << 0,
@@ -4126,4 +4138,91 @@ function nxPdfResizeSignature(){const p=nxPdf.pages[nxPdf.selected];if(p?.sign){
 /* Small local JPEG/A4 PDF writer; every page embeds a rendered image. */
 function nxPdfMake(pages){const enc=new TextEncoder(),parts=[],offsets=[0];let bytes=0;const push=a=>{parts.push(a);bytes+=a.length};const ascii=s=>push(enc.encode(s));ascii('%PDF-1.4\n');const obj=(n,body)=>{offsets[n]=bytes;ascii(n+' 0 obj\n'+body+'\nendobj\n')};const total=2+pages.length*3;obj(1,'<< /Type /Catalog /Pages 2 0 R >>');obj(2,`<< /Type /Pages /Kids [${pages.map((_,i)=>3+i*3+' 0 R').join(' ')}] /Count ${pages.length} >>`);pages.forEach((p,i)=>{const n=3+i*3,image=n+1,stream=n+2;const W=595.28,H=841.89,scale=Math.min(W/p.w,H/p.h),dw=p.w*scale,dh=p.h*scale,x=(W-dw)/2,y=(H-dh)/2;obj(n,`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W} ${H}] /Resources << /XObject << /Im${i} ${image} 0 R >> >> /Contents ${stream} 0 R >>`);offsets[image]=bytes;ascii(`${image} 0 obj\n<< /Type /XObject /Subtype /Image /Width ${p.w} /Height ${p.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${p.jpg.length} >>\nstream\n`);push(p.jpg);ascii('\nendstream\nendobj\n');const cmd=`q\n${dw.toFixed(3)} 0 0 ${dh.toFixed(3)} ${x.toFixed(3)} ${y.toFixed(3)} cm\n/Im${i} Do\nQ\n`;obj(stream,`<< /Length ${enc.encode(cmd).length} >>\nstream\n${cmd}endstream`)});const xref=bytes;ascii(`xref\n0 ${total+1}\n0000000000 65535 f \n`);for(let i=1;i<=total;i++)ascii(String(offsets[i]).padStart(10,'0')+' 00000 n \n');ascii(`trailer\n<< /Size ${total+1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);return new Blob(parts,{type:'application/pdf'})}
 async function nxPdfExport(share){if(!nxPdf.pages.length){toast('Ajoute au moins une page');return}const btns=[...document.querySelectorAll('#tool button')].filter(x=>x.textContent.includes('Exporter PDF')||x.textContent.includes('Partager / envoyer'));btns.forEach(b=>b.disabled=true);try{const pages=[];for(const p of nxPdf.pages){const c=await nxPdfPaint(p,1700);const b64=c.toDataURL('image/jpeg',.85).split(',')[1];const bin=atob(b64),arr=new Uint8Array(bin.length);for(let j=0;j<bin.length;j++)arr[j]=bin.charCodeAt(j);pages.push({w:c.width,h:c.height,jpg:arr})}const blob=nxPdfMake(pages);const raw=(document.getElementById('nxpdf-name').value||'Document').trim().replace(/[\\/:*?"<>|]/g,'_');const name=(raw||'Document')+'.pdf';const file=new File([blob],name,{type:'application/pdf'});if(share&&navigator.share&&navigator.canShare?.({files:[file]})){await navigator.share({files:[file],title:name})}else{const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);if(share)toast('Partage indisponible : PDF téléchargé')} }catch(e){if(e.name!=='AbortError'){console.error(e);toast('Erreur de création du PDF')}}finally{btns.forEach(b=>b.disabled=false)}}
-</script></body></html>
+</script>
+<script>
+/* NEXO 2.8.44: read-only, on-demand universal search. No data migration. */
+(function(){
+const sources=[
+ ['Modules','',null],['Mon garage','garageVehicles','garage'],['Entretiens','garageRecords','garage'],
+ ['Entretiens prévus','garagePlans','garage'],['Voyages','travel_v10','travel'],
+ ['Notes','notes','notes'],['To-do list','tasks','todo'],['Liste de courses','shopping','shopping'],
+ ['Dépenses','expenses','expenses'],['Entrées','incomeEntries','expenses'],
+ ['Recettes','nexoRecipes','recipes'],['Sport','sportSessions','sport'],
+ ['Parking','nexoParking','parking']
+];
+let results=[],activeQuery='';
+const normalize=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('fr').trim();
+const safeText=v=>{if(typeof v==='string'||typeof v==='number')return String(v);return ''};
+const escapeText=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function flatten(value,depth=0){
+ if(depth>4||value==null)return '';
+ if(typeof value==='string'||typeof value==='number')return String(value);
+ if(Array.isArray(value))return value.slice(0,150).map(x=>flatten(x,depth+1)).join(' ');
+ if(typeof value==='object')return Object.entries(value).filter(([k])=>!/(?:base64|image|photo|blob|binary|contentdata|signature|password|secret|token)/i.test(k)).slice(0,45).map(([,v])=>flatten(v,depth+1)).join(' ');
+ return '';
+}
+function label(item,group){
+ if(typeof item==='string')return item;
+ if(!item||typeof item!=='object')return String(item??'');
+ const props=['title','name','label','model','destination','desc','description','text','category','type'];
+ const value=props.map(k=>safeText(item[k])).find(Boolean);
+ return value||group+' · '+safeText(item.date||item.id||'Élément');
+}
+function read(key){
+ try{const v=JSON.parse(localStorage.getItem('tb_'+key)||'[]');return Array.isArray(v)?v:(v&&typeof v==='object'?[v]:[])}catch{return []}
+}
+function allResults(q){
+ const needle=normalize(q);if(!needle)return [];
+ const vehicles=read('garageVehicles');
+ const matchedVehicleIds=new Set(vehicles.filter(v=>normalize(flatten(v)).includes(needle)).map(v=>String(v.id)));
+ const out=[];
+ for(const [group,key,target] of sources){
+  if(!key)continue;
+  const items=key==='travel_v10'&&typeof travelStore==='function'?travelStore():read(key);
+  if(!Array.isArray(items))continue;
+  items.forEach((item,index)=>{
+   const searchable=flatten(item);
+   const linked=group.startsWith('Entretien')&&matchedVehicleIds.size&&['vehicleId','vehicle_id','vehicle','vehId'].some(k=>matchedVehicleIds.has(String(item?.[k])));
+   if(!normalize(searchable).includes(needle)&&!linked)return;
+   out.push({group,title:label(item,group),detail:safeText(item?.date||item?.category||item?.type||''),target,id:item?.id,index});
+  });
+ }
+ if(typeof defs!=='undefined')defs.forEach(d=>{
+  if(normalize(d[2]+' '+(d[3]||'')).includes(needle))out.push({group:'Modules',title:d[2],detail:d[3]||'',target:d[0]});
+ });
+ // PDF documents: titles only, never extract document contents.
+ for(let i=0;i<localStorage.length;i++){
+  const key=localStorage.key(i);
+  if(!key||!/^tb_/.test(key)||!/(?:pdf|document)/i.test(key)||/(?:password|vault|coffre|secret)/i.test(key))continue;
+  let value;try{value=JSON.parse(localStorage.getItem(key))}catch{continue}
+  if(!Array.isArray(value))continue;
+  value.forEach((item,index)=>{
+   const title=safeText(item?.title||item?.name||item?.filename);
+   if(title&&normalize(title).includes(needle))out.push({group:'Documents PDF',title,detail:'Titre du document',target:'scanner-pdf',index});
+  });
+ }
+ return out.slice(0,250);
+}
+window.nxSearchOpen=function(){
+ if(typeof cleanup==='function')cleanup();
+ current='nx-search';nav('');setHead('Recherche','');window.scrollTo(0,0);
+ app.innerHTML='<div class="nx-search-page"><div class="nx-search-input-row"><span style="color:#3299ff">⌕</span><input id="nx-search-query" type="search" autocomplete="off" placeholder="Rechercher dans NEXO..." aria-label="Rechercher dans NEXO"><button type="button" class="btn" onclick="gen2Home()" aria-label="Fermer la recherche">✕</button></div><div id="nx-search-results" aria-live="polite"><div class="nx-search-empty">Rechercher un module, un voyage, un véhicule, une note, un document…</div></div></div>';
+ const input=document.getElementById('nx-search-query');input.addEventListener('input',()=>window.nxSearchRender(input.value));input.focus();
+};
+window.nxSearchRender=function(query){
+ activeQuery=query;results=allResults(query);
+ const target=document.getElementById('nx-search-results');if(!target)return;
+ if(!query.trim()){target.innerHTML='<div class="nx-search-empty">Saisis un mot pour rechercher dans NEXO.</div>';return}
+ if(!results.length){target.innerHTML='<div class="nx-search-empty">Aucun résultat trouvé.</div>';return}
+ const groups=[...new Set(results.map(r=>r.group))];
+ target.innerHTML=groups.map(group=>'<section class="nx-search-group"><h3>'+escapeText(group)+' ('+results.filter(r=>r.group===group).length+')</h3>'+results.map((r,i)=>r.group===group?'<button class="nx-search-hit" type="button" onclick="nxSearchGo('+i+')"><span><strong>'+escapeText(r.title)+'</strong><small>'+escapeText(r.detail)+'</small></span><span aria-hidden="true">›</span></button>':'').join('')+'</section>').join('');
+};
+window.nxSearchGo=function(i){
+ const r=results[i];if(!r)return;
+ if(r.group==='Voyages'&&r.id!=null&&typeof travelOpen==='function'){openTool('travel');travelOpen(r.id);return}
+ if(r.group==='Mon garage'&&r.id!=null&&typeof garageOpen==='function'){openTool('garage');garageOpen(r.id);return}
+ if(typeof openTool==='function')openTool(r.target||'');
+};
+})();
+</script>
+</body></html>
