@@ -852,6 +852,22 @@ html body:not(.nexo-keyboard-open):not(.moto-gps-fullscreen) > main#app {
   position:relative;
   z-index:0;
 }
+
+/* v2.8.40: iOS standalone PWA - prevent short modules from collapsing
+   the root document viewport used to anchor the fixed navigation. */
+@supports (height:100dvh) {
+  html { min-height:100dvh!important; }
+  body:not(.moto-gps-fullscreen) { min-height:100dvh!important; }
+}
+html body:not(.nexo-keyboard-open):not(.moto-gps-fullscreen) > nav {
+  position:fixed!important;
+  bottom:0!important;
+  top:auto!important;
+  left:0!important;
+  right:0!important;
+  transform:none!important;
+  z-index:10000!important;
+}
 </style><style id="nexo-life-layout-fix-279">
 .life-dash .life-filters{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important;align-items:end!important}
 .life-dash .life-filters>label{display:flex!important;flex-direction:column!important;min-width:0!important;margin:0!important;gap:5px!important}
