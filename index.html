@@ -832,6 +832,26 @@ body.moto-gps-fullscreen .moto-gps-search-row{min-height:45px;box-sizing:border-
 body.moto-gps-fullscreen .moto-gps-search-row input{font-size:14px;padding:6px;min-width:0}
 body.moto-gps-fullscreen .moto-gps-search-row button{font-size:13px;padding:7px 9px}
 @media(max-width:380px){body.moto-gps-fullscreen .moto-gps-search{left:142px;right:8px}body.moto-gps-fullscreen .moto-gps-exit{left:8px;padding:11px 10px}body.moto-gps-fullscreen .moto-gps-search-row button{padding:7px 6px;font-size:12px}}
+
+/* v2.8.39 — persistent navigation: viewport anchored, independent of module content.
+   Do not modify the height or internal scrolling of any module. */
+html body:not(.nexo-keyboard-open):not(.moto-gps-fullscreen) > nav {
+  position:fixed!important;
+  inset:auto 0 0 0!important;
+  top:auto!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  transform:none!important;
+  translate:none!important;
+  z-index:10000!important;
+  isolation:isolate;
+  box-sizing:border-box!important;
+}
+html body:not(.nexo-keyboard-open):not(.moto-gps-fullscreen) > main#app {
+  position:relative;
+  z-index:0;
+}
 </style><style id="nexo-life-layout-fix-279">
 .life-dash .life-filters{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important;align-items:end!important}
 .life-dash .life-filters>label{display:flex!important;flex-direction:column!important;min-width:0!important;margin:0!important;gap:5px!important}
@@ -1172,56 +1192,6 @@ body.moto-gps-fullscreen .moto-gps-actions button{padding:8px 4px}
 .nxpdf-filename-label{display:flex!important;flex-direction:column!important;gap:11px!important}
 .nxpdf-filename-label .field{margin-top:0!important}
 @media(max-width:370px){.nxpdf-toolbar .btn{font-size:12px!important;padding:8px 5px!important}}
-
-/* v2.8.36 - standalone iOS: anchor the third tab to a non-scrolling viewport.
-   Other tabs keep the original v2.8.34 layout. */
-@media (display-mode: standalone) {
-  html body.nexo-bottom-shortcut-view {
-    height:100%; height:100dvh;
-    min-height:0!important; overflow:hidden!important;
-    padding-bottom:0!important;
-  }
-  html body.nexo-bottom-shortcut-view > main#app {
-    position:absolute!important;
-    top:0; bottom:0; left:0; right:0;
-    height:100%; height:100dvh;
-    overflow-y:auto!important; overflow-x:hidden!important;
-    -webkit-overflow-scrolling:touch;
-    overscroll-behavior-y:contain;
-    box-sizing:border-box;
-    padding-bottom:calc(115px + env(safe-area-inset-bottom, 0px))!important;
-  }
-  html body.nexo-bottom-shortcut-view > nav {
-    position:fixed!important;
-    left:0!important; right:0!important; bottom:0!important;
-    top:auto!important; transform:none!important;
-    margin:0!important;
-  }
-}
-
-/* v2.8.37: uniform standalone shell for third-tab tools, including short modules. */
-@media (display-mode: standalone) {
- html:has(body.nexo-bottom-shortcut-view){height:100%!important;overflow:hidden!important}
- html body.nexo-bottom-shortcut-view {
-   position:fixed!important;inset:0!important;width:100%!important;
-   height:100dvh!important;min-height:0!important;max-height:100dvh!important;
-   overflow:hidden!important;overscroll-behavior:none!important;
-   padding:0!important;margin:0!important;
- }
- html body.nexo-bottom-shortcut-view > main#app {
-   position:absolute!important;top:0!important;left:0!important;right:0!important;
-   bottom:calc(76px + env(safe-area-inset-bottom,0px))!important;
-   height:auto!important;max-height:none!important;min-height:0!important;
-   overflow-y:auto!important;overflow-x:hidden!important;
-   -webkit-overflow-scrolling:touch;overscroll-behavior-y:contain!important;
-   box-sizing:border-box!important;padding-bottom:24px!important;
- }
- html body.nexo-bottom-shortcut-view > nav {
-   position:absolute!important;inset:auto 0 0 0!important;
-   transform:none!important;margin:0!important;width:100%!important;
-   box-sizing:border-box!important;
- }
-}
 </style></head><body><header><div class="header-top"><div><div class="nexo-wordmark" aria-label="NEXO"><span>NE</span><span class="nexo-x">X</span><span>O</span></div><h1 id="heading" class="page-heading">NEXO</h1><p id="subtitle">Tout, au même endroit.</p></div></div></header><main id="app"></main><nav><button id="nav-home" class="active" onclick="gen2Home()"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21v-8h6v8"/></svg></span>Accueil</button><button id="nav-favs" onclick="gen2Modules(false)"><span class="nav-icon"><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="7" cy="7" r="2.7"/><circle cx="17" cy="7" r="2.7"/><circle cx="7" cy="17" r="2.7"/><circle cx="17" cy="17" r="2.7"/></svg></span>Modules</button><span id="custom-nav-slots"></span><button id="nav-settings" onclick="openSettings()"><span class="nav-icon"><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"><path d="M10 2h4l.7 2.4 2 .9 2.2-1.1 2.8 2.8-1.1 2.2.9 2L24 12l-2.5 1-.9 2 1.1 2.2-2.8 2.8-2.2-1.1-2 .9L14 22h-4l-.7-2.4-2-.9-2.2 1.1-2.8-2.8 1.1-2.2-.9-2L0 12l2.5-1 .9-2-1.1-2.2 2.8-2.8 2.2 1.1 2-.9z" transform="translate(2.5 2.5) scale(.79)"/><circle cx="12" cy="12" r="3"/></svg></span>Paramètres</button></nav><div id="toast"></div><script>/* Kazuhiko Arase QRCode — MIT license, bundled for offline use. */
 (function(){const modules={"QRMode":function(require,module,exports){
 module.exports = {
@@ -2501,13 +2471,7 @@ module.exports = QRCode;
 
 function navChoices(){const v=get('bottomNav',defaultNav);return Array.isArray(v)&&v.length===2&&v.every(id=>defs.some(d=>d[0]===id))?v:defaultNav}
 function updateFavoriteNavStar(){const hasFavorites=Array.isArray(favorites)&&favorites.length>0;document.querySelectorAll('#nav-favs .nexo-fav-star, .tabs .nexo-fav-star').forEach(star=>star.classList.toggle('has-favorites',hasFavorites))}
-function renderBottomNav(){const target=document.getElementById('custom-nav-slots');if(!target)return;const id=navChoices()[0],d=defs.find(x=>x[0]===id);target.innerHTML=d?`<button type="button" data-shortcut="${id}" onclick="openBottomShortcut('${id}')"><span class="nav-icon">${d[1]}</span>${esc(d[2].length>12?d[2].slice(0,10):d[2])}</button>`:''}
-/* Third bottom-tab: preserve the exact same fixed navigation shell as Home/Modules. */
-function openBottomShortcut(id){
-  document.body.classList.add('nexo-bottom-shortcut-view');
-  try { openTool(id); }
-  catch(error) { document.body.classList.remove('nexo-bottom-shortcut-view'); throw error; }
-}
+function renderBottomNav(){const target=document.getElementById('custom-nav-slots');if(!target)return;const id=navChoices()[0],d=defs.find(x=>x[0]===id);target.innerHTML=d?`<button type="button" data-shortcut="${id}" onclick="openTool('${id}')"><span class="nav-icon">${d[1]}</span>${esc(d[2].length>12?d[2].slice(0,10):d[2])}</button>`:''}
 function saveBottomNav(){const a=$('#navChoice1')?.value;if(!a)return toast('Choisis un raccourci');put('bottomNav',[a,navChoices()[1]]);renderBottomNav();closeSettings();toast('Raccourci mis à jour')}
 function nav(which){['home','favs','settings'].forEach(x=>$('#nav-'+x)?.classList.toggle('active',x===which))}function cleanup(){if(current==='vault')vaultPause();if(current==='password-manager')pmLock();if(current==='sonometer')nxSoundStop();if(current==='level'||current==='compass')nxSensorStop();if(current==='worldclock')nxClockStop();if(current==='chrono'&&chronoRunning){chronoElapsed+=Date.now()-chronoStart;chronoRunning=false}if(current==='timer'&&timerRunning){timerRemaining=Math.max(0,timerEnd-Date.now());timerRunning=false}if(clock)clearInterval(clock);clock=null;if(qrLoop)clearInterval(qrLoop);qrLoop=null;if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}}const groups=[{id:'organize',title:'Organisation',icon:'☑',desc:'Tâches, notes et courses',tools:['todo','notes','shopping','loyalty'],tone:'mint'},{id:'garage-group',title:'Mon garage',icon:'🚗',desc:'Véhicules et entretien',tools:['garage-auto','garage-moto','parking'],tone:'orange'},{id:'health',title:'Santé',icon:'♡',desc:'Nutrition et bien-être',tools:['nutrition','recipes','healthcard','lifetimes','mindset'],tone:'lime'},{id:'leisure',title:'Loisirs',icon:'<svg viewBox="0 0 32 32" width="29" height="29" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="16" cy="16" r="12"/><path d="m20 12-4 10-4-10 8 0z"/></svg>',desc:'Voyages, moto et sport',tools:['travel','moto','sport'],tone:'cyan'},{id:'math',title:'Calculs & Maths',icon:'✣',desc:'Calculatrice, pourcentages, conversions',tools:['calc','percent','fx'],tone:'indigo'},{id:'work',title:'Bureautique & Data',icon:'▤',desc:'Excel, Power BI et couleurs',tools:['excel','dax','colors','qrcode'],tone:'teal'},{id:'finance',title:'Finances',icon:'€',desc:'Suivi des dépenses',tools:['expenses','savings'],tone:'rose'},{id:'security',title:'Sécurité',icon:'🔒',desc:'Mots de passe',tools:['password','vault','password-manager'],tone:'purple'},{id:'time',title:'Outils',icon:'◷',desc:'Temps, mesures et conversions',tools:['chrono','timer','sonometer','level','convert','worldclock','compass','scanner-pdf'],tone:'yellow'}];
 // L'ordre des catégories est indépendant des données de chaque module.
@@ -2547,7 +2511,7 @@ function moveModuleCategory(id,direction){const ordered=orderedGroups(),i=ordere
 let collapsedGroups=get('collapsedGroups',[]);
 function home(fav=false){return gen2Modules(fav)}
 let gen2ModuleFavoritesOnly=false;
-function gen2Modules(fav=false){document.body.classList.remove("nexo-bottom-shortcut-view");gen2ModuleFavoritesOnly=!!fav;updateFavoriteNavStar();cleanup();current='home';nav('favs');setHead('Modules','Tous tes outils au même endroit');app.innerHTML=`<div class="home-search"><input class="search" id="search" type="search" placeholder="Rechercher un outil…" aria-label="Rechercher un outil"><button type="button" class="home-search-button" aria-label="Lancer la recherche" onclick="document.getElementById('search').focus();drawTiles(gen2ModuleFavoritesOnly)"><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="10.7" cy="10.7" r="6.6"/><path d="m16 16 5 5"/></svg></button></div><div class="tabs" style="margin-top:14px"><button class="${!fav?'active':''}" onclick="gen2Modules(false)">Tous</button><button class="${fav?'active':''}" onclick="gen2Modules(true)"><span class="nexo-fav-star ${favorites.length?'has-favorites':''}">★</span> Favoris</button></div><div class="module-category-customize"><button type="button" class="btn" onclick="openModuleCategorySettings()">⚙ Personnaliser les catégories et les modules</button></div><div id="tiles" class="category-list"></div>`;$('#search').oninput=()=>drawTiles(fav);drawTiles(fav)}
+function gen2Modules(fav=false){gen2ModuleFavoritesOnly=!!fav;updateFavoriteNavStar();cleanup();current='home';nav('favs');setHead('Modules','Tous tes outils au même endroit');app.innerHTML=`<div class="home-search"><input class="search" id="search" type="search" placeholder="Rechercher un outil…" aria-label="Rechercher un outil"><button type="button" class="home-search-button" aria-label="Lancer la recherche" onclick="document.getElementById('search').focus();drawTiles(gen2ModuleFavoritesOnly)"><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="10.7" cy="10.7" r="6.6"/><path d="m16 16 5 5"/></svg></button></div><div class="tabs" style="margin-top:14px"><button class="${!fav?'active':''}" onclick="gen2Modules(false)">Tous</button><button class="${fav?'active':''}" onclick="gen2Modules(true)"><span class="nexo-fav-star ${favorites.length?'has-favorites':''}">★</span> Favoris</button></div><div class="module-category-customize"><button type="button" class="btn" onclick="openModuleCategorySettings()">⚙ Personnaliser les catégories et les modules</button></div><div id="tiles" class="category-list"></div>`;$('#search').oninput=()=>drawTiles(fav);drawTiles(fav)}
 
 /* NEXO GEN 2.2 — configurable offline dashboard. All values sourced from existing local modules. */
 const gen2Widgets=[
@@ -2640,7 +2604,7 @@ function gen26UpcomingTrip(){
  </button>`;
 }
 async function gen26OpenTrip(id){openTool('travel');await nxTravelStartup;await nxTravelQueue;if(travelStore().some(t=>String(t.id)===String(id))){travelOpen(id);window.scrollTo(0,0)}}
-function gen2Home(){document.body.classList.remove("nexo-bottom-shortcut-view");
+function gen2Home(){
  if(!nxTravelReady){nxTravelStartup.then(()=>{if(document.querySelector('.gen2-shell')&&current==='home'){
   const grid=document.querySelector('.gen2-grid');if(grid)grid.innerHTML=gen2Config().map(gen2Card).join('');
   const section=document.querySelector('.gen26-upcoming');if(section){const card=section.querySelector('.gen26-trip-card, .gen26-trip-empty');if(card)card.outerHTML=gen26UpcomingTrip()}
