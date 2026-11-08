@@ -4219,8 +4219,30 @@ window.nxSearchRender=function(query){
 };
 window.nxSearchGo=function(i){
  const r=results[i];if(!r)return;
- if(r.group==='Voyages'&&r.id!=null&&typeof travelOpen==='function'){openTool('travel');travelOpen(r.id);return}
- if(r.group==='Recettes'&&r.id!=null&&typeof recipeView==='function'){openTool('recipes');recipeView(r.id);return}
+ if(r.group==='Voyages'&&typeof travelOpen==='function'){
+   const trips=typeof travelStore==='function'?travelStore():[];
+   const trip=trips.find(x=>String(x.id)===String(r.id))||trips[r.index];
+   if(trip){openTool('travel');travelOpen(trip.id);return}
+ }
+ if(r.group==='Recettes'&&typeof recipeView==='function'){
+   openTool('recipes');
+   const recipesNow=typeof recipeList==='function'?recipeList():[];
+   const recipe=recipesNow.find(x=>String(x.id)===String(r.id))||recipesNow[r.index];
+   if(recipe){recipeView(recipe.id);return}
+ }
+ if(r.group==='Notes'){
+   openTool('notes');
+   const notesNow=typeof get==='function'?get('notes',[]):[];
+   const note=notesNow.find(x=>String(x.id)===String(r.id))||notesNow[r.index];
+   if(note){
+     const title=typeof esc==='function'?esc(note.title||'Sans titre'):String(note.title||'Sans titre');
+     const body=typeof esc==='function'?esc(note.body||''):String(note.body||'');
+     content('<div class="card stack"><button class="btn" onclick="notes()">← Mes notes</button><h2>'+title+'</h2><div style="white-space:pre-wrap;overflow-wrap:anywhere">'+body+'</div><button class="btn" id="nx-note-edit">Modifier cette note</button></div>');
+     const edit=document.getElementById('nx-note-edit');
+     if(edit)edit.addEventListener('click',()=>{notes();editNote(note.id)});
+     return;
+   }
+ }
  if(r.group==='Mon garage'&&r.id!=null&&typeof garageOpen==='function'){openTool('garage');garageOpen(r.id);return}
  if(typeof openTool==='function')openTool(r.target||'');
 };
