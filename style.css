@@ -1306,3 +1306,7 @@ html[data-theme="light"] .tool-group .group-grid .tile{color:#172238}
 html[data-theme="light"] .tool-group{border-color:#ffffff50}
 html[data-theme="light"] .settings-panel .btn.primary{background:var(--nx-accent)!important}
 html[data-theme="dark"] .settings-panel .btn.primary{background:var(--nx-accent)!important}
+
+.moto-gl-dot{width:22px;height:22px;border-radius:50%;background:#278aff;border:3px solid #fff;box-shadow:0 0 0 7px rgba(39,138,255,.28),0 2px 8px rgba(0,0,0,.45)}
+body.moto-gps-fullscreen .moto-gps-map.maplibregl-map{position:absolute}
+body.moto-gps-fullscreen #moto-gps-engine{font-size:12px;font-weight:600;opacity:.9}
