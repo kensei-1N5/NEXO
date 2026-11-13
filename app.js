@@ -1243,65 +1243,150 @@ async function nexoShowStorage(){
  }catch(e){host.textContent='Impossible de mesurer le stockage : '+e.message}
 }
 
-// Sauvegarde complète : toutes les clés persistantes appartenant à NEXO.
+// Sauvegarde intégrale v2.8.95 : données locales et bases IndexedDB chiffrées.
+// Les clés de chiffrement ne sont pas déchiffrées et les secrets maîtres ne sont jamais exportés en clair.
 const BACKUP_FORMAT='digital-toolbox-full-backup';
 const BACKUP_EXTRA_KEYS=['nexo_lifetime_v1','nexoMindsetDailyStatus_v1'];
+const NX_BACKUP_DATABASES=['nexo-local-data','nexo-vault-v1','nexo-password-manager-v1'];
 function isBackupKey(k){return /^tb_[A-Za-z0-9_-]{1,100}$/.test(k)||BACKUP_EXTRA_KEYS.includes(k)}
-function backupKeys(){return Object.keys(localStorage).filter(k=>k.startsWith('tb_')||BACKUP_EXTRA_KEYS.includes(k)).sort()}
+function backupKeys(){return Object.keys(localStorage).filter(isBackupKey).sort()}
+function nxIdbRequest(req){return new Promise((resolve,reject)=>{req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error||Error('Lecture IndexedDB impossible'))})}
+async function nxBackupEncode(v){
+ if(v===undefined)return {__nexo_type:'undefined'};
+ if(v===null||typeof v!=='object')return v;
+ if(v instanceof Blob){const bytes=new Uint8Array(await v.arrayBuffer());return {__nexo_type:'blob',mime:v.type,bytes:nxBackupB64(bytes)}}
+ if(v instanceof ArrayBuffer)return {__nexo_type:'buffer',bytes:nxBackupB64(new Uint8Array(v))};
+ if(ArrayBuffer.isView(v))return {__nexo_type:'typed',kind:v.constructor.name,bytes:nxBackupB64(new Uint8Array(v.buffer,v.byteOffset,v.byteLength))};
+ if(v instanceof Date)return {__nexo_type:'date',value:v.toISOString()};
+ if(Array.isArray(v))return Promise.all(v.map(nxBackupEncode));
+ const out={};for(const [key,value] of Object.entries(v))out[key]=await nxBackupEncode(value);return out;
+}
+function nxBackupB64(bytes){let result='';for(let i=0;i<bytes.length;i+=8192)result+=String.fromCharCode(...bytes.subarray(i,i+8192));return btoa(result)}
+function nxBackupUnb64(s){if(typeof s!=='string'||!/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(s))throw Error('Données binaires invalides');const binary=atob(s),out=new Uint8Array(binary.length);for(let i=0;i<binary.length;i++)out[i]=binary.charCodeAt(i);return out}
+function nxBackupDecode(v){
+ if(v===null||typeof v!=='object')return v;
+ if(Array.isArray(v))return v.map(nxBackupDecode);
+ if(Object.prototype.hasOwnProperty.call(v,'__nexo_type')){
+  const t=v.__nexo_type;
+  if(t==='undefined')return undefined;
+  if(t==='date')return new Date(v.value);
+  if(t==='blob')return new Blob([nxBackupUnb64(v.bytes)],{type:v.mime||''});
+  if(t==='buffer')return nxBackupUnb64(v.bytes).buffer;
+  if(t==='typed'){const buf=nxBackupUnb64(v.bytes).buffer;const types={Uint8Array,Int8Array,Uint16Array,Int16Array,Uint32Array,Int32Array,Float32Array,Float64Array,Uint8ClampedArray,DataView};const C=types[v.kind];if(!C)throw Error('Type binaire inconnu');return new C(buf)}
+  throw Error('Type de données inconnu');
+ }
+ const out={};for(const [key,val] of Object.entries(v))out[key]=nxBackupDecode(val);return out;
+}
+async function nxBackupOpenDatabase(name,onlyExisting=true){
+ if(onlyExisting&&typeof indexedDB.databases==='function'){
+  const list=await indexedDB.databases();if(!list.some(db=>db.name===name))return null;
+ }
+ return new Promise((resolve,reject)=>{const r=indexedDB.open(name);let created=false;
+  r.onupgradeneeded=()=>{created=true;try{r.transaction.abort()}catch(_){}};
+  r.onsuccess=()=>resolve(r.result);r.onerror=()=>{if(created)resolve(null);else reject(r.error||Error('Base inaccessible : '+name))};r.onblocked=()=>reject(Error('Base occupée : '+name));
+ });
+}
+async function nxBackupReadDatabase(name){
+ const db=await nxBackupOpenDatabase(name);if(!db)return null;
+ try{
+  const stores=Array.from(db.objectStoreNames);if(!stores.length)return {version:db.version,stores:{}};
+  const result={version:db.version,stores:{}};
+  const tx=db.transaction(stores,'readonly');
+  const jobs=stores.map(async storeName=>{const store=tx.objectStore(storeName);const [keys,values]=await Promise.all([nxIdbRequest(store.getAllKeys()),nxIdbRequest(store.getAll())]);return {storeName,keyPath:store.keyPath,keys,values}});
+  const rows=await Promise.all(jobs);
+  await new Promise((resolve,reject)=>{tx.oncomplete=resolve;tx.onabort=()=>reject(tx.error||Error('Transaction annulée'));tx.onerror=()=>reject(tx.error)});
+  for(const row of rows){result.stores[row.storeName]={keyPath:row.keyPath,records:await Promise.all(row.values.map(async(value,i)=>({key:await nxBackupEncode(row.keys[i]),value:await nxBackupEncode(value)})))}}
+  return result;
+ }finally{db.close()}
+}
+async function nxBackupSnapshot(){const result={};for(const name of NX_BACKUP_DATABASES){const db=await nxBackupReadDatabase(name);if(db)result[name]=db}return result}
+function nxBackupValidateSnapshot(snapshot){
+ if(!snapshot||typeof snapshot!=='object'||Array.isArray(snapshot))throw Error('Bases de données invalides');
+ for(const [name,db] of Object.entries(snapshot)){
+  if(!NX_BACKUP_DATABASES.includes(name)||!db||typeof db!=='object'||!db.stores||typeof db.stores!=='object')throw Error('Base non reconnue');
+  for(const [store,info] of Object.entries(db.stores)){
+   if(!/^[a-zA-Z0-9_-]{1,80}$/.test(store)||!Array.isArray(info.records))throw Error('Contenu IndexedDB invalide');
+   for(const entry of info.records){if(!entry||!Object.hasOwn(entry,'key')||!Object.hasOwn(entry,'value'))throw Error('Enregistrement IndexedDB incomplet');nxBackupDecode(entry.key);nxBackupDecode(entry.value)}
+  }
+ }
+}
+async function nxBackupRestoreDatabase(name,snapshot){
+ const db=name==='nexo-local-data'?await nxTravelDb():name==='nexo-vault-v1'?await vaultDb():name==='nexo-password-manager-v1'?await pmDb():null;
+ if(!db)throw Error('Base indisponible : '+name);
+ const stores=Object.keys(snapshot.stores);
+ if(stores.some(store=>!db.objectStoreNames.contains(store))){if(name!=='nexo-local-data')db.close();throw Error('Structure de base incompatible : '+name)}
+ try{
+  if(!stores.length)return;
+  await new Promise((resolve,reject)=>{const tx=db.transaction(stores,'readwrite');
+   try{for(const storeName of stores){const store=tx.objectStore(storeName);store.clear();for(const record of snapshot.stores[storeName].records){const value=nxBackupDecode(record.value),key=nxBackupDecode(record.key);if(store.keyPath===null)store.put(value,key);else store.put(value)}}}
+   catch(e){tx.abort();reject(e);return}
+   tx.oncomplete=resolve;tx.onabort=()=>reject(tx.error||Error('Écriture de '+name+' annulée'));tx.onerror=()=>reject(tx.error||Error('Écriture de '+name+' impossible'));
+  });
+ }finally{if(name!=='nexo-local-data')db.close()}
+}
 async function backupAllData(){
  try{
   await nxTravelStartup;await nxTravelQueue;
   const data={};for(const key of backupKeys())data[key]=localStorage.getItem(key);
-  const payload={format:BACKUP_FORMAT,version:'10.2',createdAt:new Date().toISOString(),data,indexedDB:{travel_v10:travelStore()}};
+  const dbs=await nxBackupSnapshot();
+  const payload={format:BACKUP_FORMAT,version:'11.0',createdAt:new Date().toISOString(),data,indexedDB:{travel_v10:travelStore(),databases:dbs}};
   const date=new Date().toISOString().slice(0,10);
-  travelDownload('NEXO_backup_'+date+'.json',JSON.stringify(payload,null,2));
+  // La copie contient les coffres et identifiants chiffrés, pas leurs mots de passe en clair.
+  travelDownload('NEXO_backup_'+date+'.json',JSON.stringify(payload));
   put('nxLastBackup',new Date().toISOString());
   const backupDate=document.getElementById('nx-last-backup-date');if(backupDate)backupDate.textContent=nxLastBackupLabel();
-  toast('Export préparé : conserve le fichier dans Fichiers ou iCloud Drive');
- }catch(e){alert('Impossible de créer la sauvegarde : '+e.message)}
+  toast('Export complet préparé : conserve le fichier dans Fichiers ou iCloud Drive');
+ }catch(e){console.error('Sauvegarde NEXO',e);alert('Impossible de créer la sauvegarde complète : '+e.message)}
 }
 function restoreAllData(){
  const input=document.createElement('input');input.type='file';input.accept='.json,application/json';
  input.onchange=async()=>{
   const file=input.files&&input.files[0];if(!file)return;
-  let previous=null,previousTrips=null,changed=false;
+  let beforeLocal=null,beforeDB=null,changed=false;
   try{
-   if(file.size>150*1024*1024)throw Error('Fichier trop volumineux (150 Mo maximum).');
+   if(file.size>300*1024*1024)throw Error('Fichier trop volumineux (300 Mo maximum).');
    const payload=JSON.parse(await file.text());
-   if(!payload||payload.format!==BACKUP_FORMAT||!payload.data||typeof payload.data!=='object'||Array.isArray(payload.data))throw Error('Ce fichier n’est pas une sauvegarde complète NEXO.');
+   if(!payload||payload.format!==BACKUP_FORMAT||!payload.data||typeof payload.data!=='object'||Array.isArray(payload.data))throw Error('Ce fichier n’est pas une sauvegarde NEXO.');
    const entries=Object.entries(payload.data);
-   if(!entries.length)throw Error('Sauvegarde vide.');
-   for(const [key,value] of entries){
-    if(!isBackupKey(key)||typeof value!=='string')throw Error('Contenu de sauvegarde non valide.');
-    JSON.parse(value);
-   }
-   const restoredTrips=Array.isArray(payload.indexedDB?.travel_v10)?payload.indexedDB.travel_v10:JSON.parse(payload.data.tb_travel_v10||'[]');
-   if(!Array.isArray(restoredTrips))throw Error('Liste des voyages invalide.');
-   if(!confirm('Restaurer '+entries.length+' éléments et '+restoredTrips.length+' voyage(s) depuis la sauvegarde du '+(payload.createdAt?new Date(payload.createdAt).toLocaleDateString('fr-FR'):'date inconnue')+' ?\n\nLes données actuelles seront remplacées. Conserve ton fichier de sauvegarde.'))return;
-   // Attendre la migration éventuelle avant toute écriture, pour éviter qu’elle écrase les voyages restaurés.
+   for(const [key,value] of entries){if(!isBackupKey(key)||typeof value!=='string')throw Error('Clé ou valeur de sauvegarde non valide : '+key);JSON.parse(value)}
+   const isComplete=!!payload.indexedDB?.databases;
+   if(isComplete)nxBackupValidateSnapshot(payload.indexedDB.databases);
+   const trips=Array.isArray(payload.indexedDB?.travel_v10)?payload.indexedDB.travel_v10:JSON.parse(payload.data.tb_travel_v10||'[]');
+   if(!Array.isArray(trips))throw Error('Liste de voyages invalide');
+   if(!confirm((isComplete?'Sauvegarde intégrale':'Ancienne sauvegarde (coffres non inclus)')+' du '+(payload.createdAt?new Date(payload.createdAt).toLocaleDateString('fr-FR'):'jour inconnu')+'.\n\nRestaurer '+entries.length+' réglages et données'+(isComplete?', ainsi que les bases chiffrées':' et les voyages')+' ? Les données correspondantes seront remplacées.'))return;
    await nxTravelStartup;await nxTravelQueue;
-   previous={};for(const key of backupKeys())previous[key]=localStorage.getItem(key);
-   const existingTrips=await nxTravelRead();previousTrips=Array.isArray(existingTrips)?existingTrips:[];
+   beforeLocal={};for(const key of backupKeys())beforeLocal[key]=localStorage.getItem(key);
+   beforeDB=await nxBackupSnapshot();
+   // État capturé : tout échec ultérieur tentera de restaurer l'état précédent.
    changed=true;
-   // Écrire d'abord IndexedDB, puis contrôler immédiatement son contenu.
-   await nxTravelWrite(restoredTrips);
-   const verified=await nxTravelRead();
-   if(!Array.isArray(verified)||verified.length!==restoredTrips.length||JSON.stringify(verified)!==JSON.stringify(restoredTrips))throw Error('Vérification des voyages impossible : données relues différentes.');
+   if(isComplete){for(const [name,db] of Object.entries(payload.indexedDB.databases))await nxBackupRestoreDatabase(name,db)}
+   else await nxTravelWrite(trips);
+   // Mise à jour du stockage local uniquement après la restauration des bases.
    for(const key of backupKeys())localStorage.removeItem(key);
    for(const [key,value] of entries)localStorage.setItem(key,value);
-   // Éviter qu’une ancienne copie localStorage remplace IndexedDB au prochain démarrage.
    localStorage.removeItem('tb_travel_v10');
-   nxTravelCache=verified;nxTravelReady=true;
-   alert('Restauration vérifiée : '+verified.length+' voyage(s) et '+entries.length+' éléments restaurés. NEXO va se recharger.');
+   // Relire pour confirmer que les données critiques ont été écrites.
+   const restored=await nxTravelRead();
+   if(isComplete&&payload.indexedDB.databases['nexo-local-data']?.stores?.data?.records?.length&&restored===undefined)throw Error('Voyages non relus');
+   if(isComplete){
+    for(const [name,snapshot] of Object.entries(payload.indexedDB.databases)){
+     const check=await nxBackupReadDatabase(name);
+     for(const [store,info] of Object.entries(snapshot.stores)){
+      if(!check?.stores?.[store]||check.stores[store].records.length!==info.records.length)throw Error('Vérification incomplète : '+name+'/'+store);
+     }
+    }
+   }
+   nxTravelCache=Array.isArray(restored)?restored:trips;nxTravelReady=true;
+   alert('Restauration terminée. Les mots de passe maîtres et clés de récupération de la sauvegarde restent nécessaires. NEXO va redémarrer.');
    location.reload();
   }catch(e){
+   let rollback=true;
    if(changed){
-    let rollbackOk=true;
-    try{if(previous){for(const key of backupKeys())localStorage.removeItem(key);for(const [key,value] of Object.entries(previous))localStorage.setItem(key,value)}}catch(err){rollbackOk=false;console.error('Restauration localStorage échouée',err)}
-    try{if(previousTrips!==null){await nxTravelWrite(previousTrips);nxTravelCache=previousTrips}}catch(err){rollbackOk=false;console.error('Restauration voyages échouée',err)}
-    alert('Importation interrompue : '+e.message+(rollbackOk?'\nLes données précédentes ont été rétablies.':'\nATTENTION : retour arrière incomplet. Conserve tes sauvegardes.'));
-   }else alert('Restauration impossible : '+e.message);
-   console.error('NEXO importation',e);
+    try{for(const key of backupKeys())localStorage.removeItem(key);for(const [key,value] of Object.entries(beforeLocal||{}))if(value!==null)localStorage.setItem(key,value)}catch(err){rollback=false;console.error(err)}
+    if(beforeDB)for(const [name,db] of Object.entries(beforeDB)){try{await nxBackupRestoreDatabase(name,db)}catch(err){rollback=false;console.error(err)}}
+   }
+   console.error('Restauration NEXO',e);
+   alert('Restauration impossible : '+e.message+(changed?(rollback?'\nL’ancien contenu a été rétabli.':'\nATTENTION : retour arrière incomplet. Conserve tes sauvegardes.') :''));
   }
  };
  input.click();
