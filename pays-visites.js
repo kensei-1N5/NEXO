@@ -158,13 +158,13 @@ function pvSelect(key,focus){
 function pvSheet(c){
  const host=document.getElementById('pv-sheet');if(!host)return;
  const rec=pv.visited[c.key],name=c.fr||(c.fr=pvFrName(c));
- host.innerHTML=`<div class="pv-sheet-in"><div class="pv-sheet-head"><span class="pv-flag">${pvFlag(c.a2)}</span><div><strong>${pvEsc(name)}</strong><small>${rec?'✓ Pays visité':'Pas encore visité'}</small></div><button class="pv-x" onclick="pvSheetClose()" aria-label="Fermer">✕</button></div><label>Quand ?</label><input id="pv-when" maxlength="40" placeholder="Ex. été 2023" value="${pvEsc(rec?.when||'')}"><label>Souvenir / note</label><textarea id="pv-note" rows="2" maxlength="300" placeholder="Ce que tu as aimé…">${pvEsc(rec?.note||'')}</textarea><div class="nx-map-buttons">${rec?`<button onclick="pvRemove('${c.key}')">Retirer</button>`:''}<button class="nx-primary" onclick="pvMark('${c.key}')">${rec?'Enregistrer':'✓ Marquer comme visité'}</button></div></div>`;
+ host.innerHTML=`<div class="pv-sheet-in"><div class="pv-sheet-head"><span class="pv-flag">${pvFlag(c.a2)}</span><div><strong>${pvEsc(name)}</strong><small>${rec?'✓ Pays visité':'Pas encore visité'}</small></div><button class="pv-x" onclick="pvSheetClose()" aria-label="Fermer">✕</button></div><label>Quand ?</label><input id="pv-when" maxlength="40" placeholder="Ex. été 2023" value="${pvEsc(rec?.when||'')}"><div class="nx-map-buttons">${rec?`<button onclick="pvRemove('${c.key}')">Retirer</button>`:''}<button class="nx-primary" onclick="pvMark('${c.key}')">${rec?'Enregistrer':'✓ Marquer comme visité'}</button></div></div>`;
  host.hidden=false;
 }
 function pvSheetClose(){const h=document.getElementById('pv-sheet');if(h){h.hidden=true;h.innerHTML=''}pv.sel=null;pvRedraw()}
 function pvMark(key){
  const prev=pv.visited[key];
- pv.visited[key]={when:(document.getElementById('pv-when')?.value||'').trim(),note:(document.getElementById('pv-note')?.value||'').trim(),ts:prev?.ts||Date.now()};
+ pv.visited[key]={when:(document.getElementById('pv-when')?.value||'').trim(),note:prev?.note||'',ts:prev?.ts||Date.now()};
  pvSave();pvStatus();const c=pv.byKey.get(key);pvSheet(c);pvRedraw();toast(prev?'Enregistré':'✓ '+(c.fr||c.name)+' marqué visité')
 }
 function pvRemove(key){delete pv.visited[key];pvSave();pvStatus();const c=pv.byKey.get(key);pvSheet(c);pvRedraw()}
