@@ -1,0 +1,1308 @@
+:root{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#172136;background:#f7f9fc;font-size:16px}*{box-sizing:border-box}body{margin:0;padding:env(safe-area-inset-top) 0 calc(85px + env(safe-area-inset-bottom))}button,input,textarea,select{font:inherit}button{cursor:pointer}header{padding:24px 20px 12px;position:sticky;top:0;background:#f7f9fcef;backdrop-filter:blur(14px);z-index:3}h1{font-size:30px;letter-spacing:-1px;margin:0 0 5px}h2{font-size:23px;letter-spacing:-.5px;margin:0 0 14px}p{color:#6c7789;margin:4px 0 18px}main{padding:12px 18px;max-width:650px;margin:auto}.search,.field{width:100%;border:1px solid #e3e8ef;background:#fff;border-radius:14px;padding:14px;outline:none;color:#18243b}.search:focus,.field:focus{border-color:#2684ff}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.tile{position:relative;border:1px solid #e9edf3;border-radius:21px;background:white;padding:18px 12px;min-height:135px;text-align:left;box-shadow:0 4px 18px #1b39600a}.tile .emoji{font-size:31px;display:block;margin-bottom:13px}.tile strong{display:block;font-size:15px}.tile small{display:block;color:#8490a1;margin-top:5px}.star{position:absolute;right:12px;top:12px;border:0;background:transparent;color:#b2bac6;font-size:21px;padding:4px}.star.active{color:#f4b423}.bar{display:flex;gap:9px;align-items:center;margin-bottom:16px}.bar button,.btn{border:0;border-radius:13px;background:#eaf2ff;color:#1765cc;padding:12px 15px;font-weight:600}.btn.primary{background:#2584f9;color:white}.btn.danger{background:#fff0f0;color:#ce3e3e}.btn:disabled{opacity:.45}.row{display:flex;align-items:center;gap:9px}.row>*{min-width:0}.grow{flex:1}.card{background:white;border:1px solid #e9edf3;border-radius:18px;padding:15px;margin-bottom:13px;box-shadow:0 3px 12px #1b396008}.card label{font-size:12px;color:#748095;display:block;margin-bottom:6px}.stack{display:grid;gap:10px}.item{display:flex;gap:10px;align-items:center;border-bottom:1px solid #f0f2f6;padding:12px 0}.item:last-child{border:0}.item.done .itemtext{text-decoration:line-through;color:#a1a9b7}.itemtext{flex:1;overflow-wrap:anywhere}.muted{color:#8590a0;font-size:13px}.result{font-size:28px;font-weight:750;letter-spacing:-1px;overflow-wrap:anywhere}.calc-display{text-align:right;font-size:34px;min-height:76px;overflow-wrap:anywhere;padding:12px}.calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.calc-grid button{border:0;border-radius:16px;background:#edf1f6;padding:18px 5px;font-size:20px}.calc-grid button.op{background:#dceaff;color:#1669d3}.calc-grid button.eq{background:#2584f9;color:white}.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:14px}.tabs button{white-space:nowrap;border:0;border-radius:12px;padding:10px 13px;background:#e9eef6;color:#657388}.tabs button.active{background:#2584f9;color:white}.hidden{display:none!important}nav{position:fixed;bottom:0;left:0;right:0;background:#fffffff2;backdrop-filter:blur(16px);border-top:1px solid #e8edf5;display:flex;justify-content:space-around;padding:11px 0 calc(10px + env(safe-area-inset-bottom));z-index:5}nav button{border:0;background:transparent;color:#728096;font-size:12px;display:grid;gap:5px;justify-items:center}nav button.active{color:#1874e9}nav span{font-size:22px}.notice{padding:12px;border-radius:12px;background:#fff8e6;color:#805e1c;font-size:13px}.small{font-size:12px}.big{font-size:40px;font-weight:700;text-align:center;font-variant-numeric:tabular-nums;margin:18px 0}video{width:100%;border-radius:14px;background:#000}.swatch{height:100px;border-radius:15px;border:1px solid #e3e8ef}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}textarea{min-height:130px;resize:vertical}input[type=checkbox]{width:21px;height:21px;accent-color:#2684ff}input[type=color]{height:48px;padding:4px}select{min-width:0}#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#172136;color:white;border-radius:12px;padding:11px 17px;display:none;z-index:20;white-space:nowrap}
+
+:root{color:#16233b;background:#f3f6fb;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif}body{background:radial-gradient(circle at 90% -10%,#e3efff 0,transparent 42%),#f3f6fb}header{background:#f3f6fbe8;padding:30px 22px 16px;border-bottom:1px solid #e8edf5}h1{font-size:37px;letter-spacing:-1.6px;font-weight:800}header p{font-size:14px;color:#8390a4;margin:7px 0 0}main{padding:18px 19px}.search,.field{border:1px solid #e3eaf4;border-radius:17px;background:#fff;box-shadow:0 4px 18px #2b508008}.search{padding:16px}.grid{gap:13px}.tile{border:1px solid #e9eef7;border-radius:24px;min-height:159px;padding:19px 16px;box-shadow:0 8px 25px #25416b0b;transition:transform .15s ease,box-shadow .15s ease}.tile:active{transform:scale(.97)}.tile .emoji{width:52px;height:52px;display:flex;align-items:center;justify-content:center;font-size:28px;border-radius:16px;background:#eaf2ff;margin-bottom:21px}.tile:nth-child(9n+2) .emoji{background:#e7f7f2}.tile:nth-child(9n+3) .emoji{background:#e9f0ff}.tile:nth-child(9n+4) .emoji{background:#fff3dd}.tile:nth-child(9n+5) .emoji{background:#f0eaff}.tile:nth-child(9n+6) .emoji{background:#ffedf0}.tile:nth-child(9n+7) .emoji{background:#e8f7f8}.tile:nth-child(9n+8) .emoji{background:#fff0e8}.tile:nth-child(9n+9) .emoji{background:#eaf4e7}.tile strong{font-size:15px;letter-spacing:-.25px}.tile small{font-size:12px;line-height:1.4;color:#8490a3}.star{color:#bdc8d7;font-size:22px;top:13px;right:12px}.star.active{color:#f0a900}.tabs{margin-top:17px!important;margin-bottom:15px}.tabs button{border-radius:30px;padding:10px 19px;font-weight:650;background:#e9eef6;color:#78869a}.tabs button.active{background:#246df2;color:white;box-shadow:0 4px 12px #246df233}.card{border-radius:23px;padding:19px;border-color:#e8eef6;box-shadow:0 7px 24px #2c4c760a}.btn,.bar button{border-radius:14px}.btn.primary{background:#246df2}nav{box-shadow:0 -8px 28px #1d376008;border-top:1px solid #e9edf5;padding-top:13px}nav button{font-weight:550}nav button.active{color:#246df2}nav span{font-size:25px}.calc-grid button{border-radius:19px}.calc-grid button.eq{background:#246df2}input:focus-visible,button:focus-visible,.tile:focus-visible{outline:2px solid #246df2;outline-offset:2px}@media(max-width:360px){.tile{padding:15px 12px;min-height:150px}.tile strong{font-size:14px}.tile small{font-size:11px}}
+
+/* Excel reference */
+.excel-hero{background:linear-gradient(125deg,#107c41,#185c37);color:white;border-radius:24px;padding:20px;margin-bottom:15px;box-shadow:0 10px 25px #107c4125}.excel-hero h2{margin:5px 0 7px;font-size:23px}.excel-hero p{color:#dcf7e6;margin:0;font-size:13px}.excel-mark{display:inline-flex;align-items:center;justify-content:center;background:#fff2;color:#fff;border:1px solid #ffffff40;border-radius:12px;width:44px;height:44px;font-weight:850;font-size:26px}.excel-search{border:2px solid #cce7d7!important;box-shadow:0 3px 12px #107c4110!important}.excel-search:focus{border-color:#107c41!important}.excel-filter{display:flex;gap:7px;overflow-x:auto;padding:10px 0 15px;scrollbar-width:none}.excel-filter button{white-space:nowrap;border:1px solid #d5e7dc;border-radius:30px;background:white;color:#287047;padding:10px 13px;font-size:13px;font-weight:650}.excel-filter button.selected{background:#107c41;color:white;border-color:#107c41}.excel-card{background:white;border:1px solid #e0ebe4;border-radius:18px;padding:15px;margin:0 0 10px;box-shadow:0 4px 15px #174a2810}.excel-top{display:flex;align-items:center;justify-content:space-between;gap:10px}.excel-name{font-size:16px;font-weight:800;color:#107c41}.excel-cat{font-size:11px;background:#e6f5eb;color:#1c7043;border-radius:20px;padding:5px 8px}.excel-code{display:block;overflow-wrap:anywhere;white-space:pre-wrap;background:#f1f8f3;color:#155d37;border-radius:11px;padding:11px;margin:12px 0;font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace}.excel-card p{margin:8px 0;font-size:13px;line-height:1.5}.excel-card .btn{background:#e6f5eb;color:#107c41}.excel-count{font-size:12px;color:#658472;margin-bottom:12px}.excel-empty{padding:30px 12px;text-align:center;color:#658472}.excel-card button:focus-visible{outline-color:#107c41}
+
+.excel-detail{margin-top:12px;border-top:1px solid #dcece2;padding-top:12px}.excel-detail summary{cursor:pointer;font-weight:750;color:#107c41;padding:7px 0}.excel-detail h4{font-size:13px;margin:14px 0 6px;color:#145c38}.excel-arg{padding:8px 10px;border-radius:10px;background:#f5faf6;margin:6px 0;font-size:12px;line-height:1.45}.excel-arg strong{color:#155c37}.excel-builder{background:#edf7f0;border-radius:15px;padding:13px;margin-top:12px}.excel-builder label{display:block;font-size:12px;color:#23583a;font-weight:650;margin:10px 0 5px}.excel-builder input{width:100%;font-size:14px;padding:11px;border:1px solid #bcd9c6;border-radius:10px;background:white;color:#172136}.excel-builder .btn{margin-top:10px}.excel-result{background:white;border-radius:9px;padding:10px;margin-top:10px;overflow-wrap:anywhere;font:12px/1.5 ui-monospace,monospace}.excel-note{font-size:12px;color:#526d5a;line-height:1.5}.excel-scenario{padding:11px;border-left:3px solid #107c41;background:#f2f9f4;border-radius:8px;font-size:13px;line-height:1.6}.excel-card .btn{min-height:38px}
+
+/* DAX / Power BI */
+.dax-hero{background:linear-gradient(125deg,#263238,#3b424b);color:white;border-radius:24px;padding:20px;margin-bottom:15px;box-shadow:0 12px 26px #26323822}.dax-hero h2{margin:7px 0;font-size:24px}.dax-hero p{color:#f3e5ad;font-size:13px;line-height:1.5}.dax-mark{display:inline-flex;align-items:center;justify-content:center;background:#f2c811;color:#202124;border-radius:12px;width:48px;height:48px;font-weight:900;font-size:18px}.dax-search{border:2px solid #e6d58c!important}.dax-search:focus{border-color:#d6ad00!important}.dax-filter{display:flex;gap:7px;overflow-x:auto;padding:10px 0 15px}.dax-filter button{white-space:nowrap;border:1px solid #e6dcae;border-radius:25px;background:white;color:#574500;padding:10px 13px;font-size:13px;font-weight:650}.dax-filter button.selected{background:#f2c811;border-color:#f2c811;color:#202124}.dax-card{background:white;border:1px solid #eee5bd;border-radius:18px;padding:15px;margin:0 0 10px;box-shadow:0 4px 15px #453a1010}.dax-name{font-size:16px;font-weight:800;color:#5b4900}.dax-cat{font-size:11px;background:#fff4c3;color:#624d00;border-radius:20px;padding:5px 8px}.dax-code{display:block;white-space:pre-wrap;overflow-wrap:anywhere;background:#fff9e1;color:#554300;border-radius:11px;padding:11px;margin:12px 0;font:12px/1.6 ui-monospace,SFMono-Regular,monospace}.dax-card p{font-size:13px;line-height:1.55}.dax-card .btn{background:#f2c811;color:#242424}.dax-detail{margin-top:12px;border-top:1px solid #eee5bd;padding-top:12px}.dax-detail summary{cursor:pointer;font-weight:750;color:#665000;padding:8px 0}.dax-detail h4{font-size:13px;margin:14px 0 6px;color:#594600}.dax-arg{padding:9px 10px;background:#fffbed;border-radius:9px;margin:6px 0;font-size:12px}.dax-builder{background:#fff8d9;border-radius:15px;padding:13px;margin-top:12px}.dax-builder label{display:block;font-size:12px;font-weight:700;margin:10px 0 5px}.dax-builder input{width:100%;font-size:14px;padding:11px;border:1px solid #e4cf73;border-radius:10px;background:white;color:#172136}.dax-result{background:white;border-radius:10px;padding:10px;margin-top:10px;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.6 ui-monospace,monospace}.dax-count,.dax-note{font-size:12px;color:#736944;line-height:1.5}.dax-scenario{background:#fffbed;border-left:3px solid #e5b900;border-radius:8px;padding:11px;font-size:13px;line-height:1.5}
+
+.calc-symbol{font-size:16px!important;letter-spacing:-2px;color:#fff;background:linear-gradient(135deg,#4a91ff,#2661d8);display:inline-flex;align-items:center;justify-content:center;border-radius:14px;width:54px;height:54px;white-space:nowrap;letter-spacing:-1px}
+.pct-block{border:1px solid #e0e9f4;border-radius:18px;padding:16px;background:#fff;margin-bottom:13px}.pct-block h3{margin:0 0 12px;font-size:16px}.pct-answer{margin-top:12px;padding:13px;background:#eff6ff;border-radius:12px;font-weight:750;color:#1767c7}.strength-track{height:10px;border-radius:30px;background:#e6eaf0;overflow:hidden}.strength-fill{height:100%;border-radius:30px;transition:width .25s,background .25s}.exp-actions{display:flex;flex-wrap:nowrap;gap:8px}.exp-actions button{flex:1 1 0;min-width:0;white-space:nowrap}.exp-muted{font-size:12px;color:#7b899d}
+
+/* NEXO v7 - catégories repliables, thème clair/sombre */
+.header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.header-top>div{min-width:0}.settings-button{flex:none;width:45px;height:45px;border:0;border-radius:16px;background:#eaf0f8;color:#334663;font-size:25px;display:grid;place-items:center}.category-list{display:grid;gap:12px}.tool-group{--tone:#eaf4ff;--tone-ink:#1479ef;background:var(--tone);border-radius:23px;padding:12px;border:1px solid #ffffff70}.tone-blue{--tone:#e7f3ff;--tone-ink:#1479ef}.tone-green{--tone:#e8f5e9;--tone-ink:#167b46}.tone-mint{--tone:#e6f8f3;--tone-ink:#00a67a}.tone-rose{--tone:#ffebf0;--tone-ink:#ee385b}.tone-purple{--tone:#f0ebff;--tone-ink:#7b49e8}.tone-yellow{--tone:#fff5db;--tone-ink:#e6a100}.tone-pink{--tone:#ffeaf3;--tone-ink:#e9408c}.group-heading{width:100%;border:0;background:transparent;color:inherit;display:flex;align-items:center;text-align:left;gap:11px;padding:4px 2px;min-height:52px}.group-icon{display:grid;place-items:center;width:46px;height:46px;flex:none;border-radius:14px;background:var(--tone-ink);color:white;font-size:25px;font-weight:800}.group-copy{flex:1;min-width:0}.group-copy strong{display:block;font-size:16px;letter-spacing:-.3px}.group-copy small{display:block;color:#738197;font-size:11px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.group-count{border-radius:20px;background:#ffffff8f;padding:4px 10px;font-size:13px;font-weight:700}.group-chevron{font-size:23px;color:#66768d;min-width:17px;text-align:center}.group-grid{margin-top:12px;gap:9px}.group-grid .tile{min-height:120px;padding:12px 10px;border-radius:18px;box-shadow:none}.group-grid .tile .emoji{width:43px;height:43px;font-size:24px;margin-bottom:12px}.group-grid .tile strong{font-size:13px}.group-grid .tile small{font-size:11px}.group-grid .tile .calc-symbol{font-size:12px!important;width:43px;height:43px}.settings-backdrop{position:fixed;inset:0;background:#0d172a80;z-index:30;display:flex;align-items:flex-start;justify-content:center;padding:calc(env(safe-area-inset-top) + 85px) 18px 18px}.settings-panel{width:min(100%,440px);border-radius:23px;background:#fff;color:#18243b;padding:20px;box-shadow:0 20px 70px #0004}.settings-title{display:flex;align-items:center;justify-content:space-between;font-size:20px;font-weight:750;margin-bottom:18px}.settings-close{border:0;background:#edf1f6;border-radius:10px;width:36px;height:36px;font-size:22px}.theme-options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.theme-option{border:1px solid #dce4ee;background:#f6f8fb;border-radius:14px;padding:14px 5px;display:grid;gap:7px;justify-items:center;color:#32415a}.theme-option .theme-symbol{font-size:24px}.theme-option.selected{border:2px solid #2782f6;background:#eaf3ff;color:#1167d4}.settings-panel p{font-size:12px;margin-top:15px}.settings-panel .settings-label{font-size:13px;font-weight:700;margin:0 0 10px}
+html[data-theme="dark"]{color-scheme:dark;background:#0b111c;color:#f1f5fc}html[data-theme="dark"] body{background:radial-gradient(circle at 90% -10%,#15243c 0,transparent 42%),#0b111c;color:#f1f5fc}html[data-theme="dark"] header{background:#0b111ceb;border-color:#273345}html[data-theme="dark"] header p,html[data-theme="dark"] p,html[data-theme="dark"] .muted{color:#9daabe}html[data-theme="dark"] .settings-button{background:#202d41;color:#e9f0fc}html[data-theme="dark"] .tool-group{--tone:#1a2940;border-color:#28364b}html[data-theme="dark"] .tone-green{--tone:#152c28}html[data-theme="dark"] .tone-mint{--tone:#142b2b}html[data-theme="dark"] .tone-rose{--tone:#33202d}html[data-theme="dark"] .tone-purple{--tone:#29213d}html[data-theme="dark"] .tone-yellow{--tone:#332c1c}html[data-theme="dark"] .tone-pink{--tone:#342233}html[data-theme="dark"] .group-count{background:#ffffff18}html[data-theme="dark"] .group-copy small,html[data-theme="dark"] .group-chevron{color:#b0bdd1}html[data-theme="dark"] .tile,html[data-theme="dark"] .card,html[data-theme="dark"] .pct-block{background:#172233;border-color:#2b3a50;color:#f1f5fc;box-shadow:none}html[data-theme="dark"] .tile small,html[data-theme="dark"] .card label{color:#a7b4c7}html[data-theme="dark"] .field,html[data-theme="dark"] .search,html[data-theme="dark"] textarea,html[data-theme="dark"] select{background:#1b293c;border-color:#34445c;color:#f3f7fc}html[data-theme="dark"] .tabs button,html[data-theme="dark"] .btn:not(.primary):not(.danger),html[data-theme="dark"] .bar button{background:#243248;color:#d4e3f8}html[data-theme="dark"] .tabs button.active,html[data-theme="dark"] .btn.primary{background:#2679ee;color:white}html[data-theme="dark"] nav{background:#111b2bf5;border-color:#2c394c}html[data-theme="dark"] nav button{color:#9cabc2}html[data-theme="dark"] nav button.active{color:#6da9ff}html[data-theme="dark"] .item{border-color:#2b384a}html[data-theme="dark"] .calc-grid button{background:#27354a;color:#f5f8ff}html[data-theme="dark"] .calc-grid button.op{background:#233c61;color:#91bcff}html[data-theme="dark"] .calc-grid button.eq{background:#2679ee}html[data-theme="dark"] .settings-panel{background:#162236;color:#f4f7fc}html[data-theme="dark"] .settings-close,html[data-theme="dark"] .theme-option{background:#25344b;border-color:#3a4a60;color:#d6e4f7}html[data-theme="dark"] .theme-option.selected{background:#193e72;border-color:#3994ff;color:#fff}html[data-theme="dark"] .pct-answer{background:#203b5a;color:#9ac8ff}html[data-theme="dark"] .excel-detail,html[data-theme="dark"] .excel-arg{background:#182f27;color:#d6f8e6}html[data-theme="dark"] .notice{background:#39301e;color:#f8db9a}
+
+/* v8 : recherche à droite, icônes et statistiques de catégories */
+.home-search{position:relative;display:flex;align-items:center}.home-search .search{padding-right:66px;min-height:58px}.home-search-button{position:absolute;right:7px;top:50%;transform:translateY(-50%);height:46px;width:48px;border:0;border-radius:13px;background:#e9f1ff;color:#146ee6;display:grid;place-items:center}.home-search-button:focus-visible{outline:2px solid #146ee6}
+.calc-symbol{padding:6px!important;letter-spacing:normal!important}.calc-four{display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,1fr);width:100%;height:100%;gap:1px;text-align:center;align-items:center;font-size:20px;line-height:1}.calc-four b{font-weight:800}.percent-icon{font-weight:900;font-size:34px;line-height:1;color:#7942ef!important}.tile .emoji:has(.percent-icon){background:#f0eaff!important}.brand-pbi,.brand-excel{display:block;width:35px;height:35px;flex:none}.tile .emoji:has(.brand-pbi){background:#fff4cf!important}.tile .emoji:has(.brand-excel){background:#e0f3e8!important}.dax-mark .brand-pbi,.excel-mark .brand-excel{width:37px;height:37px}
+.category-manager{display:grid;gap:6px}.category-manage-row{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid #e6eaf1;padding:8px 0}.category-manage-row span{overflow-wrap:anywhere}.category-manage-row small{font-size:11px;color:#8190a2}.category-manage-row .btn{padding:8px 12px;font-size:12px}.category-share{margin-top:8px}.category-share h3{font-size:15px;margin:0 0 12px}.share-row{margin:0 0 13px}.share-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px;margin-bottom:6px}.share-heading strong{font-variant-numeric:tabular-nums;white-space:nowrap}.share-heading small{font-weight:400;color:#718098}.share-track{height:9px;border-radius:99px;background:#e8edf4;overflow:hidden}.share-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#1878e9,#42b1ff)}
+html[data-theme="dark"] .home-search-button{background:#243b5a;color:#9ac8ff}html[data-theme="dark"] .percent-icon{color:#fff!important}html[data-theme="dark"] .tile .emoji:has(.percent-icon){background:#6e39c5!important}html[data-theme="dark"] .tile .emoji:has(.brand-pbi){background:#453e23!important}html[data-theme="dark"] .tile .emoji:has(.brand-excel){background:#1c4c3a!important}html[data-theme="dark"] .category-manage-row{border-color:#354157}html[data-theme="dark"] .share-track{background:#304159}html[data-theme="dark"] .share-heading small{color:#afbdd1}
+/* V8.1: clear application branding in Bureautique & Data tiles */
+.group-grid .tile .emoji:has(.brand-excel){background:#e2f4e9!important}
+.group-grid .tile .emoji:has(.brand-pbi){background:#fff4c2!important}
+.group-grid .tile .emoji .brand-excel,.group-grid .tile .emoji .brand-pbi{display:block;width:35px;height:35px}
+html[data-theme="dark"] .group-grid .tile .emoji:has(.brand-excel){background:#1b4733!important}
+html[data-theme="dark"] .group-grid .tile .emoji:has(.brand-pbi){background:#51451c!important}
+
+/* v9.2: calculator icon centered and legible in both themes */
+.tile .emoji.calc-symbol,.group-grid .tile .emoji.calc-symbol{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  width:54px!important;height:54px!important;padding:0!important;
+  background:#1769e8!important;color:#fff!important;border-radius:14px!important;
+  overflow:hidden;line-height:1!important;letter-spacing:normal!important;
+}
+.tile .emoji.calc-symbol .calc-grid-icon{display:block!important;width:48px!important;height:48px!important;flex:0 0 48px;margin:0 auto!important}
+html[data-theme="dark"] .tile .emoji.calc-symbol{background:#1769e8!important;color:#fff!important}
+/* v9.1: collapsible expense category management */
+.exp-category-details{padding:0;overflow:hidden}
+.exp-category-details>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:18px 19px;font-size:19px;font-weight:750;gap:10px}
+.exp-category-details>summary::-webkit-details-marker{display:none}
+.exp-category-details>summary::after{content:'⌄';font-size:23px;color:#71819a;transition:transform .18s}
+.exp-category-details[open]>summary::after{transform:rotate(180deg)}
+.exp-category-details .exp-category-body{padding:0 19px 19px}
+html[data-theme="dark"] .exp-category-details>summary::after{color:#c5d2e6}
+
+/* V9.4 : contraste accessible des cartes Excel et DAX en mode sombre. */
+html[data-theme="dark"] .excel-card{background:#14291f;border-color:#335b47;color:#edf9f1}
+html[data-theme="dark"] .excel-card p,html[data-theme="dark"] .excel-detail p{color:#d0e5d8}
+html[data-theme="dark"] .excel-name,html[data-theme="dark"] .excel-detail summary,html[data-theme="dark"] .excel-detail h4{color:#81e2ab}
+html[data-theme="dark"] .excel-cat{background:#28513a;color:#d6f9e5}
+html[data-theme="dark"] .excel-code{background:#203c2d;color:#dcfbe9}
+html[data-theme="dark"] .excel-detail{background:transparent;color:#edf9f1;border-color:#355943}
+html[data-theme="dark"] .excel-arg{background:#203c2d;color:#e7f8ed}
+html[data-theme="dark"] .excel-arg strong{color:#a3efc0}
+html[data-theme="dark"] .excel-arg code{color:#f1fff5}
+html[data-theme="dark"] .excel-scenario{background:#203c2d;color:#edf9f1;border-color:#5ec88e}
+html[data-theme="dark"] .excel-builder{background:#203c2d;color:#f1fff5}
+html[data-theme="dark"] .excel-builder strong{color:#a3efc0}
+html[data-theme="dark"] .excel-builder label{color:#dcfbe9}
+html[data-theme="dark"] .excel-builder input{background:#10251a;border-color:#5a9772;color:#fff}
+html[data-theme="dark"] .excel-result{background:#10251a;color:#eafff0}
+html[data-theme="dark"] .excel-note,html[data-theme="dark"] .excel-count{color:#b5d6c2}
+html[data-theme="dark"] .excel-filter button{background:#203c2d;color:#d8f7e4;border-color:#426d53}
+html[data-theme="dark"] .excel-filter button.selected{background:#107c41;color:#fff}
+html[data-theme="dark"] .excel-card .btn{background:#28513a!important;color:#f0fff5!important}
+html[data-theme="dark"] .dax-card{background:#24271f;border-color:#62582e;color:#f9f5e8}
+html[data-theme="dark"] .dax-card p,html[data-theme="dark"] .dax-detail p{color:#e4dec7}
+html[data-theme="dark"] .dax-name,html[data-theme="dark"] .dax-detail summary,html[data-theme="dark"] .dax-detail h4{color:#f8d95b}
+html[data-theme="dark"] .dax-cat{background:#544718;color:#ffeb9c}
+html[data-theme="dark"] .dax-code{background:#38341e;color:#fff0ad}
+html[data-theme="dark"] .dax-detail{border-color:#62582e;color:#f9f5e8}
+html[data-theme="dark"] .dax-arg{background:#39351f;color:#fff4c9}
+html[data-theme="dark"] .dax-arg strong{color:#ffe176}
+html[data-theme="dark"] .dax-arg code{color:#fff8df}
+html[data-theme="dark"] .dax-scenario{background:#39351f;color:#fff5cf;border-color:#f2c811}
+html[data-theme="dark"] .dax-builder{background:#39351f;color:#fff8df}
+html[data-theme="dark"] .dax-builder strong{color:#ffe176}
+html[data-theme="dark"] .dax-builder label{color:#fff0b1}
+html[data-theme="dark"] .dax-builder input{background:#242419;border-color:#88793d;color:#fff}
+html[data-theme="dark"] .dax-result{background:#242419;color:#fff3bc}
+html[data-theme="dark"] .dax-count,html[data-theme="dark"] .dax-note{color:#ded19a}
+html[data-theme="dark"] .dax-filter button{background:#39351f;color:#fff0ad;border-color:#73622e}
+html[data-theme="dark"] .dax-filter button.selected{background:#f2c811;color:#202124}
+html[data-theme="dark"] .dax-card .btn{background:#f2c811!important;color:#24210e!important}
+html[data-theme="dark"] .excel-builder input:focus-visible,html[data-theme="dark"] .dax-builder input:focus-visible{outline:2px solid #7dbaff;outline-offset:2px}
+
+/* Travel planner V10 */
+.travel-hero{background:linear-gradient(145deg,#163a56,#10283f);color:#fff;border-radius:22px;padding:19px;margin:12px 0 16px}
+.travel-hero h2{color:#fff;margin:6px 0;font-size:24px}.travel-hero p{color:#c9e1f3;margin:5px 0}.travel-hero .travel-pill{display:inline-block;background:#ffffff24;color:#fff;padding:6px 10px;border-radius:20px;font-size:12px}
+.travel-tabs{display:flex;gap:7px;overflow-x:auto;padding:4px 0 12px}.travel-tabs button{flex-shrink:0;border:1px solid var(--border,#dce4ed);border-radius:12px;background:var(--card,#fff);color:var(--text,#142238);padding:10px 13px;font-weight:650}.travel-tabs button.active{background:#2377c8;color:white;border-color:#2377c8}
+.travel-days{display:flex;gap:8px;overflow-x:auto;padding:3px 0 14px}.travel-days button{min-width:98px;border-radius:14px;border:1px solid #b6c9dc;background:var(--card,#fff);color:var(--text,#142238);padding:12px 8px;text-align:center}.travel-days button.active{background:#2377c8;color:#fff;border-color:#2377c8}.travel-days small{display:block;margin-top:5px}
+.travel-form{display:grid;gap:10px}.travel-form label{display:block;font-weight:650;margin:4px 0}.travel-form .field{width:100%;box-sizing:border-box}.travel-step{display:flex;gap:12px;border-bottom:1px solid #8d9daf44;padding:14px 0}.travel-time{min-width:51px;font-weight:750;color:#3187cf}.travel-step-body{flex:1;min-width:0}.travel-step-body strong{display:block}.travel-step-body small{display:block;color:var(--muted,#7b8999);margin-top:4px;overflow-wrap:anywhere}.travel-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.travel-actions button{padding:7px 10px;border-radius:9px;border:1px solid #8c9dad55;background:transparent;color:inherit}
+.travel-stat{display:flex;justify-content:space-between;gap:10px;padding:12px;border-radius:13px;background:#2681c31a;margin:8px 0}.travel-progress{height:9px;background:#8494a438;border-radius:10px;overflow:hidden}.travel-progress>div{height:100%;background:#2386cf}.travel-empty{color:var(--muted,#8392a4);padding:16px 0}.travel-row{display:flex;gap:9px;align-items:center;justify-content:space-between;margin:10px 0}.travel-row input[type=checkbox]{width:22px;height:22px}.travel-row span{flex:1;overflow-wrap:anywhere}.travel-danger{color:#d75d64!important}.travel-link{color:#3188d2;overflow-wrap:anywhere}
+html[data-theme=dark] .travel-days button:not(.active),html[data-theme=dark] .travel-tabs button:not(.active){background:#202c3d;color:#eaf1fa;border-color:#45566a}
+html[data-theme=dark] .travel-time{color:#8dcaff}html[data-theme=dark] .travel-stat{background:#21364b}
+
+/* V10.1 : sauvegarde globale dans les paramètres */
+.backup-actions{display:grid;gap:10px;margin:14px 0}.backup-actions .btn{width:100%;text-align:center;white-space:normal;min-height:48px}.backup-help{font-size:13px;line-height:1.55;margin:9px 0;color:#68768a}html[data-theme="dark"] .backup-help{color:#bac8d8}
+
+/* NEXO v10.3: permanent branded wordmark, responsive travel fields and covers */
+.nexo-wordmark{display:flex;align-items:center;gap:0;font-size:31px;font-weight:900;letter-spacing:2px;line-height:1.15;color:var(--text,#172136)}
+.nexo-x{background:linear-gradient(145deg,#59f0f2 8%,#2fbbff 43%,#1166ee 82%);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block;font-weight:950;transform:skewX(-7deg);margin:0 1px}
+.page-heading{font-size:20px!important;letter-spacing:-.4px!important;font-weight:700!important;margin:9px 0 3px!important}
+.travel-form,.travel-form label{min-width:0;width:100%;max-width:100%}
+.travel-form label{display:block;box-sizing:border-box}
+.travel-form .field,.travel-form input[type=date],.travel-form input[type=time],.travel-form select,.travel-form textarea{display:block;width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;appearance:none;-webkit-appearance:none}
+.travel-form input[type=date],.travel-form input[type=time]{min-height:52px;text-align:left}
+.travel-cover{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:16px;display:block;margin:8px 0}
+.travel-hero .travel-cover{margin:-19px -19px 14px;width:calc(100% + 38px);border-radius:22px 22px 0 0;max-width:none}
+.travel-cover-picker{display:flex;flex-direction:column;gap:8px;min-width:0}
+.travel-cover-picker input[type=file]{width:100%;max-width:100%;font-size:13px}
+.travel-cover-preview{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:14px}
+html[data-theme=dark] .nexo-wordmark{color:#f5f8ff}
+
+/* NEXO 10.4 — identité uniquement sur l’accueil, voyages fidèles à la maquette */
+.nexo-wordmark{font-size:37px;letter-spacing:2.5px}.nexo-x{font-style:italic;font-weight:950;background:linear-gradient(135deg,#58f4f0 0%,#20b9fa 40%,#1761ee 80%);-webkit-background-clip:text;background-clip:text}
+.travel-list-head,.travel-hero-heading{display:flex;align-items:center;gap:12px}.travel-list-head{justify-content:space-between;margin-bottom:16px}.travel-list-head h2{margin:0}.travel-plus{border:0;background:transparent;color:inherit;font-size:30px;padding:0 8px}
+.travel-list-card,.travel-detail-hero{background:#132d45;color:#f7fbff;border:1px solid #29475e;border-radius:23px;padding:15px;margin:0 0 17px;overflow:hidden}
+.travel-list-card{cursor:pointer}.travel-list-card h2,.travel-detail-hero h2{font-size:25px;color:#fff;margin:17px 0 7px}.travel-list-card p,.travel-detail-hero p{color:#c5d9e8;font-size:14px;margin:8px 0;line-height:1.5;overflow-wrap:anywhere}
+.travel-list-card .travel-cover,.travel-detail-hero .travel-cover{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:16px;margin:0;max-width:100%}
+.travel-hero-heading{margin:2px 0 17px;font-size:19px}.travel-hero-heading span{font-size:23px;color:#91d7ff}.travel-hero-heading strong{flex:1;font-weight:650}.travel-hero-heading button{border:0;background:transparent;color:#fff;font-size:23px}
+.travel-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:15px}.travel-metrics>div{background:#23435e;border-radius:13px;text-align:center;padding:12px 3px;min-width:0}.travel-metrics strong{display:block;color:#fff;font-size:25px;line-height:1.3}.travel-metrics span{display:block;color:#c3d6e4;font-size:11px;margin-top:3px}
+.travel-list-actions{display:flex;gap:8px;margin-top:14px}.travel-list-actions .btn{flex:1}.travel-import{width:100%;margin-bottom:14px}
+.travel-tabs{gap:9px;margin:10px 0 16px;padding-bottom:6px;scrollbar-width:none}.travel-tabs button{border:0!important;border-radius:30px!important;background:transparent!important;color:var(--text,#172136)!important;padding:10px 15px!important;font-size:14px;white-space:nowrap}.travel-tabs button.active{background:#2478eb!important;color:#fff!important}
+.travel-section-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:7px 0 15px}.travel-section-title h2{font-size:19px;margin:0}.travel-section-title span{color:var(--muted,#8490a0);font-size:12px;white-space:nowrap}
+.travel-days{gap:9px;padding:0 0 19px;scrollbar-width:none}.travel-days button{min-width:105px;max-width:128px;min-height:98px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border:1px solid #a3b4c755!important;background:#f1f3f7!important;color:#23334a!important;border-radius:17px!important;padding:9px 8px}.travel-days button span{font-size:13px;color:#738298}.travel-days button strong{font-size:15px;font-weight:700;line-height:1.35;white-space:nowrap;letter-spacing:-.15px;max-width:100%}.travel-days button small{font-size:11px;margin:0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.travel-days button.active{border:2px solid #2989f7!important;background:#eaf4ff!important;color:#125db7!important}
+.travel-timeline{padding:0 2px}.travel-step{align-items:flex-start;gap:13px;padding:17px 0}.travel-time{font-size:15px;min-width:49px;font-weight:550}.travel-step-body strong{font-size:17px}.travel-step-body small{font-size:13px;margin-top:7px}.travel-actions button{font-size:12px}.travel-add-step{width:100%;margin:12px 0 20px}
+html[data-theme=dark] .travel-tabs button:not(.active){background:transparent!important;color:#c3c7d1!important;border:0!important}html[data-theme=dark] .travel-days button:not(.active){background:#232323!important;color:#e7e9ed!important;border:1px solid #424242!important}html[data-theme=dark] .travel-days button.active{background:#091525!important;color:#e9f3ff!important;border:2px solid #2689ff!important}html[data-theme=dark] .travel-days button span{color:#adb6c5}html[data-theme=dark] .travel-detail-hero,html[data-theme=dark] .travel-list-card{background:#132d45}
+/* NEXO v10.5 — daily location controls */
+.travel-day-location{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0 14px;border-bottom:1px solid var(--border,#dce4ed);margin-bottom:5px}
+.travel-day-location span{font-weight:650;overflow-wrap:anywhere;min-width:0;flex:1}
+.travel-day-location .btn{flex-shrink:0;font-size:12px;padding:9px 10px}
+
+/* NEXO GEN 2.2 — iOS focus and travel mockup-inspired summaries */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),textarea,select{font-size:16px!important}
+.travel-summary{padding:4px 1px 16px;display:grid;gap:15px}
+.travel-summary-title{font-size:21px;font-weight:800;letter-spacing:-.4px;margin:0}
+.travel-budget-total{font-size:37px;font-weight:800;letter-spacing:-1px;font-variant-numeric:tabular-nums;margin:0}
+.travel-summary-sub{font-size:13px;color:#8590a0;margin:0}
+.travel-budget-line{display:grid;gap:7px}
+.travel-budget-label{display:flex;align-items:baseline;justify-content:space-between;gap:12px;font-size:16px}
+.travel-budget-label strong{font-size:16px;font-weight:650;white-space:nowrap}
+.travel-budget-track{height:9px;background:#e8edf4;border-radius:30px;overflow:hidden}
+.travel-budget-fill{height:100%;background:#2584f9;border-radius:30px}
+.travel-summary-extra{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:3px 0}
+.travel-summary-extra>div{background:#f2f6fb;border-radius:13px;padding:11px;display:grid;gap:4px}
+.travel-summary-extra span{font-size:12px;color:#718098}.travel-summary-extra strong{font-size:16px}
+.travel-booking-line{display:grid;grid-template-columns:27px minmax(0,1fr) auto;align-items:center;gap:11px;padding:10px 0}
+.travel-booking-icon{font-size:24px;color:#98a3b3;line-height:1}
+.travel-booking-icon.ok{color:#20b864}
+.travel-booking-main{min-width:0;display:grid;gap:5px}
+.travel-booking-main strong{font-size:16px;font-weight:600;overflow-wrap:anywhere}
+.travel-booking-main small{color:#8490a1;font-size:13px;line-height:1.45}
+.travel-booking-status{font-size:15px;font-weight:650;line-height:1.3;color:#8692a3;white-space:nowrap}
+.travel-booking-status.ok{color:#1caa59}
+.travel-manage{margin-top:12px;border-top:1px solid #e6eaf1;padding-top:15px}
+.travel-manage summary{font-size:14px;font-weight:700;cursor:pointer;padding:8px 0}
+.travel-manage .travel-form{margin-top:12px}
+.travel-booking-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.travel-booking-actions .btn{font-size:12px;padding:7px 10px}
+html[data-theme="dark"] .travel-budget-track{background:#30343d}
+html[data-theme="dark"] .travel-summary-extra>div{background:#243248}
+html[data-theme="dark"] .travel-summary-extra span,html[data-theme="dark"] .travel-booking-main small{color:#a6b1c1}
+html[data-theme="dark"] .travel-manage{border-color:#354157}
+@media(max-width:370px){.travel-booking-line{grid-template-columns:25px minmax(0,1fr);gap:8px}.travel-booking-status{grid-column:2}.travel-budget-label{font-size:14px}}
+/* Réservations et checklist : boutons ronds identiques et accessibles */
+.travel-check-line{cursor:pointer;grid-template-columns:28px minmax(0,1fr) auto;align-items:center}
+.travel-check-input{appearance:none;-webkit-appearance:none;position:relative;display:block;box-sizing:border-box;width:22px;height:22px;min-width:22px;max-width:22px;min-height:22px;max-height:22px;margin:0;padding:0;border:2px solid #9299a4;border-radius:999px;background:transparent;cursor:pointer;opacity:1;grid-column:1;grid-row:1}
+.travel-check-line input.travel-check-input{flex:none;transform:none;box-shadow:none;vertical-align:middle}
+.travel-check-input:checked{border-color:#20b864;background:transparent}
+.travel-check-input:checked::after{content:'✓';position:absolute;inset:0;display:grid;place-items:center;color:#20b864;font-size:14px;font-weight:800;line-height:1}
+.travel-check-input:focus-visible{outline:2px solid #2584f9;outline-offset:4px}
+.travel-check-line .travel-booking-main{grid-column:2;grid-row:1}
+.travel-check-line .travel-booking-status{grid-column:3;grid-row:1;font-size:15px;font-weight:650}
+@media(max-width:370px){.travel-check-line{grid-template-columns:25px minmax(0,1fr) auto}.travel-check-line .travel-booking-status{grid-column:3;grid-row:1;font-size:14px}}
+.travel-budget-planned{font-size:12px;font-weight:400;color:#8490a1;white-space:normal}
+html[data-theme="dark"] .travel-budget-planned{color:#a6b1c1}
+.travel-search{display:block;box-sizing:border-box;width:100%;min-height:46px;margin:0 0 18px;padding:12px 16px;border:1px solid #35516a;border-radius:14px;background:#1b2b40;color:#f7fbff;font-size:16px;outline-offset:2px}.travel-search::placeholder{color:#b2c0d0}.travel-search:focus{border-color:#2585e8}html[data-theme="light"] .travel-search{background:#fff;color:#162338;border-color:#b8c6d4}html[data-theme="light"] .travel-search::placeholder{color:#67778a}
+
+.moto-map{height:390px;min-height:310px;border-radius:16px;overflow:hidden;background:#dce7e9;margin:12px 0}.moto-map .leaflet-container{font-family:inherit}.moto-actions{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.moto-actions .btn{flex:1 1 auto}.moto-stop{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid rgba(125,150,175,.22)}.moto-stop span{flex:1;min-width:0;overflow-wrap:anywhere}.moto-info{font-size:13px;opacity:.8}.moto-note{font-size:12px;line-height:1.5;opacity:.75}.moto-map-fallback{display:grid;place-items:center;text-align:center;padding:24px;color:#213c55;height:100%}.moto-stop .btn{padding:8px 10px}.moto-form{display:flex;gap:8px;flex-wrap:wrap}.moto-form input{flex:1;min-width:160px}.moto-map .leaflet-control-attribution{font-size:10px}
+.moto-history-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid rgba(130,150,180,.2)}.moto-history-item>div:first-child{min-width:0;overflow-wrap:anywhere}.moto-history-actions{display:flex;gap:5px;flex-shrink:0}.moto-history-actions .btn{padding:9px}
+.travel-form label>.field{margin-top:9px!important}.travel-form label>input:not(.field),.travel-form label>select:not(.field){margin-top:9px}
+.travel-expense-item{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #8794a333}.travel-expense-item>div{min-width:0}.travel-expense-item small{display:block;color:var(--muted,#8794a3);margin-top:3px}.travel-budget-line{margin-bottom:15px}
+
+/* V12.2 — Espacement homogène entre les libellés et leurs champs, uniquement dans Mes voyages. */
+.travel-form label > input,
+.travel-form label > select,
+.travel-form label > textarea { margin-top:9px!important; }
+.travel-cover-picker > label { display:block; margin-bottom:9px!important; }
+.travel-cover-picker > input[type="file"] { margin-top:0!important; }
+.travel-hero-heading{gap:12px!important}.travel-hero-heading>span{display:inline-flex;margin-right:5px}
+.settings-button svg,.settings-title svg{vertical-align:middle}.settings-title svg{margin-right:7px}
+nav button .nav-icon{display:flex;align-items:center;justify-content:center;min-height:24px}nav button .nav-icon svg{width:22px;height:22px}
+.sport-entry{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:11px 0;border-bottom:1px solid #8392a52b}.sport-entry>div{min-width:0}.sport-entry small{display:block;color:#8490a1;margin-top:3px}
+#custom-nav-slots{display:contents}
+
+/* NEXO 12.5 - pictogrammes monochromes, contrastes clair/sombre */
+.group-grid .tile .emoji:has(.nexo-line-icon),.group-grid .tile .emoji:has(.nexo-euro-icon){color:#174c83!important;background:#e8f2ff!important}
+.group-grid .tile .emoji .nexo-line-icon{display:block;width:29px;height:29px;stroke:currentColor!important;opacity:1!important}
+.group-grid .tile .emoji .nexo-euro-icon{display:inline-flex;align-items:center;justify-content:center;font-size:30px;font-weight:650;line-height:1;color:inherit}
+html[data-theme="dark"] .group-grid .tile .emoji:has(.nexo-line-icon),html[data-theme="dark"] .group-grid .tile .emoji:has(.nexo-euro-icon){color:#d6eaff!important;background:#253a54!important}
+nav button .nav-icon .nexo-line-icon{width:22px;height:22px;stroke:currentColor!important}
+nav button .nav-icon .nexo-euro-icon{font-size:23px;font-weight:650;line-height:1;color:inherit}
+.settings-button .nexo-line-icon,.settings-title .nexo-line-icon{width:24px;height:24px;stroke:currentColor!important}
+/* NEXO 12.5 — icône Outils agrandie et X vertical */
+nav #nav-home .nexo-home-icon{font-size:35px;line-height:1;display:block;min-height:28px}
+.nexo-wordmark .nexo-x{font-style:normal;transform:none;skew:0deg}
+
+/* Dépenses V12.5 */
+.exp-dash-header{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.exp-dash-tabs{display:flex;gap:8px}.exp-dash-tabs button{flex:1;border:1px solid var(--border);background:var(--card);color:var(--text);padding:11px;border-radius:12px;font-weight:700}.exp-dash-tabs button.active{background:#287de9;border-color:#287de9;color:white}
+.exp-chart{display:flex;align-items:end;gap:5px;height:175px;width:86%;max-width:480px;margin:12px auto 0}
+.exp-chart-col{min-width:0;flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:stretch}
+.exp-chart-col button{display:block;width:100%;min-height:3px;border:0;border-radius:7px 7px 0 0;background:#75a7e2;cursor:pointer}
+.exp-chart-col button.active{background:#287de9}
+.exp-chart-labels{display:flex;gap:5px;width:86%;max-width:480px;margin:8px auto 12px}.exp-chart-labels span{flex:1;min-width:0;text-align:center;font-size:10px;color:var(--muted)}
+.exp-summary{font-size:29px;font-weight:800;margin:6px 0 10px}
+.exp-track{height:10px;border-radius:10px;background:#8799ae45;overflow:hidden}.exp-track>div{height:100%;background:#287de9;border-radius:10px}
+.exp-dash-cat{border:0;background:none;color:var(--text);width:100%;text-align:left;padding:9px 0;cursor:pointer}
+.exp-dash-cat.active{color:#287de9}
+.exp-dash-cat .exp-cat-heading{display:flex;justify-content:space-between;gap:8px;font-size:14px;margin-bottom:6px}
+.exp-dash-op{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid #8294a430}.exp-dash-op .grow{min-width:0}
+.exp-dash-op small{display:block;color:var(--muted);margin-top:3px}
+.exp-dash-op button{padding:6px 9px}
+.exp-dash-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.exp-dash-controls select{width:auto;min-width:110px}
+html[data-theme=dark] .exp-chart-col button:not(.active){background:#41678e}
+.exp-money-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.exp-money-summary>div{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 7px;min-width:0}.exp-money-summary small{display:block;color:var(--muted);margin-bottom:5px;font-size:11px}.exp-money-summary strong{font-size:clamp(12px,3.4vw,17px);overflow-wrap:anywhere}.exp-positive{color:#168c73}.exp-negative{color:#df6161}.exp-paired{height:100%;display:flex;align-items:end;gap:2px}.exp-paired button{width:50%;border:0;border-radius:5px 5px 0 0;min-height:2px}.exp-paired .exp-bar-income{background:#1ba88f}.exp-paired .exp-bar-expense{background:#7aa7e2}.exp-paired .exp-bar-expense.active{background:#287de9}.exp-chart-legend{display:flex;gap:15px;font-size:12px;color:var(--muted)}.exp-chart-legend span{display:flex;align-items:center;gap:6px}.exp-chart-legend i{display:inline-block;width:10px;height:10px;border-radius:3px}.exp-legend-income{background:#1ba88f}.exp-legend-expense{background:#287de9}
+
+.nexo-fold>summary{list-style:none;cursor:pointer;font-weight:750;font-size:17px;padding:7px 2px;display:flex;align-items:center;justify-content:space-between}
+.nexo-fold>summary::-webkit-details-marker{display:none}.nexo-fold>summary::after{content:'⌄';font-size:22px;color:var(--muted)}.nexo-fold[open]>summary::after{content:'⌃'}
+.nexo-fold>.stack{padding-top:12px}.save-bars{display:flex;gap:3px;align-items:stretch;min-width:0;width:100%;height:176px}
+.save-bar-cell{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:6px}
+.save-bar-track{width:100%;height:150px;display:flex;align-items:flex-end;justify-content:center}
+.save-bar-track button{width:65%;min-height:2px;border:0;border-radius:5px 5px 0 0}
+.save-bar-cell span{width:100%;text-align:center;font-size:10px;color:var(--muted);white-space:nowrap}
+.save-date-field{box-sizing:border-box;display:block;width:100%;max-width:100%;min-width:0}
+.exp-dash-period{display:flex;gap:9px;flex-wrap:nowrap;align-items:center}.exp-dash-period select{flex:1;min-width:0;width:0;max-width:none;text-align:center;font-size:16px}.exp-dash-period #expDashMonth{flex:1.7}.exp-dash-period #expDashYear{flex:1}
+
+/* V13.1 — étoile Favoris selon le nombre de favoris */
+#nav-favs .nexo-fav-star{color:#8490a5;transition:color .18s ease}
+#nav-favs .nexo-fav-star.has-favorites{color:#f4c430}.tabs .nexo-fav-star{color:#8490a5;transition:color .18s ease}.tabs .nexo-fav-star.has-favorites,.tabs button.active .nexo-fav-star.has-favorites{color:#f4c430}
+.save-allocation-item{display:flex;flex-direction:column;gap:8px;padding:10px 0}.save-allocation-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px;flex-wrap:wrap}.save-allocation-heading>span:first-child{display:flex;align-items:center;gap:7px;flex-wrap:wrap;min-width:0}.save-allocation-heading small{font-size:11px}.save-allocation-dot{display:inline-block;flex-shrink:0;width:10px;height:10px;border-radius:50%}.save-allocation-amount{display:flex;gap:10px;align-items:center;white-space:nowrap}.save-allocation-amount strong{min-width:45px;text-align:right}.save-allocation-track{width:100%;height:10px;background:#8799ae40;border-radius:10px;overflow:hidden}.save-allocation-track>div{height:100%;border-radius:10px;transition:width .2s ease}
+nav .nexo-todo-icon{width:25px;height:25px;stroke:currentColor;vertical-align:middle;display:block;margin:0 auto}
+.exp-all-months-action{display:flex;justify-content:flex-end}.exp-all-months-action .btn{font-size:13px;padding:7px 12px}
+.travel-step-comments{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.55}
+.travel-list-head h2{display:flex;align-items:center;gap:15px}.travel-list-plane{color:#91d7ff;display:inline-flex;align-items:center}
+
+/* V13.1 : même largeur et centrage pour les barres et les mois */
+.exp-chart,.exp-chart-labels{box-sizing:border-box;margin-left:auto!important;margin-right:auto!important;width:86%!important;max-width:480px!important}
+.exp-chart-col,.exp-chart-labels>span{flex:1 1 0;min-width:0}
+
+/* Graphique Dépenses : mêmes dimensions et cellules que le graphique Épargne */
+.exp-savings-chart{width:100%!important;max-width:none!important;height:176px!important;margin:0!important;gap:3px!important}
+.exp-savings-chart .save-bar-cell{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:6px}
+.exp-savings-chart .save-bar-track{height:150px;width:100%;display:flex;align-items:flex-end;justify-content:center}
+.exp-savings-chart .exp-paired{height:100%;width:65%;display:flex;align-items:flex-end;gap:2px}
+.exp-savings-chart .exp-paired button{flex:1;width:50%;min-width:0;min-height:2px}
+.exp-savings-chart .save-bar-cell span{width:100%;font-size:10px;text-align:center;white-space:nowrap}
+
+.garage-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:12px 0}
+.garage-top h2,.garage-top h3{margin:0}
+.garage-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.garage-vehicle{min-width:0;text-align:left;background:var(--card,#182435);border:1px solid var(--border,#36445a);color:inherit;border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:7px;cursor:pointer}
+.garage-vehicle small,.garage-vehicle .garage-alert,.garage-hero small,.garage-entry small{font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+.garage-photo{width:100%;height:130px;object-fit:cover;border-radius:12px;display:block}
+.garage-placeholder{display:flex;align-items:center;justify-content:center;background:var(--bg2,#22314a);font-size:46px}
+.garage-hero{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-bottom:15px}
+.garage-hero .garage-photo{height:185px}
+.garage-hero h2{margin:0}
+.garage-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}
+.garage-kpis>div{border-radius:12px;background:var(--card,#182435);border:1px solid var(--border,#36445a);padding:10px 6px;text-align:center;display:flex;flex-direction:column;gap:5px}
+.garage-kpis strong{font-size:17px;overflow-wrap:anywhere}
+.garage-kpis small{font-size:11px;color:var(--muted)}
+.garage-tabs{display:flex;gap:4px;overflow-x:auto;margin:12px 0 18px}
+.garage-tabs button{flex:1;white-space:nowrap;padding:10px 6px;border:0;border-radius:10px;background:var(--card,#182435);color:inherit;font-size:12px}
+.garage-tabs button.active{background:#1b70df;color:#fff}
+.garage-entry{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin:9px 0}
+.garage-entry>div:first-child{display:flex;flex-direction:column;gap:5px;min-width:0;flex:1}
+.garage-actions{display:flex;gap:8px;width:100%;justify-content:flex-end}
+.garage-state{font-size:11px;border-radius:8px;padding:5px 7px;background:#1b7650;color:white}
+.garage-state.soon{background:#966a10}.garage-state.late{background:#ae3543}
+.garage-check{display:flex;align-items:center;gap:9px}
+.garage-check input{width:19px;height:19px}
+.garage-chart{width:100%;display:flex;height:175px;gap:3px}
+.garage-chart .save-bar-cell{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center}
+.garage-chart .save-bar-track{height:150px;width:100%;display:flex;align-items:flex-end;justify-content:center}
+.garage-chart .save-bar-cell span{font-size:10px}
+
+
+/* Garage : champs alignés et contenus dans leur grille sur iPhone */
+#main .garage-form .two,
+.garage-form .two{grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
+.garage-form .two>div{min-width:0;max-width:100%;width:100%}
+.garage-form .field{display:block;box-sizing:border-box;width:100%;min-width:0;max-width:100%;margin:0}
+.garage-form input[type="date"]{min-width:0;width:100%;max-width:100%;-webkit-appearance:none;appearance:none;overflow:hidden}
+.garage-form label{display:block;max-width:100%}
+@media(max-width:390px){.garage-form .two{gap:8px}.garage-form .two .field{padding-left:10px;padding-right:10px;font-size:14px}}
+
+
+/* Garage V13.1: compact entretien cards and unified form field dimensions */
+.garage-entry{padding:13px 15px!important;gap:7px!important;margin:8px 0!important}
+.garage-entry>div:first-child{gap:3px!important}
+.garage-entry .garage-actions{width:auto!important;margin-left:auto;justify-content:flex-end}
+.garage-done-btn{font-size:12px!important;padding:7px 11px!important;min-height:34px!important;border-radius:10px!important}
+.garage-setting-entry{align-items:center}
+.garage-setting-btn{font-size:12px!important;padding:7px 10px!important}
+.garage-tabs{gap:4px}
+.garage-tabs button{min-width:0;padding:9px 3px;font-size:11px}
+.garage-form{min-width:0;box-sizing:border-box}
+.garage-form .field{height:47px!important;min-height:47px!important;max-height:47px!important;box-sizing:border-box!important;border-radius:13px!important;padding:10px 13px!important;line-height:1.35!important;font-size:15px!important}
+.garage-form textarea.field{height:auto!important;min-height:100px!important;max-height:none!important}
+.garage-form .two{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;min-width:0!important}
+.garage-form .two>div{min-width:0!important;max-width:100%!important}
+.garage-form input[type=date]{display:block!important;width:100%!important;min-width:0!important;max-width:100%!important;-webkit-appearance:auto!important;appearance:auto!important}
+.garage-form input[type=number]{width:100%!important;min-width:0!important}
+.garage-form label{margin-bottom:3px!important}
+
+
+/* iOS Safari: native date picker requires more intrinsic width than half a card.
+   Use equal full-width rows to avoid overlap and clipped input borders. */
+.garage-form .two.garage-date-km{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:12px!important;width:100%!important}
+.garage-form .garage-date-km>div{width:100%!important;min-width:0!important;max-width:100%!important}
+.garage-form .garage-date-km input.field{display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;height:47px!important;min-height:47px!important;max-height:47px!important;box-sizing:border-box!important}
+.garage-form .garage-date-km input[type=date]{-webkit-appearance:auto!important;appearance:auto!important;overflow:visible!important}
+
+/* V13.1 — fixed-size Garage fields, including native iOS date picker.
+   Visual shell prevents WebKit's date-control intrinsic sizing from overflowing. */
+.garage-form{min-width:0!important;max-width:100%!important}
+.garage-form .field,
+.garage-form input.field,
+.garage-form select.field{
+ display:block!important;width:100%!important;min-width:0!important;max-width:100%!important;
+ height:48px!important;min-height:48px!important;max-height:48px!important;
+ box-sizing:border-box!important;margin:0!important;padding:0 13px!important;
+ line-height:normal!important;text-align:left!important;
+}
+.garage-form .garage-date-shell{
+ position:relative!important;display:flex!important;align-items:center!important;
+ width:100%!important;min-width:0!important;max-width:100%!important;
+ height:48px!important;min-height:48px!important;max-height:48px!important;
+ overflow:hidden!important;box-sizing:border-box!important;
+ border:1px solid var(--border,#34455e)!important;
+ border-radius:13px!important;background:var(--card,#1b293d)!important;
+}
+.garage-form .garage-date-display{
+ display:block!important;min-width:0!important;max-width:100%!important;
+ padding:0 13px!important;line-height:48px!important;text-align:left!important;
+ white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+ pointer-events:none!important;color:inherit!important;font-size:15px!important;
+}
+.garage-form .garage-date-shell input[type="date"]{
+ position:absolute!important;inset:0!important;display:block!important;
+ width:100%!important;height:100%!important;min-width:0!important;max-width:100%!important;
+ margin:0!important;padding:0!important;border:0!important;opacity:0!important;
+ cursor:pointer!important;z-index:1!important;-webkit-appearance:auto!important;appearance:auto!important;
+}
+.garage-form .two.garage-date-km{grid-template-columns:minmax(0,1fr)!important}
+.garage-form .two>div{min-width:0!important;max-width:100%!important}
+.garage-form textarea.field{height:auto!important;min-height:100px!important;max-height:none!important;padding:12px 13px!important}
+
+/* NEXO V13 — Nutrition */
+.nutrition-top{display:flex;align-items:center;gap:12px;margin-bottom:13px}.nutrition-top label{font-weight:650;font-size:13px;flex:none}.nutrition-top input{min-width:0;flex:1;max-width:100%;height:48px}
+.nutrition-total{font-size:32px;font-weight:800;letter-spacing:-1px}.nutrition-total small{font-size:14px;font-weight:500;color:#7b899c}
+.nutrition-progress{display:grid;gap:6px}.nutrition-progress>div:first-child{display:flex;justify-content:space-between;gap:10px;font-size:12px}.nutrition-progress span{color:#8290a3}
+.nutrition-track{height:9px;border-radius:99px;background:#e5eaf1;overflow:hidden}.nutrition-track>div{height:100%;border-radius:99px;background:#2684ef}
+.nutrition-actions{display:flex;flex-wrap:wrap;gap:8px}.nutrition-actions button{flex:1;min-width:130px}
+.nutrition-meal{display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid #e9edf4;padding:12px 0}.nutrition-meal:last-child{border:0}
+.nutrition-meal>div:first-child{min-width:0;flex:1}.nutrition-meal strong,.nutrition-meal small{display:block;overflow-wrap:anywhere}.nutrition-meal small{font-size:12px;color:#8190a1;margin-top:5px}
+.nutrition-meal-buttons{display:flex;gap:5px;flex:none}.nutrition-meal-buttons .btn{padding:9px;font-size:12px}
+.nutrition-form label{display:grid;gap:6px;font-size:13px!important;font-weight:600}.nutrition-form .field{width:100%;max-width:100%;min-width:0;height:48px;box-sizing:border-box}
+.nutrition-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+html[data-theme="dark"] .nutrition-track{background:#2b3b51}html[data-theme="dark"] .nutrition-meal{border-color:#334155}
+
+/* NEXO GEN 2.2: visually redesigned, customizable dashboard */
+.gen2-shell{display:grid;gap:18px;padding-bottom:16px}.gen2-hero{display:flex;align-items:center;justify-content:space-between;gap:12px;background:linear-gradient(120deg,#101d32,#223e63);color:#fff;border-radius:22px;padding:22px 18px;box-shadow:0 10px 25px #102b5322}
+.gen2-eyebrow{font-size:11px;color:#9bbce7;text-transform:uppercase;letter-spacing:1px}.gen2-hero h2{font-size:29px;margin:7px 0 4px;line-height:1.15;color:#fff}.gen2-hero h2 span{color:#6ca9ff}.gen2-hero p{font-size:12px;color:#b8c8dd;margin:0}.gen2-customize{flex:none;width:42px;height:42px;border:1px solid #45617e;background:#253b58;border-radius:14px;color:white;font-size:20px}
+.gen2-section{display:grid;gap:12px}.gen2-section-heading{display:flex;justify-content:space-between;align-items:center;gap:12px}.gen2-section-heading h3{margin:0;font-size:18px}.gen2-section-heading button{border:0;background:transparent;color:#287de9;font-size:13px;font-weight:700;padding:8px 0}
+.gen2-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.gen2-widget{min-width:0;border-radius:18px;padding:14px;background:#18283e;color:#fff;display:grid;gap:12px;min-height:134px;box-sizing:border-box}.gen2-widget-top{display:flex;align-items:center;gap:7px;min-width:0}.gen2-widget-icon{color:#8db7fa;font-size:21px}.gen2-widget-label{font-size:12px;font-weight:700;min-width:0;flex:1;line-height:1.2}.gen2-eye{border:0;border-radius:9px;padding:5px 6px;background:#2a405c;color:#dbe8f9;font-size:10px;white-space:nowrap}.gen2-widget-link{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:7px;position:relative;width:100%;min-width:0;border:0;background:transparent;color:inherit;padding:0;cursor:pointer}.gen2-widget-value{font-size:19px;letter-spacing:-.5px;overflow-wrap:anywhere;line-height:1.25}.gen2-widget-sub{font-size:11px;color:#a6b9d1;line-height:1.3;overflow-wrap:anywhere;padding-right:12px}.gen2-widget-arrow{position:absolute;bottom:0;right:0;color:#8ca3c2}.gen2-savings{background:linear-gradient(145deg,#173b38,#1b2b3d)}.gen2-savings .gen2-widget-icon{color:#78d9b0}.gen2-nutrition .gen2-widget-icon{color:#f5a678}.gen2-travel .gen2-widget-icon{color:#93b5ff}.gen2-garage .gen2-widget-icon{color:#c2a6f9}
+.gen2-shortcuts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.gen2-shortcuts button{display:grid;justify-items:center;align-content:center;gap:7px;min-width:0;border:1px solid #dce5f0;background:#fff;border-radius:15px;min-height:76px;padding:9px 3px;color:#253449}.gen2-shortcuts span{font-size:24px;line-height:1}.gen2-shortcuts svg{max-width:26px;max-height:26px}.gen2-shortcuts small{font-size:10px;overflow-wrap:anywhere;line-height:1.1}.gen2-empty{padding:20px;border:1px dashed #91a1b4;border-radius:16px;color:#718198;font-size:13px}
+.gen2-settings .card{border-radius:18px}.gen2-setting-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0;border-bottom:1px solid #e5eaf2}.gen2-setting-row label{display:flex;align-items:center;gap:8px;min-width:0;font-size:13px}.gen2-setting-row input{width:19px;height:19px;accent-color:#287de9}.gen2-reorder{display:flex;gap:5px}.gen2-reorder button{min-width:35px;min-height:35px;border-radius:10px;border:1px solid #cbd7e5;background:transparent;color:inherit;font-size:18px}.gen2-switch{display:flex;gap:8px;align-items:center;font-size:13px}.gen2-shortcut-fields{display:grid;gap:10px}.gen2-shortcut-fields label{display:grid;gap:5px;font-size:12px}.gen2-shortcut-fields select{min-width:0;width:100%;height:46px}
+html[data-theme="dark"] .gen2-shortcuts button{background:#202f44;border-color:#354960;color:#f0f5fc}html[data-theme="dark"] .gen2-setting-row{border-color:#354960}
+@media(max-width:360px){.gen2-widget{padding:11px}.gen2-widget-value{font-size:17px}.gen2-widget-label{font-size:11px}.gen2-eye{font-size:9px;padding:4px}}
+
+/* NEXO GEN 2.2.1 — dashboard layout and mobile navigation corrections */
+.gen2-shell>.gen2-hero{position:static!important;top:auto!important;z-index:auto!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;flex-shrink:0!important}
+.gen2-shell{position:relative!important;isolation:auto!important;padding-bottom:calc(115px + env(safe-area-inset-bottom))!important}
+.gen2-alltools{position:relative!important;z-index:0!important;margin-bottom:24px!important}
+.gen2-alltools .category-list{padding-bottom:calc(50px + env(safe-area-inset-bottom))!important}
+main{padding-bottom:calc(125px + env(safe-area-inset-bottom))!important}
+.settings-button{width:34px!important;height:34px!important;border-radius:11px!important;font-size:18px!important;line-height:1!important}
+.settings-button svg{width:19px!important;height:19px!important}
+.gen2-widget-top{flex-wrap:wrap!important}.gen2-eye{margin-left:auto!important;min-height:29px!important}
+.gen2-setting-row input[type=checkbox]{flex:none!important}
+
+/* GEN 2.2 — Search and module cards have independent, non-overlapping rows on iPhone */
+.gen2-alltools #gen2-tools{display:flex;flex-direction:column;align-items:stretch;gap:18px;min-width:0}
+.gen2-alltools .gen2-search-row{position:relative;display:block;flex:none;width:100%;min-height:58px;margin:0;padding:0;z-index:auto}
+.gen2-alltools .gen2-search-row .home-search{position:relative;display:block;width:100%;margin:0;padding:0}
+.gen2-alltools .gen2-search-row .search{display:block;position:relative;width:100%;min-height:58px;margin:0;box-sizing:border-box}
+.gen2-alltools .gen2-module-list{position:relative;display:grid;align-content:start;gap:12px;min-width:0;margin:0;padding-top:0;z-index:auto}
+.gen2-alltools .gen2-module-list>.tool-group{position:relative;margin:0;transform:none}
+
+/* GEN 2.6 — definitive iOS Safari search / cards separation. */
+.gen2-alltools #gen2-tools{display:block!important;}
+.gen2-alltools .gen2-search-row{display:block!important;position:relative!important;height:auto!important;min-height:0!important;padding:0 0 26px!important;margin:0!important;overflow:visible!important;}
+.gen2-alltools .gen2-search-row .home-search{display:block!important;height:auto!important;min-height:0!important;margin:0!important;}
+.gen2-alltools .gen2-search-row input.search{display:block!important;position:static!important;width:100%!important;height:58px!important;min-height:58px!important;margin:0!important;box-sizing:border-box!important;}
+.gen2-alltools #tiles.gen2-module-list{display:grid!important;position:relative!important;clear:both!important;margin:0!important;padding-top:10px!important;row-gap:14px!important;}
+.gen2-alltools #tiles.gen2-module-list>.tool-group{margin:0!important;}
+
+/* GEN 2.6 — navigation à quatre destinations */
+nav{display:flex!important;align-items:stretch;justify-content:space-around;gap:2px}nav>button,nav>#custom-nav-slots{flex:1 1 0;min-width:0}nav>#custom-nav-slots{display:flex}nav>#custom-nav-slots>button{width:100%;min-width:0}nav button{font-size:11px!important;overflow-wrap:anywhere}nav .nav-icon{font-size:23px;line-height:1.2}.gen2-module-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}.gen2-module-tabs button{border:1px solid #435674;background:#1c2b40;color:#c9d7e8;padding:12px;border-radius:14px;font-weight:700}.gen2-module-tabs button.active{background:#287dea;color:white;border-color:#287dea}.gen2-modules-cta .btn{width:100%;min-height:48px}.gen2-shell .gen2-hero{position:static!important}
+
+/* GEN 2.6.5: native iOS status area and upcoming travel */
+html,body{min-height:100%;}
+html[data-theme="dark"]{background-color:#0b111c!important;}
+html[data-theme="dark"] body{background-color:#0b111c;}
+.gen26-trip-card{width:100%;border:1px solid #30465f;background:linear-gradient(125deg,#172c43,#17243a);border-radius:19px;display:flex;align-items:center;gap:12px;text-align:left;color:#f5f8ff;padding:12px;min-height:118px;overflow:hidden}
+.gen26-trip-media{width:83px;height:88px;flex:0 0 83px;display:flex;align-items:center;justify-content:center;border-radius:14px;background:#294563;overflow:hidden}
+.gen26-trip-image{width:100%;height:100%;object-fit:cover}.gen26-trip-plane{font-size:36px;color:#8cb8f7}.gen26-trip-info{display:flex;flex-direction:column;align-items:flex-start;gap:5px;min-width:0;flex:1}.gen26-trip-info strong{font-size:16px;line-height:1.2;overflow-wrap:anywhere}.gen26-trip-info small{font-size:11px;color:#b4c6db;line-height:1.35}.gen26-trip-badge{font-size:10px;font-weight:700;border-radius:50px;background:#2b557b;color:#b5d8ff;padding:5px 9px}.gen26-trip-arrow{color:#90b5e7;font-size:20px;align-self:flex-end}.gen26-trip-empty{padding:20px;border:1px dashed #738ba8;border-radius:16px;font-size:13px;color:inherit}.gen26-trip-empty button{display:block;border:0;background:none;padding:9px 0 0;color:#3789ed;font-weight:700}
+
+/* GEN 2.6.5 — large travel card, consistent countdown */
+.gen262-trip-card{display:flex;flex-direction:column;gap:13px;width:100%;text-align:left;padding:18px;border:1px solid #36516b;border-radius:22px;background:#152d43;color:#f5f8ff;min-width:0;overflow:hidden;cursor:pointer}
+.gen262-trip-cover{display:flex;align-items:center;justify-content:center;width:100%;height:clamp(155px,43vw,265px);background:#27445d;border-radius:16px;overflow:hidden}
+.gen262-trip-image{width:100%;height:100%;object-fit:cover}.gen262-trip-plane{font-size:65px;color:#90b5e7}
+.gen262-trip-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;min-width:0}.gen262-trip-title-row strong{font-size:clamp(22px,5.2vw,29px);line-height:1.2;min-width:0;overflow-wrap:anywhere;flex:1}
+.gen262-trip-badge{flex:none;max-width:46%;font-size:11px;font-weight:700;line-height:1.2;color:#c5e0ff;background:#2a5274;border-radius:999px;padding:9px 10px;text-align:center}
+.gen262-trip-dates,.gen262-trip-destination{font-size:14px;color:#bbccde;line-height:1.35;overflow-wrap:anywhere}
+.gen262-trip-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:4px;width:100%}.gen262-trip-stats>span{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-width:0;min-height:76px;background:#234661;border-radius:15px;padding:9px 3px}.gen262-trip-stats b{font-size:27px;line-height:1.1;color:#fff}.gen262-trip-stats small{font-size:11px;color:#bed0e1}
+@media(max-width:360px){.gen262-trip-card{padding:13px}.gen262-trip-badge{font-size:10px}.gen262-trip-stats small{font-size:10px}}
+
+/* GEN 2.6.5 — uniform savings inputs, Safari iOS */
+#tool #saveAccountName,#tool #saveAccountType,#tool #saveAccountInitial,#tool #saveAccountDate{display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;height:52px!important;min-height:52px!important;max-height:52px!important;padding:11px 14px!important;margin:0!important;border-radius:16px!important;border:1px solid var(--border,#34445c)!important;font-size:16px!important;line-height:1.3!important;box-shadow:none!important}
+#tool #saveAccountDate{-webkit-appearance:none;appearance:none;text-align:left!important;display:block!important}
+#tool #saveAccountDate::-webkit-date-and-time-value{text-align:left;min-height:1.3em}
+#tool #saveAccountDate::-webkit-datetime-edit{padding:0;text-align:left}
+#tool #saveAccountType{padding-right:30px!important}
+#tool .save-create-form{display:grid;gap:10px;min-width:0}
+#tool .save-create-form>label{margin:0!important}
+/* Keep NEXO's top wordmark immobile only on the home dashboard. */
+body>header{position:fixed!important;top:env(safe-area-inset-top)!important;left:0;right:0;width:100%;z-index:12!important;transform:none!important}
+body>main{padding-top:var(--gen264-header-height,115px)!important}
+
+/* GEN 2.6.20 — uniform vault primary actions */
+.vault-actions > .btn,.vault-actions > label.btn{box-sizing:border-box;width:100%;min-height:50px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:15px;font-weight:650;line-height:1.3;padding:12px 14px;border-radius:14px;margin:0}
+
+/* GEN 2.6.20 — opaque stationary top bar and matching bottom navigation icons */
+body>header,html[data-theme="light"] body>header{background:#f3f6fb!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;isolation:isolate}
+html[data-theme="dark"] body>header{background:#0b111c!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+nav button .nav-icon,nav button .nexo-home-icon{width:28px!important;height:28px!important;min-height:28px!important;display:flex!important;align-items:center!important;justify-content:center!important;line-height:1!important;margin:0 auto!important}
+nav button .nav-icon svg,nav button .nav-icon .nexo-line-icon{display:block!important;width:25px!important;height:25px!important;max-width:25px!important;max-height:25px!important;flex-shrink:0!important}
+nav button .nav-icon .nexo-euro-icon{font-size:25px!important}
+nav button{align-content:start!important;grid-template-rows:28px auto!important;gap:7px!important;text-align:center!important}
+nav #custom-nav-slots>button{display:grid!important;justify-items:center!important}
+/* GEN 2.6.20: do not let iOS lift the bottom bar over the search keyboard. */
+/* iOS Safari resizes the visual viewport above its keyboard. Never dock nav there. */
+html body.nexo-keyboard-open > nav{display:none!important;visibility:hidden!important;pointer-events:none!important}
+html body.nexo-keyboard-open{padding-bottom:env(safe-area-inset-bottom)!important}
+
+/* GEN 2.6.20: fully opaque fixed status-bar shield, including the iOS safe area. */
+html,body{background-color:#f3f6fb!important}
+html[data-theme="dark"],html[data-theme="dark"] body{background-color:#0b111c!important}
+body::before{content:"";position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top);background:#f3f6fb;z-index:13;pointer-events:none}
+html[data-theme="dark"] body::before{background:#0b111c}
+body>header{box-shadow:0 1px 0 rgba(125,145,174,.18)!important}
+.recipe-category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:4px 0 16px}
+.recipe-category-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:122px;border-radius:20px;border:1px solid #e3eaf4;background:#fff;color:#172136;padding:14px 8px;text-align:center;cursor:pointer}
+.recipe-category-tile .recipe-cat-count{font-size:28px;font-weight:750;line-height:1}
+.recipe-category-tile .recipe-cat-name{font-size:17px;font-weight:650}
+html[data-theme="dark"] .recipe-category-tile{background:#172233;border-color:#2b3a50;color:#f1f5fc}
+
+/* GEN 2.6.20 — recipe action buttons uniform on iOS */
+.recipe-home-actions>.btn,.recipe-home-actions>label.btn{box-sizing:border-box;display:flex;align-items:center;justify-content:center;width:100%;min-height:54px;padding:13px 15px;font-size:16px!important;font-weight:650!important;line-height:1.35!important;text-align:center;border-radius:15px;white-space:normal}
+.recipe-cook-back{width:100%;min-height:48px;text-align:center}
+
+/* GEN 2.6.20 — recipe photo and compact kitchen timer */
+.recipe-photo-wrap{position:relative;display:inline-block;max-width:100%}
+.recipe-photo-remove{position:absolute;right:8px;top:8px;border:1px solid rgba(255,255,255,.45);border-radius:999px;background:rgba(15,24,38,.85);color:white;font-size:13px;font-weight:650;padding:8px 12px;cursor:pointer}
+.recipe-timer-line{display:flex;align-items:end;gap:14px;min-width:0}
+.recipe-timer-line>label{flex:0 0 33.333%;min-width:0}
+.recipe-timer-line input{width:100%;box-sizing:border-box}
+.recipe-timer-clock{font-size:26px;font-weight:750;font-variant-numeric:tabular-nums;white-space:nowrap;min-width:76px;text-align:center;padding-bottom:11px}
+@media(max-width:350px){.recipe-timer-clock{font-size:21px;min-width:65px}}
+
+/* GEN 2.6.20 — vault category navigation */
+.vault-category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}
+.vault-category-tile{border:1px solid var(--border,#34455f);background:var(--card,#1a2739);color:inherit;border-radius:18px;min-height:110px;padding:16px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;font:inherit;cursor:pointer}
+.vault-category-count{font-size:28px;font-weight:700;line-height:1.1}
+.vault-category-label{font-size:15px;font-weight:600;line-height:1.35;overflow-wrap:anywhere}
+.vault-category-back{width:100%;text-align:center}
+
+/* GEN 2.6.20 : réorganisation des catégories et palette différenciée */
+.group-move{display:flex;flex-direction:column;gap:3px;margin-left:4px;flex:none}
+.group-move button{width:34px;height:27px;border-radius:9px;border:1px solid var(--tone-ink);background:transparent;color:var(--tone-ink);font-size:19px;font-weight:800;line-height:1;display:grid;place-items:center;padding:0}
+.group-move button:disabled{opacity:.24}
+.tone-orange{--tone:#fff0e5;--tone-ink:#c85b17}
+.tone-cyan{--tone:#e3f6fc;--tone-ink:#007f9f}
+.tone-indigo{--tone:#e9edff;--tone-ink:#4a57bd}
+.tone-teal{--tone:#e1f6f1;--tone-ink:#087c73}
+.tone-lime{--tone:#f1f8df;--tone-ink:#5b8119}
+html[data-theme="dark"] .tone-blue{--tone:#172b43;--tone-ink:#559efb}
+html[data-theme="dark"] .tone-orange{--tone:#39271d;--tone-ink:#f7a26a}
+html[data-theme="dark"] .tone-cyan{--tone:#15323b;--tone-ink:#60d0ec}
+html[data-theme="dark"] .tone-indigo{--tone:#252944;--tone-ink:#a0a9ff}
+html[data-theme="dark"] .tone-teal{--tone:#16332f;--tone-ink:#5ed3bc}
+html[data-theme="dark"] .tone-lime{--tone:#2a341b;--tone-ink:#b6dc72}
+html[data-theme="dark"] .tone-rose{--tone:#39232c;--tone-ink:#ff83a3}
+html[data-theme="dark"] .tone-purple{--tone:#2d2444;--tone-ink:#b49aff}
+html[data-theme="dark"] .tone-yellow{--tone:#38301c;--tone-ink:#eac46c}
+html[data-theme="dark"] .tone-mint{--tone:#17362f;--tone-ink:#65d4ad}
+@media(max-width:380px){.group-move button{width:30px;height:25px}.group-heading{gap:7px}}
+.group-heading{gap:7px}.group-expand{display:flex;align-items:center;gap:11px;flex:1;min-width:0;background:transparent;border:0;color:inherit;text-align:left;padding:0}.group-expand .group-copy{min-width:0}
+.module-category-customize{margin:14px 0 18px}.module-category-customize .btn{width:100%;min-height:46px;font-size:14px;font-weight:700}.module-category-settings-list{display:flex;flex-direction:column;gap:10px}.module-category-setting-row{display:flex;align-items:center;gap:12px;padding:12px;border-radius:15px;background:var(--tone-bg,#233046);border:1px solid var(--tone-border,#3b4b62);color:var(--tone-ink,inherit)}.module-category-setting-icon{font-size:23px;width:34px;text-align:center;flex:none}.module-category-setting-name{flex:1;min-width:0;font-weight:750;color:var(--text,#e9f0ff)}.module-category-setting-actions{display:flex;gap:7px}.module-category-setting-actions button{width:39px;height:39px;border-radius:10px;border:1px solid currentColor;background:transparent;color:var(--tone-ink,inherit);font-size:22px;font-weight:800}.module-category-setting-actions button:disabled{opacity:.2}
+
+/* GEN 2.6.20 — Épargne : champs et typographie homogènes sur Safari iPhone */
+#tool .save-ui,#tool .save-ui *{box-sizing:border-box}
+#tool .save-ui{min-width:0;width:100%;overflow-wrap:break-word}
+#tool .save-ui .card,#tool .save-ui details,#tool .save-ui .stack,#tool .save-ui .row{min-width:0;max-width:100%}
+#tool .save-ui input.field,#tool .save-ui select.field,#tool .save-ui textarea.field{
+  display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;
+  height:52px!important;min-height:52px!important;box-sizing:border-box!important;
+  margin:0!important;padding:12px 14px!important;border-radius:16px!important;
+  font-size:16px!important;line-height:1.35!important;font-weight:500!important;
+  -webkit-text-size-adjust:100%;
+}
+#tool .save-ui select.field{padding-right:36px!important}
+#tool .save-ui input[type="date"].field{-webkit-appearance:none;appearance:none;text-align:left!important}
+#tool .save-ui input[type="date"].field::-webkit-date-and-time-value{text-align:left;min-height:1.35em}
+#tool .save-ui input[type="date"].field::-webkit-datetime-edit{padding:0;text-align:left}
+#tool .save-ui label{display:block;font-size:15px!important;line-height:1.4!important;font-weight:600!important;margin:0!important}
+#tool .save-ui .stack{gap:12px}
+#tool .save-ui .btn{font-size:15px!important;line-height:1.35!important;min-height:44px}
+#tool .save-ui details>summary{font-size:17px!important;line-height:1.4!important}
+#tool .save-ui .exp-dash-controls{min-width:0;max-width:100%;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+#tool .save-ui .exp-dash-controls>*{min-width:0;max-width:100%}
+#tool .save-ui .exp-dash-op{min-width:0;max-width:100%;gap:8px;flex-wrap:wrap}
+#tool .save-ui .exp-dash-op .grow{min-width:120px;flex:1 1 130px}
+#tool .save-ui .exp-dash-op strong,#tool .save-ui .exp-dash-op small{overflow-wrap:anywhere}
+#tool .save-ui .save-initial-tag{font-size:12px;color:var(--muted,#8798ad);white-space:nowrap}
+@media(max-width:390px){#tool .save-ui .exp-dash-controls{grid-template-columns:minmax(0,1fr)}}
+/* GEN 2.6.27: resserrer X et O du logo */
+.nexo-wordmark .nexo-x{margin-right:-3px!important}
+
+/* GEN 2.6.27: modules complémentaires */
+.nexo-new .field,.nexo-new input.field,.nexo-new select.field,.nexo-new textarea.field{box-sizing:border-box;width:100%;max-width:100%;min-width:0;font-size:16px}
+.nexo-new .two>*{min-width:0}.nexo-new .btn{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+.nexo-new .nexo-actions{display:flex;gap:8px;flex-wrap:wrap}.nexo-new .nexo-actions .btn{flex:1 1 130px}
+.nexo-new .nexo-item{padding:14px;border:1px solid var(--border,#d5dbe4);border-radius:14px;margin:10px 0;overflow-wrap:anywhere}
+.nexo-new .nexo-muted{font-size:12px;opacity:.75}.nexo-new .nexo-code{width:100%;max-width:100%;background:white;padding:12px;border-radius:12px;box-sizing:border-box;overflow:hidden}
+.nexo-new .nexo-code svg{width:100%;height:auto;max-height:150px}.nexo-new .nexo-code-big{padding:20px}.nexo-new .nexo-code-big svg{max-height:220px}
+.nexo-new .nexo-emergency{border:2px solid #d94444;border-radius:15px;padding:16px;overflow-wrap:anywhere}
+.nexo-new .nexo-emergency h2{color:#d94444}.nexo-new .nexo-break{white-space:pre-wrap;overflow-wrap:anywhere}
+
+/* GEN 2.6.29 — profils santé et cartes de fidélité */
+.nexo-new .nexo-health-profile-name{display:block;margin-bottom:8px;font-size:1.45rem;line-height:1.3;font-weight:800;overflow-wrap:anywhere}
+.nexo-new .nexo-emergency a[href^="tel:"]{text-decoration:none!important}
+.nexo-new .nexo-emergency a[href^="tel:"]:hover,.nexo-new .nexo-emergency a[href^="tel:"]:focus{text-decoration:none!important}
+.nexo-new .nexo-loyalty-name{font-size:1.3rem;line-height:1.25;font-weight:750;min-width:0;overflow-wrap:anywhere}
+.nexo-new .nexo-loyalty-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.nexo-new .nexo-loyalty-star{flex:0 0 auto;width:38px;height:38px;min-width:38px;min-height:38px;padding:0;border-radius:12px;font-size:20px;line-height:1;display:flex;align-items:center;justify-content:center}
+.nexo-new .nexo-loyalty-filters{display:flex;gap:8px;flex-wrap:wrap}
+.nexo-new .nexo-loyalty-filters .btn[aria-pressed="true"]{background:var(--accent,#2878e8);color:white}
+
+/* GEN 2.6.41 — loyalty card heading and favorites */
+.nexo-new #nxCardResults .nexo-loyalty-heading{display:flex;align-items:center;justify-content:space-between;min-height:64px;gap:12px;margin-bottom:10px}
+.nexo-new #nxCardResults .nexo-loyalty-name{display:block;align-self:center;margin:0;font-size:1.5rem;line-height:1.2;font-weight:800}
+.nexo-new #nxCardResults .nexo-loyalty-star{align-self:center;display:flex;align-items:center;justify-content:center;width:32px;height:32px;min-width:32px;min-height:32px;padding:0;border-radius:10px;font-size:17px;line-height:1;flex-shrink:0}
+.nexo-new #nxCardResults .nexo-loyalty-star[aria-pressed="true"]{color:#facc15!important}
+.nexo-new #nxCardResults .nexo-loyalty-star[aria-pressed="false"]{color:inherit}
+
+/* GEN 2.6.33 — selectable home-screen module tiles */
+.gen2-tool-tile{padding:0;min-height:134px;overflow:hidden}
+.gen2-tool-tile-button{width:100%;height:100%;min-height:134px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:12px;text-align:left;padding:15px;border:0;background:transparent;color:inherit;cursor:pointer;position:relative}
+.gen2-tool-tile-icon{font-size:29px;line-height:1.2;display:flex;align-items:center;min-height:32px}
+.gen2-tool-tile-icon svg{max-width:34px;max-height:34px}
+.gen2-tool-tile-button strong{font-size:14px;line-height:1.35;overflow-wrap:anywhere}
+.gen2-tool-tile-arrow{position:absolute;right:13px;bottom:12px;color:#8ca3c2}
+
+/* GEN 2.6.41 — consistent icon sizing in overview personalization. */
+.gen2-setting-row label{flex:1;min-width:0}
+.gen2-config-label{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.gen2-config-icon{display:inline-flex;align-items:center;justify-content:center;flex:none;width:32px;height:32px;font-size:26px;line-height:1;vertical-align:middle;overflow:hidden}
+.gen2-config-icon>svg,.gen2-config-icon>img{display:block;width:28px!important;height:28px!important;max-width:28px!important;max-height:28px!important;object-fit:contain;flex:none}
+.gen2-config-icon .percent-icon,.gen2-config-icon .nexo-euro-icon{font-size:27px!important;line-height:1!important}
+.gen2-config-name{min-width:0;overflow-wrap:anywhere;line-height:1.3}
+.gen2-reorder{flex:none}
+.nexo-health-title-icon{display:inline-flex;align-items:center;vertical-align:-4px}
+.nexo-health-title-icon svg{width:25px;height:25px}
+
+/* GEN 2.6.41 — accessible module icons in both themes */
+.gen2-config-icon,.gen2-config-icon svg,.gen2-config-icon .nexo-line-icon{color:var(--text,#e7edf8)!important;opacity:1!important;visibility:visible!important;}
+.gen2-config-icon svg{stroke:currentColor!important;fill:none!important;}
+.gen2-config-icon .nexo-qr-icon{stroke-width:2.2!important;}
+.gen2-config-icon{flex-shrink:0!important;min-width:32px!important;}
+.gen2-config-name{min-width:0;}
+.nexo-qr-icon{display:inline-block;vertical-align:middle;color:inherit;}
+@media (prefers-color-scheme:light){.gen2-config-icon{color:var(--text,#182232)!important;}}
+
+/* GEN 2.6.44 — uniform health inputs, gender marker and iOS date sizing. */
+.nexo-health-form,.nexo-health-form *{box-sizing:border-box}
+.nexo-health-form{width:100%;min-width:0;max-width:100%;overflow:hidden}
+.nexo-health-form>div:not(.nexo-actions){min-width:0;max-width:100%}
+.nexo-health-form .field,.nexo-health-form input,.nexo-health-form textarea,.nexo-health-form select{display:block;box-sizing:border-box;width:100%;max-width:100%;min-width:0}
+.nexo-health-form input[type="date"]{-webkit-appearance:none;appearance:none;min-width:0;width:100%;max-width:100%;overflow:hidden}
+.nexo-health-form input[type="date"]::-webkit-date-and-time-value{text-align:left;min-width:0}
+.nexo-health-form input[type="date"]::-webkit-datetime-edit{min-width:0;padding:0}
+.nexo-health-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.nexo-health-card-head .nexo-health-profile-name{min-width:0;flex:1}
+.nexo-health-sex{flex:0 0 auto;font-family:Arial,sans-serif;font-size:29px;font-weight:700;line-height:1;display:inline-flex;align-items:center;justify-content:center;min-width:34px;min-height:34px}
+.nexo-health-sex.male{color:#62a8ff}.nexo-health-sex.female{color:#fa87bd}
+.nexo-health-sex svg{display:block;width:30px;height:30px}
+
+/* GEN 2.6.44 — compact independent customization sections */
+.gen243-fold{border:1px solid var(--border,#d2dbe7);border-radius:14px;padding:0 12px;margin:10px 0;min-width:0}
+.gen243-fold>summary{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 2px;font-weight:700;list-style:none;min-height:48px}
+.gen243-fold>summary::-webkit-details-marker{display:none}
+.gen243-fold>summary:before{content:'▸';display:inline-block;margin-right:4px;transition:transform .15s}
+.gen243-fold[open]>summary:before{transform:rotate(90deg)}
+.gen243-fold>summary span{margin-left:auto;font-size:11px;font-weight:400;opacity:.72}
+.gen243-fold[open]>summary{border-bottom:1px solid var(--border,#d2dbe7);margin-bottom:8px}
+.gen243-fold .gen2-shortcut-fields{padding:8px 0 14px}
+.gen243-privacy{display:grid;gap:12px;padding:12px 2px}
+html[data-theme="dark"] .gen243-fold{border-color:#354960}
+html[data-theme="dark"] .gen243-fold[open]>summary{border-color:#354960}
+
+/* GEN 2.6.47 — compteur Mon garage sur deux lignes */
+.gen2644-garage-button{width:100%;border:0;background:transparent;color:inherit;text-align:left;display:flex;flex-direction:column;gap:12px;padding:16px;cursor:pointer;font:inherit}
+.gen2644-garage-title{display:flex;align-items:center;gap:9px;width:100%}
+.gen2644-garage-arrow{margin-left:auto;opacity:.7}
+.gen2644-garage-counts{display:flex;flex-direction:column;align-items:flex-start;gap:6px;font-size:14px}
+.gen2644-garage-counts>span{display:inline-flex;align-items:center;gap:6px}
+.gen2644-garage-counts b{font-size:20px;font-weight:800}
+.gen2644-due{color:#f17878}.gen2644-soon{color:#e7b653}
+
+/* GEN 2.6.47 — Mon garage: same tile geometry as other overview widgets */
+.gen2-grid>.gen2644-garage{padding:14px;min-height:134px;height:100%;position:relative;overflow:hidden;display:block}
+.gen2644-garage .gen2644-garage-button{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:12px;width:100%;height:100%;min-width:0;padding:0;margin:0;background:transparent;border:0;color:inherit;text-align:left;font:inherit}
+.gen2644-garage .gen2644-garage-title{display:flex;align-items:center;flex-wrap:nowrap;gap:7px;min-width:0;width:100%;font-size:12px;line-height:1.2}
+.gen2644-garage .gen2644-garage-title strong{display:block;min-width:0;white-space:nowrap;font-size:12px;font-weight:700}
+.gen2644-garage .gen2644-garage-title .gen2-widget-icon{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;font-size:21px;line-height:1}
+.gen2644-garage .gen2644-garage-arrow{position:absolute;right:0;bottom:0;margin:0;color:#8ca3c2;font-size:16px;line-height:1;opacity:1}
+.gen2644-garage .gen2644-garage-counts{display:flex;flex-direction:column;align-items:flex-start;gap:7px;min-width:0;padding-bottom:17px;font-size:11px;line-height:1.25}
+.gen2644-garage .gen2644-garage-counts>span{display:flex;align-items:baseline;gap:6px;white-space:nowrap}
+.gen2644-garage .gen2644-garage-counts b{font-size:19px;line-height:1.15;font-weight:800}
+@media(max-width:360px){.gen2-grid>.gen2644-garage{padding:11px}.gen2644-garage .gen2644-garage-title strong{font-size:11px}.gen2644-garage .gen2644-garage-counts{font-size:10px}}
+.garage-transfer-actions{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.garage-transfer-actions .btn{flex:1 1 150px;font-size:13px}
+
+/* GEN 2.6.48 — mêmes dimensions et typographie que les actions de Mes voyages */
+.garage-import-home{margin:12px 0 18px;display:flex;flex-direction:column;gap:10px}
+.garage-import-home>.btn,.garage-vehicle-options>.btn{display:block;width:100%;box-sizing:border-box;text-align:center;min-height:44px;font:inherit;font-weight:600}
+.garage-vehicle-options{gap:12px}
+.garage-vehicle-options>p{margin:4px 0;color:var(--muted,#94a3b8)}
+
+/* GEN 2.6.49 — défilement des paramètres sur iPhone */
+.settings-backdrop{height:100dvh;max-height:100dvh;overflow-y:auto!important;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;align-items:flex-start!important;padding-bottom:calc(100px + env(safe-area-inset-bottom))!important}
+.settings-panel{flex:0 0 auto;max-width:100%;min-width:0;box-sizing:border-box;margin-bottom:calc(28px + env(safe-area-inset-bottom))}
+.settings-panel input,.settings-panel select,.settings-panel textarea,.settings-panel button{max-width:100%;box-sizing:border-box}
+.settings-panel .two,.garage-form .two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.settings-panel .two>*,.garage-form .two>*{min-width:0}
+/* Cohérence des champs et boutons dans Mon Auto et Ma Moto */
+.garage-form .field,.garage-form select,.garage-form input{min-width:0;max-width:100%;box-sizing:border-box}
+.garage-tabs{scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.garage-tabs button{min-height:42px;box-sizing:border-box;flex:1 0 auto}
+.garage-actions .btn,.garage-entry .btn{min-height:42px;box-sizing:border-box}
+@media(max-width:390px){.settings-backdrop{padding-left:12px!important;padding-right:12px!important}.settings-panel{padding:16px}.garage-tabs button{padding-inline:10px}}
+
+/* GEN 2.6.51: iOS date field contained within same-width visual shell */
+.garage-form #gvBoughtShell{width:100%!important;max-width:100%!important;min-width:0!important;height:48px!important;box-sizing:border-box!important;overflow:hidden!important}
+.garage-form #gvBoughtDisplay{width:100%;box-sizing:border-box;text-align:left!important;line-height:48px!important}
+.garage-form #gvBought{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;opacity:0!important;z-index:2!important}
+
+/* GEN 2.6.51 — alignement vertical de Mon garage avec Prochain voyage */
+.gen2-grid>.gen2644-garage .gen2644-garage-button{box-sizing:border-box;padding-top:12px}
+.gen2-grid>.gen2644-garage .gen2644-garage-arrow{bottom:0}
+
+.nexo-step-photos{display:flex;gap:8px;overflow-x:auto;padding:6px 0;max-width:100%}
+.nexo-step-photo{flex:0 0 78px;width:78px;height:78px;padding:0;border:1px solid var(--border,#526078);border-radius:12px;overflow:hidden;background:transparent}
+.nexo-step-photo img{width:100%;height:100%;object-fit:cover}
+.nexo-photo-overlay{position:fixed;inset:0;z-index:99999;background:rgba(5,9,18,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:calc(20px + env(safe-area-inset-top)) 16px calc(20px + env(safe-area-inset-bottom));box-sizing:border-box}
+.nexo-photo-overlay img{max-width:100%;max-height:70dvh;object-fit:contain;border-radius:8px}
+
+/* Voyage GEN 2.6.54 */
+.travel-tabs{overflow-x:auto;display:flex;flex-wrap:nowrap;gap:6px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.travel-tabs button{flex:0 0 auto;white-space:nowrap}
+.nexo-travel-item{display:flex;flex-direction:column;gap:7px;padding:12px 0;border-bottom:1px solid var(--border,#34455c);min-width:0;overflow-wrap:anywhere}
+.nexo-travel-item small{color:var(--muted,#9eacc0)}
+.nexo-travel-actions,.nexo-travel-quick{display:flex;gap:8px;flex-wrap:wrap}
+.nexo-travel-actions .btn,.nexo-travel-quick .btn{width:auto;flex:1 1 auto;text-align:center}
+
+/* NEXO GEN 2.6.55 — fiches de voyage harmonisées */
+.nexo-travel-screen{padding:10px 0 24px;min-width:0}.nexo-travel-screen-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.nexo-travel-screen-head h2{margin:0;font-size:1.15rem}.nexo-add-label{background:none;border:0;color:#398eff;font:inherit;font-weight:700;cursor:pointer}.nexo-filter-rail{display:flex;overflow-x:auto;gap:7px;margin-bottom:15px;padding-bottom:5px;scrollbar-width:none}.nexo-filter-rail button{flex:0 0 auto;border:0;border-radius:12px;background:var(--card,#203047);color:var(--text,#edf2fa);padding:10px 12px;font:inherit;font-size:.85rem}.nexo-filter-rail button.active{background:#267cf0;color:#fff}.nexo-contact-row{display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(130,150,180,.2);padding:10px 0;min-width:0}.nexo-contact-info{display:flex;align-items:center;gap:10px;flex:1;min-width:0;background:none;border:0;color:inherit;text-align:left;padding:0}.nexo-contact-thumb{flex:0 0 48px;height:52px;border-radius:11px;background:rgba(60,130,220,.14);display:grid;place-items:center;font-size:1.6rem}.nexo-contact-copy,.nexo-doc-copy{display:flex;flex-direction:column;gap:3px;min-width:0}.nexo-contact-copy strong,.nexo-doc-copy strong{font-size:.9rem;overflow-wrap:anywhere}.nexo-contact-copy small,.nexo-doc-copy small{color:var(--muted,#9aabc4);font-size:.75rem}.nexo-contact-actions{display:flex;gap:4px;flex:0 0 auto}.nexo-contact-actions a,.nexo-contact-actions button{border:0;border-radius:10px;background:rgba(50,110,175,.16);color:#5aa7ff;width:31px;height:37px;display:grid;place-items:center;text-decoration:none;font-size:1rem;padding:0}.nexo-contact-detail{text-align:left}.nexo-contact-detail-actions{display:flex;gap:7px;flex-wrap:wrap;margin:18px 0}.nexo-doc-row{display:flex;align-items:center;gap:8px;border-radius:12px;background:var(--card,#1b2a3e);margin-bottom:9px;padding:10px;min-width:0}.nexo-doc-main{background:none;border:0;display:flex;align-items:center;gap:12px;flex:1;min-width:0;text-align:left;color:inherit;padding:0}.nexo-doc-thumb{width:45px;height:60px;flex:0 0 45px;border-radius:6px;background:#e7edf7;color:#26384b;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:1.4rem}.nexo-doc-thumb small{font-size:.65rem;font-weight:800}.nexo-category{font-size:.7rem;background:#27599b;color:white;padding:2px 8px;border-radius:10px;align-self:flex-start}.nexo-doc-more{border:0;background:none;color:inherit;font-size:1.3rem;padding:7px}.nexo-today-pills{display:flex;justify-content:space-between;gap:8px;margin-bottom:20px}.nexo-today-pills span{background:var(--card,#1b2a3e);padding:9px 12px;border-radius:12px;font-size:.85rem}.nexo-today-timeline{display:flex;flex-direction:column;gap:10px}.nexo-today-row{width:100%;border:0;background:none;color:inherit;display:grid;grid-template-columns:48px 10px minmax(0,1fr);gap:7px;align-items:stretch;text-align:left;padding:0;min-height:80px}.nexo-today-time{padding-top:18px;font-size:.85rem}.nexo-today-dot{width:7px;background:#4b93e9;border-radius:6px;position:relative;margin:0 auto}.nexo-today-dot:before{content:'';position:absolute;top:20px;left:-3px;width:13px;height:13px;background:#6b9ccc;border-radius:50%}.nexo-today-card{background:var(--card,#1b2a3e);border-radius:13px;display:flex;align-items:center;gap:10px;padding:12px;min-width:0}.nexo-today-emoji{font-size:1.4rem;background:rgba(62,131,221,.13);border-radius:10px;width:42px;height:44px;flex:0 0 42px;display:grid;place-items:center}.nexo-today-info{min-width:0;display:flex;flex-direction:column;gap:3px;flex:1}.nexo-today-info strong{font-size:.92rem}.nexo-today-info small{font-size:.76rem;color:var(--muted,#9aabc4);overflow-wrap:anywhere}.nexo-arrow{color:#8ea5c4;font-size:1.7rem}.nexo-mini-booking{padding:10px;background:var(--card,#1b2a3e);border-radius:10px;margin-bottom:8px;display:flex;flex-direction:column}
+@media(max-width:390px){.nexo-contact-thumb{flex-basis:39px;height:43px}.nexo-contact-actions a,.nexo-contact-actions button{width:28px}.nexo-today-row{grid-template-columns:43px 8px minmax(0,1fr)}}
+
+/* GEN 2.6.57: fiche contact lisible sur iPhone */
+.nexo-contact-profile{max-width:100%;overflow-wrap:anywhere;color:var(--text,#edf2fa)}
+.nexo-contact-profile .nexo-travel-screen-head{display:grid;grid-template-columns:56px 1fr 80px;align-items:center;margin-bottom:25px}
+.nexo-contact-profile .nexo-travel-screen-head h2{text-align:center;font-size:1.12rem}
+.nexo-contact-back{background:transparent;color:inherit;border:0;font-size:1.7rem;text-align:left;padding:4px}
+.nexo-contact-profile-hero{display:flex;align-items:center;gap:14px;min-width:0;margin-bottom:20px}
+.nexo-contact-profile-photo{width:78px;height:82px;flex:0 0 78px;display:grid;place-items:center;background:var(--card,#1d3049);border-radius:12px;font-size:2.5rem}
+.nexo-contact-profile-intro{min-width:0;flex:1}.nexo-contact-profile-intro h2{font-size:1.15rem;line-height:1.2;margin:0 0 7px;overflow-wrap:anywhere}
+.nexo-contact-profile-intro p{font-size:.87rem;color:var(--muted,#a6b4c7);margin:4px 0;overflow-wrap:anywhere}
+.nexo-contact-profile-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:20px 0 23px}
+.nexo-contact-profile-actions a,.nexo-contact-profile-actions button{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:9px;min-height:86px;padding:10px 4px;background:var(--card,#1b2a3e);border:0;border-radius:13px;color:inherit;text-decoration:none;font:inherit;font-size:.78rem;box-sizing:border-box;min-width:0}
+.nexo-contact-profile-actions svg{width:28px;height:28px;color:#4b9cff}.nexo-contact-profile-actions [aria-disabled=true]{opacity:.4;pointer-events:none}
+.nexo-contact-profile-data{border-top:1px solid rgba(130,150,180,.22);border-bottom:1px solid rgba(130,150,180,.22);padding:11px 0}
+.nexo-contact-data-row{display:grid;grid-template-columns:26px minmax(0,1fr) 32px;gap:11px;align-items:start;padding:13px 0}
+.nexo-contact-data-icon,.nexo-contact-copy-btn{color:#58a8ff}.nexo-contact-data-icon{padding-top:2px}.nexo-contact-data-text{display:flex;flex-direction:column;gap:5px;min-width:0;font-size:.85rem}
+.nexo-contact-data-text strong{font-size:.88rem}.nexo-contact-data-text span{color:var(--muted,#9aabc4);overflow-wrap:anywhere;white-space:pre-wrap}
+.nexo-contact-website-link{color:#58a8ff;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}.nexo-contact-copy-btn{border:0;background:transparent;padding:3px;display:grid;place-items:center}
+.nexo-contact-profile-notes{margin-top:22px}.nexo-contact-profile-notes h3{font-size:1rem;margin:0 0 10px}.nexo-contact-profile-notes>div{background:var(--card,#1b2a3e);padding:14px;border-radius:12px;font-size:.87rem;white-space:pre-wrap;line-height:1.5}
+.nexo-doc-more{color:#e47777;font-size:1.6rem;font-weight:700;min-width:35px}
+
+/* NEXO 2.6.59: actions contacts et aperçu des documents */
+.nexo-contact-actions a,.nexo-contact-actions button{width:39px;height:39px;flex:0 0 39px;border-radius:11px;background:#192e47;color:#54a7ff;display:grid;place-items:center;padding:0}
+.nexo-contact-actions svg{width:22px;height:22px;stroke-width:2.6}
+.nexo-doc-preview{position:fixed;inset:0;z-index:100000;background:var(--bg,#0b1220);color:var(--text,#f0f5ff);padding:calc(16px + env(safe-area-inset-top)) 14px calc(16px + env(safe-area-inset-bottom));box-sizing:border-box;display:flex;flex-direction:column;gap:15px;overflow:auto}
+.nexo-doc-preview-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.nexo-doc-preview-top strong{overflow-wrap:anywhere}
+.nexo-doc-preview-top button{background:var(--card,#1b2a3e);color:inherit;border:0;border-radius:10px;padding:12px}
+.nexo-doc-preview iframe{flex:1;width:100%;min-height:65dvh;border:0;background:white;border-radius:10px}
+.nexo-doc-preview img{max-width:100%;max-height:75dvh;object-fit:contain;margin:auto}
+.nexo-doc-preview p{padding:20px;border-radius:12px;background:var(--card,#1b2a3e)}
+.nexo-doc-more{color:#f47e84;font-size:1.5rem;min-width:38px;min-height:40px}
+.travel-bulk-actions{display:grid;grid-template-columns:1fr;gap:10px;margin:16px 0 8px}.travel-bulk-actions .btn{width:100%}
+
+/* GEN 2.6.68 — contact swipe fix and expense layout */
+.nexo-contact-swipe{position:relative;overflow:hidden;border-radius:14px;touch-action:pan-y;margin-bottom:9px}
+.nexo-contact-swipe>.nexo-contact-row{position:relative;z-index:2;margin:0;transform:translateX(0);transition:transform .22s ease;background:var(--card);width:100%;box-sizing:border-box}
+.nexo-contact-swipe.open>.nexo-contact-row{transform:translateX(-100px)}
+.nexo-contact-swipe-delete{position:absolute;right:0;top:0;bottom:0;width:92px;border:0;background:#d73543;color:#fff;font-weight:750;font-size:14px;cursor:pointer;z-index:1}
+.nexo-contact-swipe:not(.open)>.nexo-contact-swipe-delete{pointer-events:none;visibility:hidden}.nexo-contact-swipe.open>.nexo-contact-swipe-delete{visibility:visible}.nexo-contact-swipe>.nexo-contact-row{overflow:hidden;min-width:0}.nexo-contact-actions{max-width:45%;flex-shrink:0}.nexo-contact-copy{min-width:0;overflow:hidden}.nexo-contact-copy strong,.nexo-contact-copy small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nexo-expense-date{box-sizing:border-box;display:block;width:100%;min-width:0;max-width:100%;height:48px;min-height:48px;border-radius:17px;font:inherit;color:var(--text);background:var(--card);color-scheme:light dark;-webkit-appearance:none;appearance:none;text-align:left;padding:14px}
+.nexo-expense-date::-webkit-date-and-time-value{text-align:left;min-height:1.2em}
+.nexo-expense-date::-webkit-datetime-edit{padding:0;text-align:left}
+html[data-theme=light] .nexo-expense-date{color-scheme:light}html[data-theme=dark] .nexo-expense-date{color-scheme:dark}
+.nexo-expense-global-history{margin-top:12px}.nexo-expense-global-history .exp-dash-op{min-width:0}.nexo-expense-global-history .exp-dash-op strong{overflow-wrap:anywhere}
+
+/* GEN 2.6.70: booking management actions */
+.nexo-booking-manage-row{display:flex;align-items:center;gap:8px;min-width:0}.nexo-booking-manage-name{flex:1;min-width:0;overflow-wrap:anywhere}.nexo-booking-edit{flex-shrink:0;padding:9px 12px!important}.nexo-booking-delete{flex-shrink:0;width:40px;height:40px;padding:0!important;border-radius:12px!important;color:#c83b40!important;background:#ffeded!important;font-size:28px!important;font-weight:700;line-height:1}.nexo-booking-manage-row input[type=checkbox]{display:none}
+
+/* GEN 2.6.73 : planning : heure liée à son activité ; GEN 2.6.71 : suivi des réservations plus compact, sans toucher à la checklist */
+.travel-booking-line.nexo-booking-compact{padding:5px 0;gap:8px;min-height:0}
+.nexo-booking-compact .travel-booking-main{gap:2px}
+.nexo-booking-compact .travel-booking-main small{line-height:1.3}
+
+/* NEXO 2.6.73 : flèches de réorganisation réservations et checklist */
+.nexo-order-arrows{display:flex!important;flex:0 0 auto!important;gap:3px;align-items:center;overflow:visible!important}
+.nexo-order-btn{appearance:none;border:1px solid var(--line,#354458);background:var(--card,#203047);color:var(--text,#e9eef7);border-radius:9px;min-width:30px;height:36px;font-size:20px;line-height:1;cursor:pointer;padding:0 4px}
+.nexo-booking-manage-row,.nexo-check-manage-row{gap:7px}
+.nexo-check-manage-row>span:nth-child(2){min-width:0}
+@media(max-width:390px){.nexo-order-btn{min-width:27px;height:33px}.nexo-booking-edit{padding:8px!important}}
+
+/* NEXO GEN 2.6.74 — Contraste des indicateurs de budget en thème clair */
+html[data-theme="light"] .travel-summary-extra>div{
+  background:#e9eff8;
+  border:1px solid #d4deeb;
+  color:#182840;
+}
+html[data-theme="light"] .travel-summary-extra>div span{color:#53657e!important;opacity:1}
+html[data-theme="light"] .travel-summary-extra>div strong{color:#14243c!important;opacity:1;-webkit-text-fill-color:#14243c}
+html[data-theme="dark"] .travel-summary-extra>div strong{color:#f4f7fd}
+
+/* NEXO GEN 2.6.77 — Champ heure limite : mêmes dimensions et alignement que les autres champs */
+#tool #nxParkDeadline{
+  display:block;box-sizing:border-box;width:100%;min-width:0;max-width:100%;
+  height:52px;min-height:52px;margin:0;
+  padding:12px 14px;border-radius:17px;
+  font:inherit;font-size:16px;line-height:26px;text-align:left;
+  -webkit-appearance:none;appearance:none;
+}
+#tool #nxParkDeadline::-webkit-date-and-time-value{text-align:left;min-height:26px}
+#tool #nxParkDeadline::-webkit-datetime-edit{text-align:left;padding:0}
+#tool #nxParkDeadline::-webkit-calendar-picker-indicator{margin:0 0 0 auto;opacity:.75}
+
+/* v2.8.5 — Ma Auto : meme presentation d’historique que Ma Moto */
+.garage-auto-history-entry{justify-content:flex-start!important}
+.garage-auto-history-entry>div:first-child{flex:1 1 170px;min-width:0;overflow-wrap:anywhere}
+.garage-auto-history-entry>.garage-actions{flex:0 0 100%;width:100%!important;margin-left:0!important;display:flex;justify-content:flex-end;gap:6px}
+.garage-auto-history-entry .garage-actions .btn{font-size:12px!important;min-height:32px!important;padding:6px 10px!important;border-radius:9px!important;width:auto!important;flex:0 0 auto}
+/* v2.8.4 — Historique Ma Moto : boutons compacts, texte non comprime */
+.garage-history-entry{justify-content:flex-start!important}
+.garage-history-entry>div:first-child{flex:1 1 170px;min-width:0;overflow-wrap:anywhere}
+.garage-history-entry>.garage-actions{flex:0 0 100%;width:100%!important;margin-left:0!important;display:flex;justify-content:flex-end;gap:6px}
+.garage-history-entry .garage-actions .btn{font-size:12px!important;min-height:32px!important;padding:6px 10px!important;border-radius:9px!important;width:auto!important;flex:0 0 auto}
+
+/* v2.8.6 — Historique Mon Auto */
+.garage-history-head{flex-wrap:wrap;gap:8px}
+.garage-history-controls{display:flex;align-items:center;gap:6px;margin-left:auto}
+.garage-history-controls select.field{width:auto;min-width:82px;min-height:42px;padding:8px}
+.garage-history-controls .btn{white-space:nowrap}
+.garage-history-list summary{cursor:pointer;font-weight:700;padding:10px 0;list-style:none}
+.garage-history-list summary::-webkit-details-marker{display:none}
+.garage-history-list summary:before{content:'▸';display:inline-block;margin-right:8px}
+.garage-history-list[open] summary:before{content:'▾'}
+.garage-history-list summary span{font-weight:400;opacity:.7}
+.garage-history-summary{margin-top:16px}
+.garage-history-summary h3{margin:0 0 12px}
+.garage-summary-header,.garage-summary-row{display:grid;grid-template-columns:minmax(0,1fr) auto 48px;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid rgba(150,170,200,.18)}
+.garage-summary-header{font-size:12px;opacity:.7}
+.garage-summary-row span:first-child{overflow-wrap:anywhere}
+.garage-summary-row>:nth-child(2),.garage-summary-row>:nth-child(3),.garage-summary-header>:nth-child(2),.garage-summary-header>:nth-child(3){text-align:right;white-space:nowrap}
+.garage-summary-total{border-bottom:0}
+ .module-category-setting-row:has(.nexo-category-icon-editor){flex-wrap:wrap} 
+/* Recherche de destination superposée à la carte */
+body.moto-gps-fullscreen .moto-gps-search{position:absolute;top:calc(env(safe-area-inset-top,0px) + 66px);left:12px;right:12px;z-index:1000;max-width:620px;margin:auto;color:#fff}
+body.moto-gps-fullscreen .moto-gps-search-row{display:flex;gap:6px;background:rgba(13,26,44,.96);border:1px solid #46617c;border-radius:16px;padding:6px;box-shadow:0 3px 15px #0005}
+body.moto-gps-fullscreen .moto-gps-search-row input{min-width:0;flex:1;width:100%;border:0;background:transparent;color:white;font-size:16px;padding:8px;outline:none}
+body.moto-gps-fullscreen .moto-gps-search-row input::placeholder{color:#b2c2d6}
+body.moto-gps-fullscreen .moto-gps-search-row button{background:#287ef0;color:#fff;border:0;border-radius:10px;padding:7px 11px;font-weight:700}
+body.moto-gps-fullscreen .moto-gps-search-results,body.moto-gps-fullscreen .moto-gps-route-summary{margin-top:6px;border-radius:12px;background:rgba(13,26,44,.97);border:1px solid #46617c;overflow:hidden;box-shadow:0 3px 15px #0005}
+body.moto-gps-fullscreen .moto-gps-search-results[hidden],body.moto-gps-fullscreen .moto-gps-route-summary[hidden]{display:none}
+body.moto-gps-fullscreen .moto-gps-search-results button{display:block;text-align:left;width:100%;padding:11px;color:#fff;background:transparent;border:0;border-bottom:1px solid #35455c;font-size:13px}
+body.moto-gps-fullscreen .moto-gps-route-summary{padding:10px;font-size:13px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+body.moto-gps-fullscreen .moto-gps-route-summary button{background:#314963;color:#fff;border:0;border-radius:8px;padding:7px}
+
+/* v2.8.28 — navigation controls above the telemetry, no other module affected */
+body.moto-gps-fullscreen .moto-gps-nav-controls{position:absolute;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 183px);z-index:1001;display:flex;flex-direction:column;gap:7px}
+body.moto-gps-fullscreen .moto-gps-nav-controls button{background:rgba(12,28,48,.94);color:#fff;border:1px solid #59799a;border-radius:12px;padding:10px 12px;font-size:13px;font-weight:700;box-shadow:0 3px 12px #0006}
+body.moto-gps-fullscreen .moto-gps-nav-controls button[hidden]{display:none}
+body.moto-gps-fullscreen .leaflet-map-pane{will-change:rotate,scale}
+
+/* v2.8.28 — search on same line as Back, and stable GPS recentering */
+body.moto-gps-fullscreen .moto-gps-search{top:calc(env(safe-area-inset-top,0px) + 12px);left:158px;right:12px;max-width:none;width:auto;margin:0}
+body.moto-gps-fullscreen .moto-gps-search-row{min-height:45px;box-sizing:border-box;padding:4px;gap:4px}
+body.moto-gps-fullscreen .moto-gps-search-row input{font-size:14px;padding:6px;min-width:0}
+body.moto-gps-fullscreen .moto-gps-search-row button{font-size:13px;padding:7px 9px}
+@media(max-width:380px){body.moto-gps-fullscreen .moto-gps-search{left:142px;right:8px}body.moto-gps-fullscreen .moto-gps-exit{left:8px;padding:11px 10px}body.moto-gps-fullscreen .moto-gps-search-row button{padding:7px 6px;font-size:12px}}
+
+/* v2.8.39 — persistent navigation: viewport anchored, independent of module content.
+   Do not modify the height or internal scrolling of any module. */
+html body:not(.nexo-keyboard-open):not(.moto-gps-fullscreen) > nav {
+  position:fixed!important;
+  inset:auto 0 0 0!important;
+  top:auto!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  transform:none!important;
+  translate:none!important;
+  z-index:10000!important;
+  isolation:isolate;
+  box-sizing:border-box!important;
+}
+html body:not(.nexo-keyboard-open):not(.moto-gps-fullscreen) > main#app {
+  position:relative;
+  z-index:0;
+}
+
+/* v2.8.40: iOS standalone PWA - prevent short modules from collapsing
+   the root document viewport used to anchor the fixed navigation. */
+@supports (height:100dvh) {
+  html { min-height:100dvh!important; }
+  body:not(.moto-gps-fullscreen) { min-height:100dvh!important; }
+}
+html body:not(.nexo-keyboard-open):not(.moto-gps-fullscreen) > nav {
+  position:fixed!important;
+  bottom:0!important;
+  top:auto!important;
+  left:0!important;
+  right:0!important;
+  transform:none!important;
+  z-index:10000!important;
+}
+
+/* Settings is a normal full-page tab, not an overlay. */
+#app > #settings-modal.settings-backdrop{
+  position:static!important;inset:auto!important;z-index:auto!important;
+  display:block!important;width:100%!important;height:auto!important;
+  max-height:none!important;min-height:0!important;overflow:visible!important;
+  padding:16px 0 28px!important;background:transparent!important;
+}
+#app > #settings-modal .settings-panel{
+  width:100%!important;max-width:none!important;box-shadow:none!important;
+  margin:0!important;border-radius:20px!important;
+}
+.nexo-settings-version{color:#2d8cff;font-size:.56em;font-weight:700;white-space:nowrap;vertical-align:middle;margin-left:6px}
+ .nx-recipe-steps{display:flex;flex-direction:column;gap:8px;margin:0} .nx-recipe-steps p{margin:0!important;line-height:1.45}
+.life-dash .life-filters{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important;align-items:end!important}
+.life-dash .life-filters>label{display:flex!important;flex-direction:column!important;min-width:0!important;margin:0!important;gap:5px!important}
+.life-dash .life-filters>label>input,.life-dash .life-filters>label>select{display:block!important;width:100%!important;min-width:0!important;height:46px!important;min-height:46px!important;max-height:46px!important;margin:0!important;padding:6px 3px!important;box-sizing:border-box!important;border-radius:9px!important;font-size:clamp(10px,2.6vw,14px)!important;text-align:center!important;background:#102b40!important;color:#e6f2ff!important;border:1px solid #31516b!important}
+.life-dash .life-weekrow-grid{gap:1px!important;margin-bottom:1px!important;min-height:12px!important;grid-template-columns:20px 24px repeat(7,minmax(0,1fr))!important;align-items:stretch!important}
+.life-dash .life-cell{height:12px!important;min-height:12px!important;border-radius:2px!important;padding:0!important;margin:0!important;display:block!important}
+.life-dash .life-monthtag{font-size:8px!important;border-radius:2px!important}
+.life-dash .life-heat-header{margin-bottom:3px!important}
+@media(max-width:390px){.life-dash .life-filters>label>input,.life-dash .life-filters>label>select{font-size:10px!important}}
+/* MON TEMPS — correctifs ciblés 2026-10-25 */
+.life-dash .life-filters{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;align-items:stretch!important;gap:6px!important;width:100%!important}
+.life-dash .life-filters>label{display:flex!important;flex-direction:column!important;min-width:0!important;width:100%!important;gap:6px!important;box-sizing:border-box!important}
+.life-dash .life-filters>label>input,.life-dash .life-filters>label>select{display:block!important;box-sizing:border-box!important;width:100%!important;max-width:100%!important;min-width:0!important;height:48px!important;min-height:48px!important;max-height:48px!important;padding:5px 2px!important;margin:0!important;border-radius:10px!important;text-align:center!important;font-size:12px!important;-webkit-appearance:none!important;appearance:none!important}
+.life-dash .life-heat{display:block!important;width:100%!important;overflow:hidden!important}
+.life-dash .life-weekrow-grid{display:grid!important;grid-template-columns:20px 22px repeat(7,minmax(0,1fr))!important;column-gap:2px!important;row-gap:0!important;margin:0!important;padding:0!important;align-items:stretch!important;height:16px!important;min-height:16px!important;max-height:16px!important}
+.life-dash .life-weekrow-grid.life-heat-header{height:22px!important;min-height:22px!important;max-height:22px!important}
+.life-dash .life-weekrow-grid .life-cell{display:block!important;box-sizing:border-box!important;width:100%!important;height:14px!important;min-height:14px!important;max-height:14px!important;margin:1px 0!important;padding:0!important;border-radius:2px!important;flex:none!important}
+.life-dash .life-monthtag{writing-mode:vertical-rl!important;text-orientation:mixed!important;transform:none!important;align-self:start!important;justify-self:center!important;overflow:visible!important}
+.life-dash .life-weeknum{font-size:10px!important;text-align:center!important;line-height:16px!important}
+.life-dash .life-compare>div{min-width:0!important;gap:0!important}
+.life-dash .life-compare>div>span{flex-shrink:0!important}
+/* Three identically-sized filter controls, including Safari date text */
+.life-dash .life-filters{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important;width:100%!important;align-items:stretch!important}
+.life-dash .life-filters>label{display:flex!important;flex-direction:column!important;min-width:0!important;width:100%!important;gap:5px!important;font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif!important;font-size:12px!important;font-weight:500!important;line-height:17px!important;text-align:center!important}
+.life-dash .life-filters>label>input,.life-dash .life-filters>label>select{display:block!important;min-width:0!important;max-width:100%!important;width:100%!important;height:44px!important;min-height:44px!important;max-height:44px!important;padding:0 3px!important;margin:0!important;border-radius:9px!important;font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif!important;font-size:12px!important;font-weight:500!important;line-height:normal!important;letter-spacing:0!important;text-align:center!important;text-align-last:center!important;box-sizing:border-box!important;-webkit-appearance:none!important;appearance:none!important}
+.life-dash .life-filters input[type=date]::-webkit-date-and-time-value{text-align:center!important;min-height:1em!important}
+.life-dash .life-filters input[type=date]::-webkit-datetime-edit{display:block!important;text-align:center!important;padding:0!important;white-space:nowrap!important;font-size:12px!important}
+.life-dash .life-filters input[type=date]::-webkit-calendar-picker-indicator{display:none!important}
+/* Annual view: seven day columns that fit within the panel on iPhone */
+.life-dash .life-heat{width:100%!important;max-width:100%!important;min-width:0!important;overflow:hidden!important;padding:5px 0!important}
+.life-dash .life-weekrow-grid{display:grid!important;width:100%!important;min-width:0!important;max-width:100%!important;grid-template-columns:17px 19px repeat(7,minmax(0,1fr))!important;column-gap:1px!important;row-gap:0!important;box-sizing:border-box!important;padding:0 2px 0 0!important;margin:0!important}
+.life-dash .life-weekrow-grid>.life-cell{min-width:0!important;width:100%!important;max-width:100%!important;min-height:14px!important;height:14px!important;margin:1px 0!important;padding:0!important;border-radius:2px!important}
+.life-dash .life-weekrow-grid>.life-monthtag{max-width:17px!important;min-width:0!important;font-size:8px!important}
+.life-dash .life-weekrow-grid>.life-weeknum{min-width:0!important;font-size:9px!important}
+.life-dash .life-heat-header{font-size:9px!important}
+/* NEXO 2.7.8.1 - mobile audited layout */
+.life-dash,.life-dash .life-panel{min-width:0!important;max-width:100%!important;box-sizing:border-box!important}
+.life-dash .life-filters{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important;align-items:stretch!important;width:100%!important;max-width:100%!important;box-sizing:border-box!important}
+.life-dash .life-filters>label{display:grid!important;grid-template-rows:18px 44px!important;gap:5px!important;min-width:0!important;max-width:100%!important;margin:0!important;padding:0!important;align-items:center!important;justify-items:stretch!important;font:500 12px/18px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif!important;text-align:center!important}
+.life-dash .life-filters .life-filter-control{display:block!important;box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:100%!important;height:44px!important;min-height:44px!important;max-height:44px!important;margin:0!important;padding:0 3px!important;border:1px solid #31516b!important;border-radius:9px!important;background:#102b40!important;color:#eaf4ff!important;font:500 12px/44px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif!important;text-align:center!important;text-align-last:center!important;letter-spacing:0!important;appearance:none!important;-webkit-appearance:none!important;box-shadow:none!important}
+.life-dash .life-filters .life-filter-control::-webkit-date-and-time-value{min-height:44px!important;text-align:center!important;line-height:44px!important}
+.life-dash .life-filters .life-filter-control::-webkit-datetime-edit{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;min-width:0!important;padding:0!important;font:500 12px -apple-system,BlinkMacSystemFont,sans-serif!important}
+.life-dash .life-filters .life-filter-control::-webkit-calendar-picker-indicator{display:none!important}
+.life-dash .life-heat{display:block!important;box-sizing:border-box!important;width:100%!important;max-width:100%!important;min-width:0!important;overflow:hidden!important;padding:4px 5px 4px 0!important}
+.life-dash .life-weekrow-grid{display:grid!important;box-sizing:border-box!important;width:100%!important;max-width:100%!important;min-width:0!important;grid-template-columns:16px 19px repeat(7,minmax(0,1fr))!important;column-gap:1px!important;row-gap:0!important;padding:0 3px 0 0!important;margin:0!important;height:16px!important;min-height:16px!important;max-height:16px!important;align-items:stretch!important}
+.life-dash .life-weekrow-grid.life-heat-header{height:21px!important;min-height:21px!important;max-height:21px!important}
+.life-dash .life-weekrow-grid>.life-cell{display:block!important;box-sizing:border-box!important;width:100%!important;max-width:100%!important;min-width:0!important;height:14px!important;min-height:14px!important;max-height:14px!important;margin:1px 0!important;padding:0!important;border-radius:2px!important}
+.life-dash .life-weekrow-grid>.life-monthtag{max-width:16px!important;font-size:8px!important;overflow:hidden!important}
+.life-dash .life-weekrow-grid>.life-weeknum{font-size:9px!important;min-width:0!important}
+.life-dash .life-legend{display:flex!important;flex-wrap:wrap!important;gap:10px 14px!important}
+/* Larger text only for Month and Year filters; preserve geometry */
+.life-dash .life-filters>label:nth-child(2) .life-filter-control,
+.life-dash .life-filters>label:nth-child(3) .life-filter-control{font-size:15px!important}
+/* Explicit additional separation between sections 4/5 and 5/6 */
+.life-dash .life-panels>section.life-panel:nth-child(5),
+.life-dash .life-panels>section.life-panel:nth-child(6){margin-top:3mm!important}
+/* Keep months chronological, with larger stacked values at the bottom */
+.life-dash .life-compare>div{flex-direction:column!important;justify-content:flex-end!important}
+/* Espace supplémentaire de 3 mm uniquement entre 4→5 et 5→6.
+   Sélecteur plus spécifique que les anciennes règles margin:0!important. */
+.life-dash .life-panels > section.life-panel:nth-child(4) + section.life-panel:nth-child(5),
+.life-dash .life-panels > section.life-panel:nth-child(5) + section.life-panel:nth-child(6) {
+  margin-top: 3mm !important;
+}
+.ms-dash .ms-filters{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important;align-items:end!important}
+.ms-dash .ms-filters>label{display:flex!important;flex-direction:column!important;min-width:0!important;margin:0!important;gap:5px!important}
+.ms-dash .ms-filters>label>input,.ms-dash .ms-filters>label>select{display:block!important;width:100%!important;min-width:0!important;height:46px!important;min-height:46px!important;max-height:46px!important;margin:0!important;padding:6px 3px!important;box-sizing:border-box!important;border-radius:9px!important;font-size:clamp(10px,2.6vw,14px)!important;text-align:center!important;background:#102b40!important;color:#e6f2ff!important;border:1px solid #31516b!important}
+.ms-dash .ms-weekrow-grid{gap:1px!important;margin-bottom:1px!important;min-height:12px!important;grid-template-columns:20px 24px repeat(7,minmax(0,1fr))!important;align-items:stretch!important}
+.ms-dash .ms-cell{height:12px!important;min-height:12px!important;border-radius:2px!important;padding:0!important;margin:0!important;display:block!important}
+.ms-dash .ms-monthtag{font-size:8px!important;border-radius:2px!important}
+.ms-dash .ms-heat-header{margin-bottom:3px!important}
+.ms-dash .ms-filters{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;align-items:stretch!important;gap:6px!important;width:100%!important}
+.ms-dash .ms-filters>label{display:flex!important;flex-direction:column!important;min-width:0!important;width:100%!important;gap:6px!important;box-sizing:border-box!important}
+.ms-dash .ms-filters>label>input,.ms-dash .ms-filters>label>select{display:block!important;box-sizing:border-box!important;width:100%!important;max-width:100%!important;min-width:0!important;height:48px!important;min-height:48px!important;max-height:48px!important;padding:5px 2px!important;margin:0!important;border-radius:10px!important;text-align:center!important;font-size:12px!important;-webkit-appearance:none!important;appearance:none!important}
+.ms-dash .ms-heat{display:block!important;width:100%!important;overflow:hidden!important}
+.ms-dash .ms-weekrow-grid{display:grid!important;grid-template-columns:20px 22px repeat(7,minmax(0,1fr))!important;column-gap:2px!important;row-gap:0!important;margin:0!important;padding:0!important;align-items:stretch!important;height:16px!important;min-height:16px!important;max-height:16px!important}
+.ms-dash .ms-weekrow-grid.ms-heat-header{height:22px!important;min-height:22px!important;max-height:22px!important}
+.ms-dash .ms-weekrow-grid .ms-cell{display:block!important;box-sizing:border-box!important;width:100%!important;height:14px!important;min-height:14px!important;max-height:14px!important;margin:1px 0!important;padding:0!important;border-radius:2px!important;flex:none!important}
+.ms-dash .ms-monthtag{writing-mode:vertical-rl!important;text-orientation:mixed!important;transform:none!important;align-self:start!important;justify-self:center!important;overflow:visible!important}
+.ms-dash .ms-weeknum{font-size:10px!important;text-align:center!important;line-height:16px!important}
+.ms-dash .ms-compare>div{min-width:0!important;gap:0!important}
+.ms-dash .ms-compare>div>span{flex-shrink:0!important}
+.ms-dash .ms-filters{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important;width:100%!important;align-items:stretch!important}
+.ms-dash .ms-filters>label{display:flex!important;flex-direction:column!important;min-width:0!important;width:100%!important;gap:5px!important;font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif!important;font-size:12px!important;font-weight:500!important;line-height:17px!important;text-align:center!important}
+.ms-dash .ms-filters>label>input,.ms-dash .ms-filters>label>select{display:block!important;min-width:0!important;max-width:100%!important;width:100%!important;height:44px!important;min-height:44px!important;max-height:44px!important;padding:0 3px!important;margin:0!important;border-radius:9px!important;font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif!important;font-size:12px!important;font-weight:500!important;line-height:normal!important;letter-spacing:0!important;text-align:center!important;text-align-last:center!important;box-sizing:border-box!important;-webkit-appearance:none!important;appearance:none!important}
+.ms-dash .ms-filters input[type=date]::-webkit-date-and-time-value{text-align:center!important;min-height:1em!important}
+.ms-dash .ms-filters input[type=date]::-webkit-datetime-edit{display:block!important;text-align:center!important;padding:0!important;white-space:nowrap!important;font-size:12px!important}
+.ms-dash .ms-filters input[type=date]::-webkit-calendar-picker-indicator{display:none!important}
+.ms-dash .ms-heat{width:100%!important;max-width:100%!important;min-width:0!important;overflow:hidden!important;padding:5px 0!important}
+.ms-dash .ms-weekrow-grid{display:grid!important;width:100%!important;min-width:0!important;max-width:100%!important;grid-template-columns:17px 19px repeat(7,minmax(0,1fr))!important;column-gap:1px!important;row-gap:0!important;box-sizing:border-box!important;padding:0 2px 0 0!important;margin:0!important}
+.ms-dash .ms-weekrow-grid>.ms-cell{min-width:0!important;width:100%!important;max-width:100%!important;min-height:14px!important;height:14px!important;margin:1px 0!important;padding:0!important;border-radius:2px!important}
+.ms-dash .ms-weekrow-grid>.ms-monthtag{max-width:17px!important;min-width:0!important;font-size:8px!important}
+.ms-dash .ms-weekrow-grid>.ms-weeknum{min-width:0!important;font-size:9px!important}
+.ms-dash .ms-heat-header{font-size:9px!important}
+.ms-dash,.ms-dash .ms-panel{min-width:0!important;max-width:100%!important;box-sizing:border-box!important}
+.ms-dash .ms-filters{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important;align-items:stretch!important;width:100%!important;max-width:100%!important;box-sizing:border-box!important}
+.ms-dash .ms-filters>label{display:grid!important;grid-template-rows:18px 44px!important;gap:5px!important;min-width:0!important;max-width:100%!important;margin:0!important;padding:0!important;align-items:center!important;justify-items:stretch!important;font:500 12px/18px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;text-align:center!important}
+.ms-dash .ms-filters .ms-filter-control{display:block!important;box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:100%!important;height:44px!important;min-height:44px!important;max-height:44px!important;margin:0!important;padding:0 3px!important;border:1px solid #31516b!important;border-radius:9px!important;background:#102b40!important;color:#eaf4ff!important;font:500 12px/44px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;text-align:center!important;text-align-last:center!important;letter-spacing:0!important;appearance:none!important;-webkit-appearance:none!important;box-shadow:none!important}
+.ms-dash .ms-filters .ms-filter-control::-webkit-date-and-time-value{min-height:44px!important;text-align:center!important;line-height:44px!important}
+.ms-dash .ms-filters .ms-filter-control::-webkit-datetime-edit{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;min-width:0!important;padding:0!important;font:500 12px -apple-system,BlinkMacSystemFont,sans-serif!important}
+.ms-dash .ms-filters .ms-filter-control::-webkit-calendar-picker-indicator{display:none!important}
+.ms-dash .ms-heat{display:block!important;box-sizing:border-box!important;width:100%!important;max-width:100%!important;min-width:0!important;overflow:hidden!important;padding:4px 5px 4px 0!important}
+.ms-dash .ms-weekrow-grid{display:grid!important;box-sizing:border-box!important;width:100%!important;max-width:100%!important;min-width:0!important;grid-template-columns:16px 19px repeat(7,minmax(0,1fr))!important;column-gap:1px!important;row-gap:0!important;padding:0 3px 0 0!important;margin:0!important;height:16px!important;min-height:16px!important;max-height:16px!important;align-items:stretch!important}
+.ms-dash .ms-weekrow-grid.ms-heat-header{height:21px!important;min-height:21px!important;max-height:21px!important}
+.ms-dash .ms-weekrow-grid>.ms-cell{display:block!important;box-sizing:border-box!important;width:100%!important;max-width:100%!important;min-width:0!important;height:14px!important;min-height:14px!important;max-height:14px!important;margin:1px 0!important;padding:0!important;border-radius:2px!important}
+.ms-dash .ms-weekrow-grid>.ms-monthtag{max-width:16px!important;font-size:8px!important;overflow:hidden!important}
+.ms-dash .ms-weekrow-grid>.ms-weeknum{font-size:9px!important;min-width:0!important}
+.ms-dash .ms-legend{display:flex!important;flex-wrap:wrap!important;gap:10px 14px!important}
+.ms-dash .ms-filters>label:nth-child(2) .ms-filter-control,
+.ms-dash .ms-filters>label:nth-child(3) .ms-filter-control{font-size:15px!important}
+.ms-dash .ms-panels>section.ms-panel:nth-child(5),
+.ms-dash .ms-panels>section.ms-panel:nth-child(6){margin-top:3mm!important}
+.ms-dash .ms-compare>div{flex-direction:column!important;justify-content:flex-end!important}
+.ms-dash .ms-panels > section.ms-panel:nth-child(4) + section.ms-panel:nth-child(5),
+.ms-dash .ms-panels > section.ms-panel:nth-child(5) + section.ms-panel:nth-child(6){
+  margin-top: 3mm !important;
+}
+#tool:has(.ms-dash){max-width:1500px;margin:auto}
+.ms-dash{--lw:#ff893f;--ls:#8b70ff;--lp:#10c9c1;--lc:#8298b5;--lv:#ffce48;color:#eaf3ff;font-family:system-ui,-apple-system,sans-serif}
+.ms-dash *{box-sizing:border-box}
+.ms-dash .ms-panel{background:linear-gradient(135deg,#0d2539,#061725);border:1px solid #244158;border-radius:16px;padding:15px;min-width:0}
+.ms-dash .ms-title{font-weight:750;font-size:17px;margin:0 0 14px}
+.ms-dash .ms-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 0 16px}
+.ms-dash .ms-brand{font-size:25px;font-weight:800}
+.ms-dash .ms-grid{display:grid;grid-template-columns:minmax(230px,1.05fr) minmax(330px,1.6fr) minmax(245px,1fr);gap:12px}
+.ms-dash .ms-middle{display:grid;gap:12px;min-width:0}
+.ms-dash .ms-side{display:grid;gap:12px;align-content:start}
+.ms-dash .ms-bottom{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:12px;margin-top:12px}
+.ms-dash label{display:block;font-size:12px;color:#b8c9dc;margin:9px 0 5px}
+.ms-dash input,.ms-dash select{width:100%;min-width:0;background:#102b40!important;border:1px solid #31516b!important;border-radius:9px!important;color:#f0f7ff!important;padding:9px!important;font-size:14px!important}
+.ms-dash button{background:#15334c;color:#f0f7ff;border:1px solid #34516a;border-radius:9px;padding:8px 10px;cursor:pointer}
+.ms-dash button.active,.ms-dash .ms-save{background:#147bfa!important;color:white;border-color:#147bfa}
+.ms-dash .ms-types{display:flex;gap:5px;flex-wrap:wrap}
+.ms-dash .ms-types button{flex:1;font-size:12px;padding:9px 5px}
+.ms-dash .ms-types button.active[data-type=work]{background:#f4833b!important}
+.ms-dash .ms-types button.active[data-type=rest]{background:#079e99!important}
+.ms-dash .ms-types button.active[data-type=vacation]{background:#7561d9!important}
+.ms-dash .ms-stat{background:#0b2031;border:1px solid #244258;border-radius:12px;padding:12px}
+.ms-dash .ms-value{font-size:30px;font-weight:800;color:var(--lw)}
+.ms-dash .ms-mini{font-size:12px;color:#b2c6da}
+.ms-dash .ms-heat{display:grid;grid-template-columns:repeat(53,minmax(0,1fr));gap:3px;overflow-x:auto;padding:4px 0}
+.ms-dash .ms-weekcol{display:grid;grid-template-rows:repeat(7,11px);gap:3px;min-width:0}
+.ms-dash .ms-cell{padding:0;border:0;border-radius:2px;min-height:11px;width:100%;background:#1a3245}
+.ms-dash .ms-cell.selected{outline:2px solid white;outline-offset:1px}
+.ms-dash .ms-legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;font-size:11px;color:#aebfd2}
+.ms-dash .ms-dot{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px}
+.ms-dash .ms-timeline{display:flex;gap:2px;height:30px;overflow:hidden;border-radius:6px}
+.ms-dash .ms-timeline span{flex:1}
+.ms-dash .ms-metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ms-dash .ms-metric{background:#0b2031;border:1px solid #234055;border-radius:10px;padding:11px}
+.ms-dash .ms-metric strong{font-size:20px;display:block}
+.ms-dash .ms-stack{display:flex;height:22px;overflow:hidden;border-radius:7px;margin:14px 0}
+.ms-dash .ms-bar{height:100%}
+.ms-dash .ms-line{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;border-bottom:1px solid #1a364b;padding:7px 0}
+.ms-dash .ms-weekrow{display:flex;gap:8px;align-items:center;margin:7px 0;font-size:11px}
+.ms-dash .ms-weekrow .ms-timeline{flex:1;height:17px}
+.ms-dash .ms-muted{color:#94adc3;font-size:11px}
+.ms-dash .ms-year-controls{display:flex;gap:6px;align-items:center}
+.ms-dash .ms-year-controls button{padding:5px 9px}
+.ms-dash .ms-compare{display:flex;align-items:end;gap:5px;height:145px;border-bottom:1px solid #37516a}
+.ms-dash .ms-compare>div{flex:1;display:flex;flex-direction:column;justify-content:end;height:100%}
+.ms-dash .ms-compare span{display:block;width:100%}
+.ms-dash .ms-compare-labels{display:flex;justify-content:space-around;font-size:10px;margin-top:6px}
+.ms-dash .ms-save{width:100%;margin-top:14px;font-weight:700}
+.ms-dash .ms-view{display:flex;gap:4px}
+.ms-dash .ms-view button{font-size:12px}
+.ms-dash .ms-error{color:#ffac89;font-size:12px;margin-top:8px}
+.ms-dash .ms-panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ms-dash .ms-panels>.ms-panel{min-width:0}
+.ms-dash .ms-filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-bottom:14px}
+.ms-dash .ms-filters label{margin:0}
+.ms-dash .ms-time-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;min-width:0}
+.ms-dash .ms-time-fields>div{min-width:0;overflow:hidden}
+.ms-dash input[type=date],.ms-dash input[type=time]{display:block;min-width:0;width:100%;max-width:100%;font-size:13px!important;padding:8px 4px!important}
+.ms-dash .ms-heat{display:block;overflow-x:auto;padding:8px 0}
+.ms-dash .ms-weekrow-grid{display:grid;grid-template-columns:24px 32px repeat(7,minmax(0,1fr));gap:5px;align-items:center;margin-bottom:4px}
+.ms-dash .ms-monthtag{writing-mode:vertical-rl;transform:rotate(180deg);text-align:center;justify-self:stretch;align-self:stretch;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#cfe5fb;background:#173750;border:1px solid #31546e;border-radius:5px;letter-spacing:.4px}
+.ms-dash .ms-monthblank{display:block}
+.ms-dash .ms-weeknum{font-size:10px;text-align:center;color:#a7bcd1}
+.ms-dash .ms-heat-header{position:sticky;top:0;background:#0d2539;z-index:1;color:#bed4e8;font-size:11px;text-align:center;margin-bottom:8px}
+.ms-dash .ms-cell{width:100%;height:13px;min-height:13px;border-radius:3px;padding:0}
+.ms-dash .ms-hours{display:flex;justify-content:space-between;font-size:10px;color:#a7bcd1}
+.ms-dash .ms-weekday{width:75px;flex-shrink:0}
+.ms-dash .ms-workhours{width:48px;text-align:right;flex-shrink:0}
+.ms-dash .ms-weekrow[role=button]{cursor:pointer}
+.ms-dash .ms-filters{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important}
+.ms-dash .ms-filters>label{min-width:0!important;display:block!important}
+.ms-dash .ms-filters input,.ms-dash .ms-filters select{width:100%!important;min-width:0!important;max-width:100%!important;height:44px!important;box-sizing:border-box!important;font-size:12px!important;padding:7px 5px!important;border-radius:9px!important}
+.ms-dash .ms-date-field,.ms-dash .ms-time-field{display:block!important;width:100%!important;min-width:0!important;max-width:100%!important;height:46px!important;box-sizing:border-box!important;overflow:hidden!important;border:1px solid #31516b!important;border-radius:9px!important;background:#102b40!important;text-align:center!important;padding:8px 6px!important;line-height:28px!important;appearance:none!important;-webkit-appearance:none!important}
+.ms-dash .ms-date-field::-webkit-date-and-time-value,.ms-dash .ms-time-field::-webkit-date-and-time-value{text-align:center!important;min-height:28px!important}
+.ms-dash .ms-date-field::-webkit-datetime-edit,.ms-dash .ms-time-field::-webkit-datetime-edit{display:flex;justify-content:center;align-items:center;width:100%;padding:0!important}
+.ms-dash .ms-time-fields{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+.ms-dash .ms-time-fields>div{min-width:0!important;overflow:visible!important}
+.ms-dash .ms-heat{padding:3px 0!important}
+.ms-dash .ms-weekrow-grid{gap:2px!important;margin-bottom:0!important;min-height:14px!important;align-items:stretch!important}
+.ms-dash .ms-cell{height:14px!important;min-height:14px!important;border-radius:1px!important;align-self:stretch!important}
+.ms-dash .ms-monthtag{border-radius:2px!important;font-size:9px!important}
+.ms-dash .ms-heat-header{margin-bottom:3px!important}
+.ms-dash .ms-filters{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;align-items:end!important;gap:6px!important;width:100%!important}
+.ms-dash .ms-filters label{display:flex!important;flex-direction:column!important;min-width:0!important;width:100%!important;margin:0!important;gap:5px!important}
+.ms-dash .ms-filters input,.ms-dash .ms-filters select{display:block!important;width:100%!important;min-width:0!important;max-width:100%!important;height:46px!important;min-height:46px!important;box-sizing:border-box!important;border-radius:9px!important;padding:6px 4px!important;font-size:clamp(10px,2.7vw,14px)!important;line-height:24px!important}
+.ms-dash .ms-filters input::-webkit-date-and-time-value{min-height:24px!important;text-align:center!important}
+.ms-dash .ms-heat{display:block!important;width:100%!important;overflow-x:visible!important;padding:3px 0!important}
+.ms-dash .ms-weekrow-grid{display:grid!important;grid-template-columns:24px 26px repeat(7,minmax(0,1fr))!important;column-gap:2px!important;row-gap:0!important;margin:0 0 1px!important;min-height:15px!important;height:15px!important;align-items:stretch!important}
+.ms-dash .ms-heat-header{height:19px!important;margin-bottom:3px!important}
+.ms-dash .ms-weekrow-grid .ms-cell{display:block!important;width:100%!important;height:14px!important;min-height:14px!important;margin:0!important;padding:0!important;border:0!important;border-radius:2px!important;box-sizing:border-box!important;cursor:pointer}
+.ms-dash .ms-weekrow-grid .ms-monthtag{writing-mode:vertical-rl;text-orientation:mixed;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:9px!important}
+.ms-dash .ms-weekrow-grid .ms-weeknum{font-size:9px!important;text-align:center;line-height:14px}
+.ms-dash .ms-panels{row-gap:19px!important;column-gap:19px!important;gap:19px!important}
+.ms-dash .ms-panels>.ms-panel{margin:0!important}
+.ms-dash .ms-weekrow-grid>.ms-cell.selected,
+.ms-dash .ms-weekrow-grid .ms-cell.selected{
+  outline:none!important;outline-offset:0!important;
+  box-shadow:inset 0 0 0 2px #fff!important;
+  border:0!important;
+  position:relative!important;
+  z-index:1!important;
+  border-radius:3px!important;
+}
+.ms-dash .ms-panels{display:grid!important;row-gap:3mm!important;column-gap:3mm!important;gap:3mm!important;align-items:start!important}
+.ms-dash .ms-panels > section.ms-panel{margin:0!important;position:relative!important;min-width:0!important}
+.ms-dash input[type="date"]{height:42px;min-height:42px;box-sizing:border-box}
+#tool:has(.life-dash){max-width:1500px;margin:auto}.life-dash{--lw:#ff893f;--ls:#8b70ff;--lp:#10c9c1;--lc:#8298b5;--lv:#ffce48;color:#eaf3ff;font-family:system-ui,-apple-system,sans-serif}.life-dash *{box-sizing:border-box}.life-dash .life-panel{background:linear-gradient(135deg,#0d2539,#061725);border:1px solid #244158;border-radius:16px;padding:15px;min-width:0}.life-dash .life-title{font-weight:750;font-size:17px;margin:0 0 14px}.life-dash .life-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 0 16px}.life-dash .life-brand{font-size:25px;font-weight:800}.life-dash .life-grid{display:grid;grid-template-columns:minmax(230px,1.05fr) minmax(330px,1.6fr) minmax(245px,1fr);gap:12px}.life-dash .life-middle{display:grid;gap:12px;min-width:0}.life-dash .life-side{display:grid;gap:12px;align-content:start}.life-dash .life-bottom{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:12px;margin-top:12px}.life-dash label{display:block;font-size:12px;color:#b8c9dc;margin:9px 0 5px}.life-dash input,.life-dash select{width:100%;min-width:0;background:#102b40!important;border:1px solid #31516b!important;border-radius:9px!important;color:#f0f7ff!important;padding:9px!important;font-size:14px!important}.life-dash button{background:#15334c;color:#f0f7ff;border:1px solid #34516a;border-radius:9px;padding:8px 10px;cursor:pointer}.life-dash button.active,.life-dash .life-save{background:#147bfa!important;color:white;border-color:#147bfa}.life-dash .life-types{display:flex;gap:5px;flex-wrap:wrap}.life-dash .life-types button{flex:1;font-size:12px;padding:9px 5px}.life-dash .life-types button.active[data-type=work]{background:#f4833b!important}.life-dash .life-types button.active[data-type=rest]{background:#079e99!important}.life-dash .life-types button.active[data-type=vacation]{background:#7561d9!important}.life-dash .life-stat{background:#0b2031;border:1px solid #244258;border-radius:12px;padding:12px}.life-dash .life-value{font-size:30px;font-weight:800;color:var(--lw)}.life-dash .life-mini{font-size:12px;color:#b2c6da}.life-dash .life-heat{display:grid;grid-template-columns:repeat(53,minmax(0,1fr));gap:3px;overflow-x:auto;padding:4px 0}.life-dash .life-weekcol{display:grid;grid-template-rows:repeat(7,11px);gap:3px;min-width:0}.life-dash .life-cell{padding:0;border:0;border-radius:2px;min-height:11px;width:100%;background:#1a3245}.life-dash .life-cell.selected{outline:2px solid white;outline-offset:1px}.life-dash .life-legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;font-size:11px;color:#aebfd2}.life-dash .life-dot{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px}.life-dash .life-timeline{display:flex;gap:2px;height:30px;overflow:hidden;border-radius:6px}.life-dash .life-timeline span{flex:1}.life-dash .life-metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px}.life-dash .life-metric{background:#0b2031;border:1px solid #234055;border-radius:10px;padding:11px}.life-dash .life-metric strong{font-size:20px;display:block}.life-dash .life-stack{display:flex;height:22px;overflow:hidden;border-radius:7px;margin:14px 0}.life-dash .life-bar{height:100%}.life-dash .life-line{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;border-bottom:1px solid #1a364b;padding:7px 0}.life-dash .life-weekrow{display:flex;gap:8px;align-items:center;margin:7px 0;font-size:11px}.life-dash .life-weekrow .life-timeline{flex:1;height:17px}.life-dash .life-muted{color:#94adc3;font-size:11px}.life-dash .life-year-controls{display:flex;gap:6px;align-items:center}.life-dash .life-year-controls button{padding:5px 9px}.life-dash .life-compare{display:flex;align-items:end;gap:5px;height:145px;border-bottom:1px solid #37516a}.life-dash .life-compare>div{flex:1;display:flex;flex-direction:column;justify-content:end;height:100%}.life-dash .life-compare span{display:block;width:100%}.life-dash .life-compare-labels{display:flex;justify-content:space-around;font-size:10px;margin-top:6px}.life-dash .life-save{width:100%;margin-top:14px;font-weight:700}.life-dash .life-view{display:flex;gap:4px}.life-dash .life-view button{font-size:12px}.life-dash .life-error{color:#ffac89;font-size:12px;margin-top:8px}@media(max-width:1000px){.life-dash .life-grid{grid-template-columns:1fr 1.4fr}.life-dash .life-side{grid-column:1/-1;grid-template-columns:1fr 1fr}.life-dash .life-bottom{grid-template-columns:1fr 1fr}.life-dash .life-bottom>:last-child{grid-column:1/-1}}@media(max-width:650px){.life-dash .life-grid,.life-dash .life-bottom,.life-dash .life-side{display:grid;grid-template-columns:1fr}.life-dash .life-side,.life-dash .life-bottom>:last-child{grid-column:auto}.life-dash .life-brand{font-size:21px}.life-dash .life-top{flex-wrap:wrap}.life-dash .life-heat{gap:2px}.life-dash .life-weekcol{grid-template-rows:repeat(7,10px);gap:2px}.life-dash .life-cell{min-height:10px}.life-dash .life-panel{padding:12px}}
+
+.life-dash .life-panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.life-dash .life-panels>.life-panel{min-width:0}
+.life-dash .life-filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-bottom:14px}
+.life-dash .life-filters label{margin:0}
+.life-dash .life-time-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;min-width:0}
+.life-dash .life-time-fields>div{min-width:0;overflow:hidden}
+.life-dash input[type=date],.life-dash input[type=time]{display:block;min-width:0;width:100%;max-width:100%;font-size:13px!important;padding:8px 4px!important}
+.life-dash .life-heat{display:block;overflow-x:auto;padding:8px 0}
+.life-dash .life-weekrow-grid{display:grid;grid-template-columns:24px 32px repeat(7,minmax(0,1fr));gap:5px;align-items:center;margin-bottom:4px}
+.life-dash .life-monthtag{writing-mode:vertical-rl;transform:rotate(180deg);text-align:center;justify-self:stretch;align-self:stretch;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#cfe5fb;background:#173750;border:1px solid #31546e;border-radius:5px;letter-spacing:.4px}.life-dash .life-monthblank{display:block}.life-dash .life-weeknum{font-size:10px;text-align:center;color:#a7bcd1}
+.life-dash .life-heat-header{position:sticky;top:0;background:#0d2539;z-index:1;color:#bed4e8;font-size:11px;text-align:center;margin-bottom:8px}
+.life-dash .life-cell{width:100%;height:13px;min-height:13px;border-radius:3px;padding:0}
+.life-dash .life-hours{display:flex;justify-content:space-between;font-size:10px;color:#a7bcd1}
+.life-dash .life-weekday{width:75px;flex-shrink:0}.life-dash .life-workhours{width:48px;text-align:right;flex-shrink:0}
+.life-dash .life-weekrow[role=button]{cursor:pointer}
+@media(max-width:700px){.life-dash .life-panels{grid-template-columns:minmax(0,1fr)}.life-dash .life-filters{grid-template-columns:repeat(2,minmax(0,1fr))}.life-dash .life-weekrow-grid{grid-template-columns:20px 25px repeat(7,minmax(0,1fr));gap:3px}.life-dash .life-panel{padding:12px}.life-dash .life-cell{height:12px;min-height:12px}}
+
+/* Mon temps: iPhone layout refinements */
+.life-dash .life-filters{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important}
+.life-dash .life-filters>label{min-width:0!important;display:block!important}
+.life-dash .life-filters input,.life-dash .life-filters select{width:100%!important;min-width:0!important;max-width:100%!important;height:44px!important;box-sizing:border-box!important;font-size:12px!important;padding:7px 5px!important;border-radius:9px!important}
+.life-dash .life-date-field,.life-dash .life-time-field{display:block!important;width:100%!important;min-width:0!important;max-width:100%!important;height:46px!important;box-sizing:border-box!important;overflow:hidden!important;border:1px solid #31516b!important;border-radius:9px!important;background:#102b40!important;text-align:center!important;padding:8px 6px!important;line-height:28px!important;appearance:none!important;-webkit-appearance:none!important}
+.life-dash .life-date-field::-webkit-date-and-time-value,.life-dash .life-time-field::-webkit-date-and-time-value{text-align:center!important;min-height:28px!important}
+.life-dash .life-date-field::-webkit-datetime-edit,.life-dash .life-time-field::-webkit-datetime-edit{display:flex;justify-content:center;align-items:center;width:100%;padding:0!important}
+.life-dash .life-time-fields{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+.life-dash .life-time-fields>div{min-width:0!important;overflow:visible!important}
+.life-dash .life-heat{padding:3px 0!important}
+.life-dash .life-weekrow-grid{gap:2px!important;margin-bottom:0!important;min-height:14px!important;align-items:stretch!important}
+.life-dash .life-cell{height:14px!important;min-height:14px!important;border-radius:1px!important;align-self:stretch!important}
+.life-dash .life-monthtag{border-radius:2px!important;font-size:9px!important}
+.life-dash .life-heat-header{margin-bottom:3px!important}
+@media(max-width:700px){.life-dash .life-filters{grid-template-columns:repeat(3,minmax(0,1fr))!important}.life-dash .life-filters input,.life-dash .life-filters select{font-size:11px!important;padding:5px 3px!important}.life-dash .life-weekrow-grid{grid-template-columns:20px 24px repeat(7,minmax(0,1fr))!important}}
+
+/* Mon temps: uniform filters and 7-column annual day grid */
+.life-dash .life-filters{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;align-items:end!important;gap:6px!important;width:100%!important}
+.life-dash .life-filters label{display:flex!important;flex-direction:column!important;min-width:0!important;width:100%!important;margin:0!important;gap:5px!important}
+.life-dash .life-filters input,.life-dash .life-filters select{display:block!important;width:100%!important;min-width:0!important;max-width:100%!important;height:46px!important;min-height:46px!important;box-sizing:border-box!important;border-radius:9px!important;padding:6px 4px!important;font-size:clamp(10px,2.7vw,14px)!important;line-height:24px!important}
+.life-dash .life-filters input::-webkit-date-and-time-value{min-height:24px!important;text-align:center!important}
+.life-dash .life-heat{display:block!important;width:100%!important;overflow-x:visible!important;padding:3px 0!important}
+.life-dash .life-weekrow-grid{display:grid!important;grid-template-columns:24px 26px repeat(7,minmax(0,1fr))!important;column-gap:2px!important;row-gap:0!important;margin:0 0 1px!important;min-height:15px!important;height:15px!important;align-items:stretch!important}
+.life-dash .life-heat-header{height:19px!important;margin-bottom:3px!important}
+.life-dash .life-weekrow-grid .life-cell{display:block!important;width:100%!important;height:14px!important;min-height:14px!important;margin:0!important;padding:0!important;border:0!important;border-radius:2px!important;box-sizing:border-box!important;cursor:pointer}
+.life-dash .life-weekrow-grid .life-monthtag{writing-mode:vertical-rl;text-orientation:mixed;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:9px!important}
+.life-dash .life-weekrow-grid .life-weeknum{font-size:9px!important;text-align:center;line-height:14px}
+@media(max-width:650px){.life-dash .life-weekrow-grid{grid-template-columns:20px 22px repeat(7,minmax(0,1fr))!important;column-gap:1px!important}.life-dash .life-filters{gap:5px!important}}
+
+/* NEXO 2.7.8.3 — espacements des sections et selection annuelle iOS */
+.life-dash .life-panels{row-gap:19px!important;column-gap:19px!important;gap:19px!important}
+.life-dash .life-panels>.life-panel{margin:0!important}
+.life-dash .life-weekrow-grid>.life-cell.selected,
+.life-dash .life-weekrow-grid .life-cell.selected{
+  outline:none!important;outline-offset:0!important;
+  box-shadow:inset 0 0 0 2px #fff!important;
+  border:0!important;
+  position:relative!important;
+  z-index:1!important;
+  border-radius:3px!important;
+}
+
+/* NEXO 2.7.8.3 — espacement réel entre les six sections : 3 mm */
+.life-dash .life-panels{display:grid!important;row-gap:3mm!important;column-gap:3mm!important;gap:3mm!important;align-items:start!important}
+.life-dash .life-panels > section.life-panel{margin:0!important;position:relative!important;min-width:0!important}
+@media(max-width:700px){.life-dash .life-panels{grid-template-columns:minmax(0,1fr)!important;row-gap:3mm!important;gap:3mm!important}}
+.nexo-module-assignment-list{display:grid;gap:8px}.nexo-module-assignment-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid rgba(130,150,180,.22);font-size:13px;font-weight:600}.nexo-module-assignment-row span{min-width:0;flex:1}.nexo-module-assignment-row select{width:52%;min-width:0;min-height:42px;border-radius:10px;border:1px solid #8394ab;background:var(--card,#fff);color:var(--text,#172136);padding:6px;font:inherit;font-size:12px}
+.ms-dash input.nx-mindset-day-filter{text-align:center!important;text-align-last:center!important}.ms-dash input.nx-mindset-day-filter::-webkit-date-and-time-value{text-align:center!important;min-height:1lh}.ms-dash input.nx-mindset-day-filter::-webkit-datetime-edit{display:flex;justify-content:center;width:100%;padding:0}
+.ms-dash input.nx-mindset-day-filter{line-height:normal!important;vertical-align:middle!important}.ms-dash input.nx-mindset-day-filter::-webkit-date-and-time-value{display:flex!important;align-items:center!important;justify-content:center!important;height:100%!important;min-height:0!important;line-height:normal!important}.ms-dash input.nx-mindset-day-filter::-webkit-datetime-edit{display:flex!important;align-items:center!important;justify-content:center!important;height:100%!important;min-height:0!important;line-height:normal!important;padding:0!important}.ms-dash input.nx-mindset-day-filter::-webkit-datetime-edit-fields-wrapper{display:flex!important;align-items:center!important;justify-content:center!important;height:100%!important}
+.nexo-custom-fold>summary{cursor:pointer;display:list-item;list-style:revert;list-style-position:inside;user-select:none}.nexo-custom-fold>summary h2{display:inline;margin:0 0 0 5px;vertical-align:middle}.nexo-custom-fold:not([open])>summary{margin-bottom:0}.nexo-module-assignment-row{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr)!important;column-gap:.5cm!important;justify-content:initial!important}.nexo-module-assignment-row span{min-width:0;overflow-wrap:anywhere}.nexo-module-assignment-row select{width:100%!important;min-width:0!important}
+.nexo-custom-fold>.btn.primary+.btn{margin-top:12px!important;margin-left:0!important}.nexo-custom-fold .module-category-settings-list{margin-bottom:16px!important}.nexo-custom-fold .nexo-module-assignment-list{margin-bottom:16px!important}.nexo-icon-picker-label{display:block;font-weight:650;margin-top:10px;margin-bottom:8px}.nexo-icon-picker{display:flex;align-items:center;gap:12px;margin-bottom:16px}.nexo-icon-picker select{flex:1;min-width:0}.nexo-icon-picker #nexo-icon-preview{font-size:1.7rem;min-width:48px;text-align:center;background:var(--card,#203047);border-radius:12px;padding:8px}
+.moto-gps-shell{background:#0d1726;border-radius:18px;overflow:hidden;color:#fff}.moto-gps-map{height:45vh;min-height:290px;background:#182638}.moto-gps-panel{padding:12px;display:grid;gap:12px}.moto-gps-speed{display:grid;grid-template-columns:1fr 1fr;gap:12px}.moto-gps-speed>div{background:#1c2b40;border-radius:14px;padding:12px;display:flex;flex-direction:column;align-items:center;gap:4px}.moto-gps-speed strong{font-size:48px;line-height:1.1}.moto-gps-speed small,.moto-gps-lean small{color:#b4c3d8}.moto-gps-limit{border:5px solid #e34d4d;border-radius:50%;background:white;color:#111;width:68px;height:68px;display:grid;place-items:center;font-size:32px;font-weight:800}.moto-gps-lean{border:1px solid #3b5575;background:#1c2b40;color:#fff;border-radius:16px;padding:15px;display:flex;flex-direction:column;align-items:center;gap:7px;width:100%}.moto-gps-lean strong{font-size:48px;color:#65aaff}.moto-gps-scale{width:100%;display:flex;justify-content:space-between;color:#9eb8dc;font-size:13px}.moto-gps-stats{display:flex;justify-content:space-around;gap:8px;font-weight:700}.moto-gps-actions{display:flex;gap:8px;flex-wrap:wrap}.moto-gps-actions button{flex:1;min-width:130px}
+
+/* Roadtrip GPS full-screen overlay — isolated to active GPS */
+body.moto-gps-fullscreen{overflow:hidden!important}
+body.moto-gps-fullscreen>header,body.moto-gps-fullscreen>nav{display:none!important}
+body.moto-gps-fullscreen main#app,body.moto-gps-fullscreen #tool{position:static!important;margin:0!important;padding:0!important;max-width:none!important;width:100%!important}
+body.moto-gps-fullscreen .moto-gps-screen{position:fixed;inset:0;z-index:9990;background:#101b29;overflow:hidden;color:white}
+body.moto-gps-fullscreen .moto-gps-shell{position:absolute;inset:0;border-radius:0;background:transparent;overflow:hidden}
+body.moto-gps-fullscreen .moto-gps-map{position:absolute;inset:0;width:100%;height:100%;min-height:0;background:#182638}
+body.moto-gps-fullscreen .moto-gps-map .leaflet-tile-pane{filter:brightness(.78) invert(1) hue-rotate(180deg) saturate(.8) contrast(.9)}
+body.moto-gps-fullscreen .moto-gps-panel{position:absolute;left:10px;right:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 10px);z-index:800;padding:10px;display:grid;gap:8px;background:rgba(10,20,34,.91);border:1px solid #3c5068;border-radius:18px;backdrop-filter:blur(12px);max-height:48dvh;overflow-y:auto}
+body.moto-gps-fullscreen .moto-gps-speed{gap:8px}
+body.moto-gps-fullscreen .moto-gps-speed>div{padding:6px;min-height:66px}
+body.moto-gps-fullscreen .moto-gps-speed strong{font-size:35px}
+body.moto-gps-fullscreen .moto-gps-limit{width:48px;height:48px;font-size:24px;border-width:4px}
+body.moto-gps-fullscreen .moto-gps-lean{padding:7px;gap:2px}
+body.moto-gps-fullscreen .moto-gps-lean strong{font-size:30px}
+body.moto-gps-fullscreen .moto-gps-stats{font-size:12px}
+body.moto-gps-fullscreen .moto-gps-actions button{min-width:0;font-size:12px;padding:9px 5px}
+body.moto-gps-fullscreen .moto-gps-help{display:none}
+body.moto-gps-fullscreen .moto-gps-exit{position:absolute;z-index:900;top:calc(env(safe-area-inset-top,0px) + 12px);left:12px;border:1px solid #50647c;border-radius:999px;padding:11px 15px;background:rgba(10,20,34,.9);color:white;font-weight:700;font-size:15px;box-shadow:0 3px 15px #0005}
+@media (max-height:690px){body.moto-gps-fullscreen .moto-gps-panel{max-height:56dvh;gap:5px;padding:7px}body.moto-gps-fullscreen .moto-gps-speed>div{min-height:50px}body.moto-gps-fullscreen .moto-gps-lean strong{font-size:24px}}
+
+/* GPS moto : trois indicateurs compacts gauche / centre / droite */
+body.moto-gps-fullscreen .moto-gps-speed{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+body.moto-gps-fullscreen .moto-gps-speed>div,body.moto-gps-fullscreen .moto-gps-speed>.moto-gps-lean{box-sizing:border-box;min-width:0;min-height:78px;padding:7px 3px;border-radius:12px;justify-content:center;gap:3px}
+body.moto-gps-fullscreen .moto-gps-speed>.moto-gps-lean{border:1px solid #3b5575;cursor:pointer}
+body.moto-gps-fullscreen .moto-gps-speed small,body.moto-gps-fullscreen .moto-gps-speed .moto-gps-lean span{font-size:10px;line-height:1.15;text-align:center}
+body.moto-gps-fullscreen .moto-gps-speed .moto-gps-lean strong{font-size:29px;line-height:1.05;color:#65aaff}
+body.moto-gps-fullscreen .moto-gps-speed>div strong{font-size:33px;line-height:1.05}
+body.moto-gps-fullscreen .moto-gps-limit{width:44px;height:44px;font-size:22px;border-width:4px}
+body.moto-gps-fullscreen .moto-gps-panel{gap:6px;padding:8px;max-height:36dvh}
+body.moto-gps-fullscreen .moto-gps-stats{font-size:11px}
+body.moto-gps-fullscreen .moto-gps-actions button{padding:8px 4px}
+.moto-gps-history-lean{display:grid;grid-template-columns:1fr 1fr;gap:10px}.moto-gps-history-lean>div{display:flex;flex-direction:column;gap:5px;text-align:center;background:var(--card,#203047);border:1px solid #57728c;border-radius:12px;padding:12px}.moto-gps-history-lean small{font-size:12px}.moto-gps-history-lean strong{font-size:27px;color:#66aaff}
+/* v2.8.34 — espacement réduit autour des titres du Scanner PDF uniquement */
+.nxpdf-section{row-gap:7px!important;padding-top:12px!important;padding-bottom:12px!important}
+.nxpdf-section>h2,.nxpdf-section>h3{margin:0 0 2px!important;padding:0!important;line-height:1.2!important}
+
+.nxpdf-toolbar{display:flex;gap:8px;flex-wrap:wrap}.nxpdf-toolbar .btn{flex:1;min-width:125px}.nxpdf-pages{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.nxpdf-page{background:var(--card,#243247);border:1px solid var(--border,#607086);border-radius:12px;padding:9px;min-width:0}.nxpdf-page img{width:100%;height:170px;object-fit:contain;background:#ddd;border-radius:7px}.nxpdf-page .nxpdf-controls{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}.nxpdf-page button{font-size:12px;padding:7px}.nxpdf-editor{position:relative;width:100%;background:#e7e9ee;touch-action:none;border-radius:10px;overflow:hidden}.nxpdf-editor canvas{display:block;width:100%;height:auto}.nxpdf-signature{width:100%;height:145px;display:block;background:#fff;border:1px solid #9faec1;border-radius:10px;touch-action:none}.nxpdf-note{font-size:12px;opacity:.75}.nxpdf-sign-control{display:grid;grid-template-columns:1fr 1fr;gap:8px}.nxpdf-editor-hint{font-size:12px;opacity:.8}
+
+/* Scanner PDF : commandes compactes, autres modules inchangés */
+.nxpdf-toolbar .btn{font-size:13px!important;line-height:1.25!important;padding:9px 7px!important;min-height:38px!important;border-radius:11px!important;min-width:0!important;white-space:normal!important}
+.nxpdf-toolbar{gap:8px!important;flex-wrap:nowrap!important}
+.nxpdf-filename-label{display:flex!important;flex-direction:column!important;gap:11px!important}
+.nxpdf-filename-label .field{margin-top:0!important}
+@media(max-width:370px){.nxpdf-toolbar .btn{font-size:12px!important;padding:8px 5px!important}}
+
+.header-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.nexo-universal-trigger{display:none;align-items:center;justify-content:center;width:43px;height:43px;flex:none;border:1px solid var(--border,#34465d);border-radius:13px;background:var(--card,#1b2c42);color:#3299ff;cursor:pointer}
+body.gen264-home .nexo-universal-trigger{display:flex}
+.nexo-universal-trigger svg{width:23px;height:23px}
+.nx-search-page{padding:14px 0 32px}
+.nx-search-input-row{display:flex;align-items:center;gap:10px;background:var(--card,#1b2c42);border:1px solid var(--border,#34465d);border-radius:16px;padding:10px 14px}
+.nx-search-input-row > span{font-size:29px!important;line-height:1;min-width:27px;text-align:center}.nx-search-input-row input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--text,#fff);font:inherit;font-size:16px}
+.nx-search-group{margin-top:22px}.nx-search-group h3{margin:0 0 10px;font-size:16px}
+.nx-search-hit{width:100%;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 15px;margin:7px 0;border:1px solid var(--border,#34465d);border-radius:13px;background:var(--card,#1b2c42);color:var(--text,#fff);cursor:pointer}
+.nx-search-hit small{display:block;opacity:.65;margin-top:4px;font-size:12px}
+.nx-search-empty{opacity:.7;padding:20px 4px}
+/* Compact recipe home actions only; other modules untouched. */
+.recipe-home-compact{padding:14px!important;display:flex!important;flex-direction:column!important;gap:10px!important}
+.recipe-home-compact .recipe-home-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.recipe-home-compact h2{margin:0!important;font-size:19px!important;line-height:1.25!important}
+.recipe-home-compact .recipe-home-top .btn{flex:1 1 auto;min-width:145px}
+.recipe-home-compact .recipe-home-secondary{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.recipe-home-compact .btn{padding:10px 12px!important;min-height:40px!important;font-size:14px!important;line-height:1.3!important;margin:0!important;display:flex;align-items:center;justify-content:center}
+.recipe-create-top{display:flex;justify-content:flex-end;margin:0 0 12px}.recipe-create-top .btn{width:auto;min-height:40px;padding:10px 14px;font-size:14px}.recipe-import-export{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.recipe-import-export .btn{min-height:40px;padding:10px 12px;font-size:14px;display:flex;align-items:center;justify-content:center}
+.nx-assign-line{display:flex;align-items:center;gap:9px;min-width:0;padding:9px 0;border-bottom:1px solid rgba(120,155,190,.2)}
+.nx-assign-name{font-size:13px;font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nx-assign-category{font-size:11px;color:#9caac0;max-width:38%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:right}
+.nx-assign-pencil{flex:0 0 34px;height:36px;border-radius:10px;border:1px solid #789bb7;color:#9dc6ef;background:transparent;font-size:17px}
+#nx-emoji-overlay,#nx-module-edit-overlay{position:fixed;inset:0;z-index:100000;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;padding:15px}
+.nx-emoji-panel{width:min(540px,100%);max-height:86vh;overflow:auto;border-radius:18px;background:#192438;border:1px solid #34485f;padding:15px;color:#f5f7ff}
+.nx-emoji-head,.nx-edit-actions{display:flex;align-items:center;justify-content:space-between;gap:9px;margin-bottom:14px}
+.nx-emoji-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin:12px 0}
+.nx-emoji-choice{min-width:0;height:41px;padding:0;border-radius:9px;border:1px solid #34485f;background:#26354b;font-size:23px}
+.nx-emoji-choice.nx-selected{border:2px solid #2c83fa;background:#365477}
+.nx-create-icon-btn{width:100%}
+.nx-order-actions{display:flex;align-items:center;gap:8px;flex-wrap:nowrap}.nx-order-actions>.btn{min-width:0;flex:1 1 0}.nexo-icon-picker{min-width:0}
+.nx-category-create-actions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;align-items:stretch!important;gap:8px!important;width:100%!important}
+.nx-category-create-actions>.nexo-icon-picker{margin:0!important;display:block!important;min-width:0!important;width:100%!important}
+.nx-category-create-actions .nx-create-icon-btn,.nx-category-create-actions>.btn{box-sizing:border-box!important;width:100%!important;height:44px!important;min-height:44px!important;max-height:44px!important;padding:6px 8px!important;white-space:nowrap!important;font-size:14px!important;line-height:1.1!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:6px!important}
+.nx-category-create-actions #nexo-icon-preview{font-size:18px!important;min-width:0!important;padding:0!important;background:transparent!important}
+.nx-recipe-title-favorite{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.nx-recipe-title-favorite h2{flex:1;min-width:0;margin:0}
+.nx-recipe-favorite-btn{flex:0 0 44px;width:44px;height:44px;border:1px solid rgba(148,163,184,.35);border-radius:12px;background:rgba(148,163,184,.12);color:#9aa9be;font-size:29px;line-height:1;display:flex;align-items:center;justify-content:center}
+.nx-recipe-favorite-btn.is-favorite{color:#ffcb45;border-color:rgba(255,203,69,.5)}
+.nx-recipe-list{display:flex;flex-direction:column;gap:7px;margin-top:12px}
+.nx-recipe-list-item{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:49px;padding:12px 15px;text-align:left;background:var(--card,#192536);color:inherit;border:1px solid rgba(140,163,194,.25);border-radius:13px;font:inherit;font-weight:600;cursor:pointer}
+.nx-recipe-list-item span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nx-recipe-list-item span:last-child{opacity:.65;font-size:24px;line-height:1}
+.nx-recipe-fav-group{margin:18px 0 24px}
+.nx-recipe-fav-group h3{margin:0 0 8px;font-size:17px}
+.nexo-settings-version{cursor:default}
+#nexo-google-view{position:fixed;inset:0;z-index:2147483647;background:#fff;display:flex;flex-direction:column}
+.nexo-google-toolbar{height:calc(54px + env(safe-area-inset-top,0px));padding:env(safe-area-inset-top,0px) 14px 0;display:flex;align-items:center;gap:15px;background:#142036;color:#fff;font:600 15px system-ui}
+.nexo-google-close{position:absolute;right:calc(18px + env(safe-area-inset-right,0px));bottom:calc(22px + env(safe-area-inset-bottom,0px));width:52px;height:52px;border:0;border-radius:50%;background:#dc2626;color:#fff;font-size:27px;font-weight:700;box-shadow:0 4px 18px rgba(0,0,0,.3);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2}
+.nexo-google-toolbar a{margin-left:auto;color:#7cb9ff;font-size:12px;text-decoration:none}
+#nexo-google-view iframe{flex:1;width:100%;border:0;background:#fff}
+/* NEXO Settings */
+:root{--nx-accent:#3B82F6}
+.nx-settings-panel{padding:18px!important;overflow:hidden;max-width:100%;box-sizing:border-box}
+.nx-settings-panel *{box-sizing:border-box;min-width:0}
+.nx-settings-top{display:flex;align-items:center;gap:10px;margin-bottom:18px}.nx-settings-top h2{font-size:20px;margin:0;flex:1}.nx-back{border:0;background:transparent;color:inherit;font-size:32px;width:32px;height:38px;line-height:1;cursor:pointer}.nx-settings-panel h3{font-size:14px;margin:22px 0 12px}
+.nx-settings-navrow,.nx-profile-banner{width:100%;border:0;border-bottom:1px solid #8793a330;background:transparent;color:inherit;display:flex;align-items:center;gap:12px;text-align:left;padding:14px 3px;min-height:67px;cursor:pointer}.nx-nav-emoji{width:40px;height:40px;border-radius:12px;background:#8594ac20;display:grid;place-items:center;font-size:23px;flex:none}.nx-nav-label,.nx-profile-banner>span:nth-child(2){flex:1;display:grid;gap:3px}.nx-nav-label strong,.nx-profile-banner strong{font-size:14px}.nx-nav-label small,.nx-profile-banner small{font-size:11px;color:#8a98af}.nx-arrow{font-size:24px;color:#8997ac}
+.nx-profile-banner{border:1px solid #8793a330;border-radius:14px;padding:9px;margin-bottom:12px;background:#8594ac12}.nx-avatar{width:86px;height:86px;border-radius:50%;background:#8b9bb225;display:grid;place-items:center;font-size:38px;overflow:hidden}.nx-avatar img{width:100%;height:100%;object-fit:cover}.nx-avatar-small{width:46px;height:46px;font-size:24px;flex:none}.nx-profile-photo{display:grid;justify-items:center;gap:12px;margin:12px 0 22px}
+.nx-btn-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;width:100%;margin:14px 0}.nx-btn-row>.btn,.nx-full{min-height:46px;width:100%;font-size:13px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;justify-content:center;padding:9px 8px!important;margin:0!important}.nx-file-button{cursor:pointer}.nx-field-label{display:grid;gap:7px;font-weight:600;font-size:13px;margin:14px 0}.nx-field-label .field{width:100%;font-weight:400;margin:0;min-height:45px}.nx-switch-row{display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:13px;margin:20px 0}.nx-switch-row input{accent-color:var(--nx-accent);width:20px;height:20px;flex:none}
+.nx-accent-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px}.nx-accent-choice{border:0;background:transparent;color:inherit;display:grid;place-items:center;gap:5px;padding:0}.nx-accent-choice span{display:grid;place-items:center;width:min(38px,100%);aspect-ratio:1;border-radius:50%;color:white;font-size:19px}.nx-accent-choice.selected span{outline:2px solid var(--nx-accent);outline-offset:3px}.nx-accent-choice small{font-size:9px}
+.nx-settings-panel .btn.primary{background:var(--nx-accent)!important;color:white!important}.nx-settings-panel .theme-option.selected{border-color:var(--nx-accent)!important}.nx-theme-preview{background:#f2f3f6;color:#142033;padding:15px;border-radius:14px;display:grid;gap:10px}.nx-theme-preview-title{font-size:18px;font-weight:bold;display:flex;justify-content:space-between}.nx-theme-category{background:#26775a;color:white;border-radius:12px;padding:12px;font-weight:600}.nx-theme-finance{background:#ac4969}html[data-theme=dark] .nx-theme-preview{background:#0b1120;color:white}html[data-theme=dark] .nx-theme-category{background:#17382f}html[data-theme=dark] .nx-theme-finance{background:#402831}
+.nx-settings-panel .nx-hint{font-size:12px!important;line-height:1.45;color:#8795aa;margin:10px 0 15px}.nx-item-row{display:flex;align-items:center;gap:10px;min-height:58px;border-bottom:1px solid #8793a330;padding:7px 0}.nx-module-symbol{font-size:23px;min-width:36px;text-align:center}.nx-item-main{flex:1;display:grid;gap:3px;overflow:hidden}.nx-item-main strong{font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.nx-item-main small{font-size:11px;color:#8997ae}.nx-item-row .nx-small{font-size:12px;padding:8px 10px;min-height:36px;white-space:nowrap}.nx-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:15px 0}.nx-tabs:has([data-filter]){grid-template-columns:repeat(3,minmax(0,1fr))}.nx-tabs button{border:1px solid #8793a340;background:#8697ad20;color:inherit;border-radius:10px;min-height:41px;font-size:12px;white-space:nowrap;padding:6px 3px}.nx-tabs button.selected{background:var(--nx-accent);border-color:var(--nx-accent);color:white}.nx-category-create{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px}.nx-category-create .btn{min-height:45px;margin:0;white-space:nowrap}.nx-pencil,.nx-drag-handle{display:grid;place-items:center;width:37px;height:37px;border-radius:9px;border:1px solid #8793a348;color:inherit;background:#8899ae18;font-size:20px;flex:none}.nx-drag-handle{font-size:21px;cursor:grab;touch-action:none}.nx-draggable.nx-dragging{opacity:.7;background:#408df72b}.nx-inline-end{display:flex;justify-content:flex-end;margin:8px 0}.nx-link-btn{border:0;background:transparent;color:var(--nx-accent);font-size:12px}.nx-module-group{border:1px solid #8793a33a;border-radius:12px;overflow:hidden;margin:10px 0}.nx-module-group .nx-item-row{padding:7px 10px}.nx-group-header{width:100%;background:#8494af16;border:0;color:inherit;display:flex;justify-content:space-between;align-items:center;padding:13px;font-size:13px;font-weight:bold;text-align:left;gap:10px}.nx-group-header span:last-child{color:#8b9bb3;white-space:nowrap}
+.nx-setting-modal-backdrop{position:fixed;inset:0;background:#0009;z-index:110000;display:flex;align-items:center;justify-content:center;padding:calc(14px + env(safe-area-inset-top)) 16px calc(14px + env(safe-area-inset-bottom));overscroll-behavior:contain}.nx-setting-modal{width:min(100%,420px);max-height:min(85dvh,740px);overflow:auto;-webkit-overflow-scrolling:touch;background:#fff;color:#1b2940;border-radius:18px;padding:18px;box-shadow:0 18px 60px #0007;display:flex;flex-direction:column;gap:9px}.nx-setting-modal h3{margin:0 0 4px;font-size:17px}.nx-setting-modal p{font-size:13px;color:#7c8b9f;margin:3px 0 8px}.nx-setting-modal .nx-btn-row{flex:none;margin-top:10px;margin-bottom:0}.nx-setting-emoji-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px;overflow-y:auto;max-height:220px;min-height:0}.nx-setting-emoji{border:1px solid #98a3b54d;background:#8793aa12;border-radius:9px;min-height:43px;font-size:22px;display:grid;place-items:center}.nx-setting-emoji.selected{border:2px solid var(--nx-accent);background:#4b8ffe20}.nx-module-edit-name{display:flex;gap:12px;align-items:center;padding:10px;background:#8793aa16;border-radius:12px;font-size:14px}.nx-module-edit-name span{font-size:25px}html[data-theme=dark] .nx-setting-modal{background:#172338;color:#f4f7fc}html[data-theme=dark] .nx-setting-modal .field{background:#1b293c;color:white;border-color:#39475b}html[data-theme=dark] .nx-setting-modal .btn:not(.primary){background:#263650;color:white}
+.nx-storage-card{background:#8697b51b;border-radius:15px;padding:16px;margin-bottom:13px}.nx-last-backup{display:flex;gap:12px;align-items:center;padding:8px 2px 14px}.nx-last-backup>span{font-size:24px}.nx-last-backup>div{display:grid;gap:4px}.nx-last-backup strong{font-size:13px}.nx-last-backup small{font-size:11px;color:#8a99ae}.nx-sort{width:100%;margin:10px 0 13px}.nx-storage-module{margin:0 0 13px}.nx-storage-module>div:first-child{display:flex;justify-content:space-between;gap:10px;font-size:12px;margin-bottom:6px}.nx-storage-module strong{white-space:nowrap}.nx-bar{height:5px;background:#8494a839;border-radius:10px;overflow:hidden}.nx-bar span{display:block;height:100%;background:var(--nx-accent);border-radius:10px}.nx-storage-actions{display:grid;gap:12px;padding:10px 0}.nx-about-line{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:50px;border-bottom:1px solid #8793a330;font-size:13px}.nx-about-line span{text-align:right;color:#8b99ac}#nx-welcome-home{text-align:left;font-size:12px;color:#879ab5;margin:4px 0 0}
+@media(max-width:360px){.nx-settings-panel{padding:12px!important}.nx-btn-row{gap:8px}.nx-btn-row .btn{font-size:12px!important}.nx-setting-emoji-grid{gap:4px}.nx-setting-emoji{min-height:38px;font-size:20px}}
+
+html[data-theme="light"] .tool-group.tone-blue{--tone:#1d6688;--tone-ink:#ffffff}
+html[data-theme="light"] .tool-group.tone-green{--tone:#277a58;--tone-ink:#ffffff}
+html[data-theme="light"] .tool-group.tone-mint{--tone:#26775a;--tone-ink:#ffffff}
+html[data-theme="light"] .tool-group.tone-rose{--tone:#ac4969;--tone-ink:#ffffff}
+html[data-theme="light"] .tool-group.tone-purple{--tone:#70529b;--tone-ink:#ffffff}
+html[data-theme="light"] .tool-group.tone-yellow{--tone:#967031;--tone-ink:#ffffff}
+html[data-theme="light"] .tool-group.tone-pink{--tone:#ae4c77;--tone-ink:#ffffff}
+html[data-theme="light"] .tool-group.tone-orange{--tone:#99542c;--tone-ink:#ffffff}
+html[data-theme="light"] .tool-group.tone-cyan{--tone:#176d83;--tone-ink:#ffffff}
+html[data-theme="light"] .tool-group.tone-lime{--tone:#59782a;--tone-ink:#ffffff}
+html[data-theme="light"] .tool-group.tone-indigo{--tone:#4b589f;--tone-ink:#ffffff}
+html[data-theme="light"] .tool-group.tone-teal{--tone:#247c79;--tone-ink:#ffffff}
+html[data-theme="light"] .tool-group .group-heading,html[data-theme="light"] .tool-group .group-heading strong,html[data-theme="light"] .tool-group .group-heading small,html[data-theme="light"] .tool-group .group-chevron{color:#fff}
+html[data-theme="light"] .tool-group .group-count{background:#ffffff25;color:#fff}
+html[data-theme="light"] .tool-group .group-icon{background:#ffffff22;color:white}
+html[data-theme="light"] .tool-group .group-grid{color:#172238}
+html[data-theme="light"] .tool-group .group-grid .tile{color:#172238}
+html[data-theme="light"] .tool-group{border-color:#ffffff50}
+html[data-theme="light"] .settings-panel .btn.primary{background:var(--nx-accent)!important}
+html[data-theme="dark"] .settings-panel .btn.primary{background:var(--nx-accent)!important}
