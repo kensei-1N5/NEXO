@@ -1384,3 +1384,10 @@ body.moto-gps-fullscreen .pv-results button{display:block;width:100%;text-align:
 body.nx-map-screen-on:has(#pv-canvas) .nx-map-top,body.nx-map-screen-on:has(#pv-canvas) .nx-map-toolbar{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;filter:none!important;}
 body.nx-map-screen-on:has(#pv-canvas) .nx-map-toolbar{box-shadow:none!important;}
 body.nx-map-screen-on:has(#pv-canvas) .nx-map-shell::before,body.nx-map-screen-on:has(#pv-canvas) .nx-map-shell::after{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;filter:none!important;}
+
+/* v2.8.109 — Pays visités : retirer le calque global de la zone de statut iOS.
+   Le pseudo-élément body::before (déclaré plus haut) couvrait encore la carte,
+   indépendamment du blur de la barre de recherche. */
+body.nx-map-screen-on:has(#pv-canvas)::before{content:none!important;display:none!important;}
+body.nx-map-screen-on:has(#pv-canvas) .nx-map-shell,
+body.nx-map-screen-on:has(#pv-canvas) .nx-map-base{filter:none!important;-webkit-filter:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
