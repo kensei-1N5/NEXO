@@ -1393,3 +1393,12 @@ body.nx-map-screen-on:has(#pv-canvas) .nx-map-shell,
 body.nx-map-screen-on:has(#pv-canvas) .nx-map-base{filter:none!important;-webkit-filter:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
 
 /* v2.8.110 : la barre d’état iOS PWA est désormais opaque (meta apple-mobile-web-app-status-bar-style=black). Aucun filtre de flou ajouté à Pays visités. */
+
+/* v2.8.111 — Pays visités : empêcher les effets de matière de la PWA iOS
+   au bord supérieur. Zone d'état entièrement opaque, carte sous la safe-area.
+   Ne concerne ni la navigation GPS ni les autres écrans. */
+html:has(body.nx-map-screen-on #pv-canvas){background:#d0e7f5!important;overscroll-behavior:none!important;}
+body.nx-map-screen-on:has(#pv-canvas){background:#d0e7f5!important;overscroll-behavior:none!important;}
+body.nx-map-screen-on:has(#pv-canvas) .nx-map-shell{top:env(safe-area-inset-top)!important;bottom:0!important;background:#d0e7f5!important;}
+body.nx-map-screen-on:has(#pv-canvas) .nx-map-top{top:10px!important;}
+body.nx-map-screen-on:has(#pv-canvas)::before{content:""!important;display:block!important;position:fixed!important;inset:0 0 auto 0!important;height:env(safe-area-inset-top)!important;background:#d0e7f5!important;z-index:105!important;pointer-events:none!important;filter:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
