@@ -160,19 +160,27 @@ function pvDraw(){
    for(let i=0;i<r.length;i++){const x=w/2+(r[i][0]+off-v.cx)*v.s,y=h/2-(r[i][2]-vm)*v.s;if(!first&&Math.abs(x-lx)<.6&&Math.abs(y-ly)<.6&&i<r.length-1)continue;if(first){ctx.moveTo(x,y);first=false}else ctx.lineTo(x,y);lx=x;ly=y}
    ctx.closePath()}
  };
- const pathOf=c=>{for(const p of c.polys){addPoly(p,0);if(p.box[2]>180)addPoly(p,-360)}};
+ /* Russie : ne dessiner que sa représentation à l'est du méridien 0.
+    Évite la copie artificielle à gauche de l'Alaska, liée au passage du 180e méridien. */
+ const pathOf=c=>{for(const p of c.polys){addPoly(p,0);if(c.key!=='RU'&&p.box[2]>180)addPoly(p,-360)}};
+ const pvRussiaClip=()=>{
+  const left=w/2+(0-v.cx)*v.s,right=w/2+(180-v.cx)*v.s;
+  ctx.beginPath();ctx.rect(left,0,right-left,h);ctx.clip();
+ };
  const drawSet=visitedPass=>{
   for(const c of pv.countries){
    const vis=!!pv.visited[c.key];if(vis!==visitedPass||c.pt)continue;
+   if(c.key==='RU'){ctx.save();pvRussiaClip()}
    ctx.beginPath();pathOf(c);
    ctx.fillStyle=vis?'#38a56f':'#f2efe6';ctx.fill('evenodd');
    ctx.lineWidth=strokeW;ctx.strokeStyle=vis?'#1f7a4d':'#b8b3a3';ctx.lineJoin='round';ctx.stroke();
+   if(c.key==='RU')ctx.restore();
   }
  };
  drawSet(false);drawSet(true);
  
  const sel=pv.sel&&pv.byKey.get(pv.sel);
- if(sel&&sel.polys.length){ctx.beginPath();pathOf(sel);ctx.lineWidth=2.4;ctx.strokeStyle='#1779ed';ctx.stroke()}
+ if(sel&&sel.polys.length){if(sel.key==='RU'){ctx.save();pvRussiaClip()}ctx.beginPath();pathOf(sel);ctx.lineWidth=2.4;ctx.strokeStyle='#1779ed';ctx.stroke();if(sel.key==='RU')ctx.restore()}
  if(true){ctx.font='600 12px -apple-system,system-ui,sans-serif';ctx.textAlign='center';
   for(const c of pv.countries){if(!pv.visited[c.key])continue;if(v.s<7)continue;const [x,y]=pvToScr(c.pin[0],c.pin[1],w,h);if(x<0||x>w||y<0||y>h)continue;const n=c.fr||(c.fr=pvFrName(c));ctx.lineWidth=3.5;ctx.strokeStyle='#fffd';ctx.strokeText(n,x,y);ctx.fillStyle='#15263b';ctx.fillText(n,x,y)}}
  ctx.textAlign='left';ctx.fillStyle='#4a5a6c';ctx.font='10px system-ui';ctx.fillText('Fond de carte © Natural Earth',8,h-8);
@@ -182,7 +190,7 @@ function pvHit(x,y){
  const [w,h]=pvSize();
  for(const [dx,dy] of [[0,0],[9,0],[-9,0],[0,9],[0,-9]]){
   const [lon,lat]=pvFromScr(x+dx,y+dy,w,h);
-  for(const c of pv.countries){if(!c.polys.length||lat<c.box[1]||lat>c.box[3])continue;for(const p of c.polys)if(pvInPoly(p,lon,lat)||(p.box[2]>180&&pvInPoly(p,lon+360,lat)))return c}
+  for(const c of pv.countries){if(!c.polys.length||lat<c.box[1]||lat>c.box[3])continue;if(c.key==='RU'&&(lon<0||lon>180))continue;for(const p of c.polys)if(pvInPoly(p,lon,lat)||(c.key!=='RU'&&p.box[2]>180&&pvInPoly(p,lon+360,lat)))return c}
  }
  return null;
 }
@@ -237,13 +245,7 @@ function pvRemove(key){delete pv.visited[key];pvSave();pvStatus();const c=pv.byK
 function pvSearch(q){
  const box=document.getElementById('pv-results');if(!box)return;
  const n=pvNorm(q);if(!n){box.hidden=true;box.innerHTML='';return}
- if(n==='israel'){
-  box.hidden=true;box.innerHTML='';
-  const i=document.getElementById('pv-search');if(i)i.blur();
-  const m=document.getElementById('pv-modal');
-  if(m){m.innerHTML='<div class="nx-map-dialog" role="alertdialog" aria-modal="true" aria-label="Pays introuvable"><h3>Pays introuvable</h3><div class="nx-map-buttons"><button type="button" class="nx-primary" onclick="pvModalClose()">Fermer</button></div></div>';m.hidden=false}
-  return;
- }
+ if(n==='israel'){box.innerHTML='<div class="pv-none">Aucun pays trouvé</div>';box.hidden=false;return;}
  const res=pv.countries.map(c=>({c,fr:c.fr||(c.fr=pvFrName(c))})).filter(x=>pvNorm(x.fr).includes(n)||pvNorm(x.c.name).includes(n)).sort((a,b)=>pvNorm(a.fr).indexOf(n)-pvNorm(b.fr).indexOf(n)||a.fr.localeCompare(b.fr,'fr')).slice(0,8);
  box.innerHTML=res.length?res.map(x=>`<button type="button" onclick="pvPick('${x.c.key.replace(/'/g,"\\'")}')">${pvFlag(x.c.a2)} ${pvEsc(x.fr)}${pv.visited[x.c.key]?' <small>✓</small>':''}</button>`).join(''):'<div class="pv-none">Aucun pays trouvé</div>';
  box.hidden=false;

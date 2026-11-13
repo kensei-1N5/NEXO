@@ -1,5 +1,5 @@
 /* NEXO service worker — réseau d'abord (timeout 4 s), cache en secours hors-ligne */
-const CACHE='nexo-v2.8.111';
+const CACHE='nexo-v2.8.114';
 const ASSETS=['./','./index.html','./style.css','./qrcode.js','./app.js','./carte-gps.js','./pays-visites.js','./extras.js','./manifest.webmanifest','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
 self.addEventListener('install',e=>{
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));

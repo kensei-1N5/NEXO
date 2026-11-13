@@ -1402,3 +1402,6 @@ body.nx-map-screen-on:has(#pv-canvas){background:#d0e7f5!important;overscroll-be
 body.nx-map-screen-on:has(#pv-canvas) .nx-map-shell{top:env(safe-area-inset-top)!important;bottom:0!important;background:#d0e7f5!important;}
 body.nx-map-screen-on:has(#pv-canvas) .nx-map-top{top:10px!important;}
 body.nx-map-screen-on:has(#pv-canvas)::before{content:""!important;display:block!important;position:fixed!important;inset:0 0 auto 0!important;height:env(safe-area-inset-top)!important;background:#d0e7f5!important;z-index:105!important;pointer-events:none!important;filter:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+
+/* v2.8.113 — Mes pays visités uniquement : décaler la recherche de 0,5 cm (≈19 px) vers le bas, sans déplacer le GPS. */
+body.nx-map-screen-on:has(#pv-canvas) .nx-map-top{top:29px!important;}
