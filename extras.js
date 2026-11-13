@@ -309,7 +309,7 @@ window.nxSearchGo=function(i){
 /* NEXO settings redesign 2.8.88 — non-destructive, keeps original modules and keys. */
 const NX_SETTING_ICONS=['📋','✅','📝','📌','📅','🗓️','📁','🗂️','📒','📚','🔖','⏰','💰','💳','💵','💶','🪙','🏦','📈','📉','📊','🧾','💸','💎','✈️','🧳','🌍','🗺️','🧭','🏝️','🏕️','⛺','🎯','🎟️','🎮','🎨','🚗','🏎️','🏍️','🛵','🚲','⛽','🛞','🔧','⚙️','🛠️','🚦','🛣️','❤️','💊','🩺','🩹','💉','💪','🏋️','🏃','🚴','🏊','🥗','💧','🏠','🛒','🛍️','🍽️','🍳','🥘','🧹','🧺','🪴','🔑','📦','🛏️','💻','📱','⌚','⌨️','🖥️','📷','🔋','🔌','💡','🔐','🛜','📡','🧮','🔢','📐','📏','⚖️','🌡️','⏱️','⏳','🔍','📍','🧲','☀️','🌙','⭐','🌈','☁️','🌧️','❄️','🔥','🌊','🌳','🌸','🍀'];
 let nxSettingsPage='home',nxSettingsTab='modules',nxSettingsSort='sizeDesc',nxSettingsSearch='',nxSettingsExpanded=new Set(),nxSettingsModal=null,nxCategoryDrag=null;
-const NX_VERSION='2.8.121';
+const NX_VERSION='2.8.122';
 const nxAccentColors=[['Bleu','#3B82F6'],['Violet','#8B5CF6'],['Vert','#10B981'],['Orange','#F97316'],['Rouge','#EF4444'],['Rose','#EC4899']];
 function nxAccent(){return get('nxAccent','#3B82F6')}
 function nxApplyAccent(){document.documentElement.style.setProperty('--nx-accent',nxAccent())}

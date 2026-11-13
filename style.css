@@ -1455,3 +1455,13 @@ body.nx-map-screen-on:has(#pv-canvas) .nx-map-top{top:29px!important;}
 .goal-move-card .field{text-align:center;}
 .goal-move-card .goal-move-submit{width:100%;height:46px;display:flex;align-items:center;justify-content:center;}
 .goal-module-icon{display:inline-flex;align-items:center;justify-content:center;min-width:1em;}
+
+/* v2.8.122 — trois filtres dépenses alignés sur une seule ligne */
+.exp-dash-period.exp-dash-three-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:end;width:100%;min-width:0;}
+.exp-dash-three-filters .exp-dash-filter{display:flex;flex-direction:column;gap:7px;min-width:0;width:100%;margin:0;text-align:center;}
+.exp-dash-three-filters .exp-dash-filter>span{display:block;text-align:center;font-size:13px;color:var(--muted);line-height:1.25;}
+.exp-dash-three-filters .exp-dash-filter select,.exp-dash-three-filters #expDashMonth,.exp-dash-three-filters #expDashYear,.exp-dash-three-filters #expFilter{display:block;box-sizing:border-box;width:100%;min-width:0;max-width:100%;height:44px;padding:0 15px 0 5px;text-align:center;text-align-last:center;font-size:clamp(11px,2.8vw,14px);text-overflow:ellipsis;}
+/* Dates iOS : centrage du contenu natif, y compris la date affichée */
+.goal-editor #goalDeadline,.goal-move-card #goalMoveDate{display:block;text-align:center!important;text-align-last:center!important;direction:ltr;}
+.goal-editor #goalDeadline::-webkit-date-and-time-value,.goal-move-card #goalMoveDate::-webkit-date-and-time-value{text-align:center!important;min-height:1lh;width:100%;}
+.goal-editor #goalDeadline::-webkit-datetime-edit,.goal-move-card #goalMoveDate::-webkit-datetime-edit{display:inline-flex;justify-content:center;text-align:center;width:100%;padding:0;}
