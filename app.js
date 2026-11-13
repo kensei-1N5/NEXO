@@ -1243,7 +1243,7 @@ async function nexoShowStorage(){
  }catch(e){host.textContent='Impossible de mesurer le stockage : '+e.message}
 }
 
-// Sauvegarde intégrale v2.8.95 : données locales et bases IndexedDB chiffrées.
+// Sauvegarde intégrale v2.8.96 : données locales et bases IndexedDB chiffrées.
 // Les clés de chiffrement ne sont pas déchiffrées et les secrets maîtres ne sont jamais exportés en clair.
 const BACKUP_FORMAT='digital-toolbox-full-backup';
 const BACKUP_EXTRA_KEYS=['nexo_lifetime_v1','nexoMindsetDailyStatus_v1'];

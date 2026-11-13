@@ -309,7 +309,7 @@ window.nxSearchGo=function(i){
 /* NEXO settings redesign 2.8.88 — non-destructive, keeps original modules and keys. */
 const NX_SETTING_ICONS=['📋','✅','📝','📌','📅','🗓️','📁','🗂️','📒','📚','🔖','⏰','💰','💳','💵','💶','🪙','🏦','📈','📉','📊','🧾','💸','💎','✈️','🧳','🌍','🗺️','🧭','🏝️','🏕️','⛺','🎯','🎟️','🎮','🎨','🚗','🏎️','🏍️','🛵','🚲','⛽','🛞','🔧','⚙️','🛠️','🚦','🛣️','❤️','💊','🩺','🩹','💉','💪','🏋️','🏃','🚴','🏊','🥗','💧','🏠','🛒','🛍️','🍽️','🍳','🥘','🧹','🧺','🪴','🔑','📦','🛏️','💻','📱','⌚','⌨️','🖥️','📷','🔋','🔌','💡','🔐','🛜','📡','🧮','🔢','📐','📏','⚖️','🌡️','⏱️','⏳','🔍','📍','🧲','☀️','🌙','⭐','🌈','☁️','🌧️','❄️','🔥','🌊','🌳','🌸','🍀'];
 let nxSettingsPage='home',nxSettingsTab='modules',nxSettingsSort='sizeDesc',nxSettingsSearch='',nxSettingsExpanded=new Set(),nxSettingsModal=null,nxCategoryDrag=null;
-const NX_VERSION='2.8.95';
+const NX_VERSION='2.8.96';
 const nxAccentColors=[['Bleu','#3B82F6'],['Violet','#8B5CF6'],['Vert','#10B981'],['Orange','#F97316'],['Rouge','#EF4444'],['Rose','#EC4899']];
 function nxAccent(){return get('nxAccent','#3B82F6')}
 function nxApplyAccent(){document.documentElement.style.setProperty('--nx-accent',nxAccent())}
@@ -361,38 +361,64 @@ function nxCreateCategory(){const el=document.getElementById('nx-new-cat');const
 function nxEditCategory(id){const g=allModuleGroups().find(x=>x.id===id);if(!g)return;nxModal(`<h3>Modifier la catégorie</h3><label class="nx-field-label">Nom<input class="field" maxlength="45" id="nx-edit-cat-name" value="${esc(g.title)}"></label><label class="nx-field-label">Icône</label>${nxEmojiPicker(g.icon)}<div class="nx-btn-row"><button class="btn" onclick="nxCloseModal()">Annuler</button><button class="btn primary" onclick="nxSaveCategory('${id}')">Enregistrer</button></div>`)}
 function nxSaveCategory(id){const g=allModuleGroups().find(x=>x.id===id),title=document.getElementById('nx-edit-cat-name')?.value.trim(),icon=nxChosenEmoji()||g.icon;if(!title)return toast('Nom requis');if(allModuleGroups().some(x=>x.id!==id&&x.title.toLocaleLowerCase('fr')===title.toLocaleLowerCase('fr')))return toast('Ce nom existe déjà');if(id.startsWith('custom-'))put('customModuleGroups',customModuleGroups().map(x=>x.id===id?{...x,title}:x));else{const names=get('nxCategoryNames',{});names[id]=title;put('nxCategoryNames',names)}const icons=get('moduleCategoryIcons',{});icons[id]=icon;put('moduleCategoryIcons',icons);nxCloseModal();nxRenderCategories();toast('Catégorie modifiée')}
 function nxBindCategoryDrag(){
- const host=document.getElementById('nx-categories-list');if(!host)return;
+ const host=document.getElementById('nx-categories-list');
+ if(!host)return;
  host.querySelectorAll('.nx-drag-handle').forEach(handle=>{
   handle.addEventListener('pointerdown',e=>{
-   if(e.button!==undefined&&e.button!==0)return;
-   const row=handle.closest('.nx-draggable');if(!row||nxCategoryDrag)return;
-   const box=row.getBoundingClientRect();
-   nxCategoryDrag={id:row.dataset.cid,handle,row,pointer:e.pointerId,startY:e.clientY,originalTop:box.top,lastY:e.clientY};
+   if(e.button!==0||nxCategoryDrag)return;
+   const row=handle.closest('.nx-draggable');
+   if(!row)return;
+   e.preventDefault();
+   nxCategoryDrag={id:row.dataset.cid,handle,row,pointer:e.pointerId,startY:e.clientY,
+     index:moduleCategoryDraft.indexOf(row.dataset.cid),dropIndex:0,y:e.clientY};
+   nxCategoryDrag.dropIndex=nxCategoryDrag.index;
+   row.classList.add('nx-dragging');
    try{handle.setPointerCapture(e.pointerId)}catch(_){}
-   row.classList.add('nx-dragging');document.body.classList.add('nx-category-moving');e.preventDefault();
   });
   handle.addEventListener('pointermove',e=>{
-   const drag=nxCategoryDrag;if(!drag||drag.handle!==handle||drag.pointer!==e.pointerId)return;
-   e.preventDefault();drag.lastY=e.clientY;
-   // Repositionnement basé sur le centre des lignes et non sur elementFromPoint
-   // (qui renvoie parfois la ligne déplacée elle-même sur iOS).
-   const others=[...host.querySelectorAll('.nx-draggable')].filter(row=>row!==drag.row);
-   const next=others.find(row=>e.clientY<row.getBoundingClientRect().top+row.getBoundingClientRect().height/2);
-   if(next)host.insertBefore(drag.row,next);else host.appendChild(drag.row);
-   const pane=document.scrollingElement||document.documentElement;
-   const edge=65;if(e.clientY>window.innerHeight-edge)pane.scrollTop+=12;else if(e.clientY<edge)pane.scrollTop-=12;
+   const drag=nxCategoryDrag;
+   if(!drag||drag.handle!==handle||drag.pointer!==e.pointerId)return;
+   e.preventDefault();
+   drag.y=e.clientY;
+   drag.row.style.transform=`translateY(${e.clientY-drag.startY}px)`;
+   drag.row.style.position='relative';
+   drag.row.style.zIndex='10';
+   const others=[...host.querySelectorAll('.nx-draggable')].filter(r=>r!==drag.row);
+   drag.dropIndex=others.filter(r=>e.clientY>r.getBoundingClientRect().top+r.getBoundingClientRect().height/2).length;
+   host.querySelectorAll('.nx-drop-before,.nx-drop-after').forEach(r=>r.classList.remove('nx-drop-before','nx-drop-after'));
+   if(others.length){
+    if(drag.dropIndex<others.length)others[drag.dropIndex].classList.add('nx-drop-before');
+    else others[others.length-1].classList.add('nx-drop-after');
+   }
+   // Scroll a long list while the finger approaches an edge.
+   const scroller=(()=>{let p=host.parentElement;while(p&&p!==document.body){
+    const style=getComputedStyle(p);
+    if(/auto|scroll/.test(style.overflowY)&&p.scrollHeight>p.clientHeight+2)return p;
+    p=p.parentElement;
+   }return document.scrollingElement||document.documentElement})();
+   const box=scroller===document.scrollingElement||scroller===document.documentElement
+    ?{top:0,bottom:window.innerHeight}:scroller.getBoundingClientRect();
+   if(e.clientY<box.top+65)scroller.scrollTop-=Math.min(20,(box.top+65-e.clientY)/3);
+   else if(e.clientY>box.bottom-65)scroller.scrollTop+=Math.min(20,(e.clientY-(box.bottom-65))/3);
   });
   const finish=e=>{
-   const drag=nxCategoryDrag;if(!drag||drag.handle!==handle)return;
-   if(e&&e.pointerId!==undefined&&e.pointerId!==drag.pointer)return;
-   drag.row.classList.remove('nx-dragging');document.body.classList.remove('nx-category-moving');
-   // Le DOM fait foi : un seul geste peut déplacer une catégorie de plusieurs places.
-   moduleCategoryDraft=[...host.querySelectorAll('.nx-draggable')].map(row=>row.dataset.cid);
+   const drag=nxCategoryDrag;
+   if(!drag||drag.handle!==handle||drag.pointer!==e.pointerId)return;
+   drag.row.classList.remove('nx-dragging');
+   drag.row.style.transform='';drag.row.style.position='';drag.row.style.zIndex='';
+   host.querySelectorAll('.nx-drop-before,.nx-drop-after').forEach(r=>r.classList.remove('nx-drop-before','nx-drop-after'));
+   if(e.type==='pointerup'){
+    const from=moduleCategoryDraft.indexOf(drag.id);
+    if(from>=0){
+     moduleCategoryDraft.splice(from,1);
+     moduleCategoryDraft.splice(Math.max(0,Math.min(drag.dropIndex,moduleCategoryDraft.length)),0,drag.id);
+    }
+   }
    nxCategoryDrag=null;
-   try{if(handle.hasPointerCapture(drag.pointer))handle.releasePointerCapture(drag.pointer)}catch(_){}
+   nxRenderCategories();
   };
-  handle.addEventListener('pointerup',finish);handle.addEventListener('pointercancel',finish);
-  handle.addEventListener('lostpointercapture',finish);
+  handle.addEventListener('pointerup',finish);
+  handle.addEventListener('pointercancel',finish);
  });
 }
 function nxSaveCategoryOrder(){put('moduleCategoryOrder',moduleCategoryDraft.slice());toast('Ordre des catégories enregistré')}
