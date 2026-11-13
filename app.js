@@ -490,7 +490,7 @@ let motoGPSNavWatch=null,motoGPSNavMode='follow',motoGPSNavHeading=null,motoGPSN
 const MOTO_GL_VERSION='4.7.1',MOTO_GL_STYLE='https://tiles.openfreemap.org/styles/liberty';
 let motoGL=null,motoGLReady=false,motoGLMarker=null,motoGLDestMarker=null,motoWakeLock=null;
 function motoGLSupported(){try{const c=document.createElement('canvas');return !!(c.getContext('webgl2')||c.getContext('webgl'))}catch(e){return false}}
-function motoGLEnabled(){return get('motoModernMap',true)!==false&&motoGLSupported()}
+function motoGLEnabled(){return motoGLSupported()}
 function motoMapActive(){return !!(motoGL||motoGPSMap)}
 function motoLoadMapLibre(){return new Promise((resolve,reject)=>{
  if(window.maplibregl)return resolve();
@@ -510,11 +510,12 @@ function motoGLInit(){return new Promise((resolve,reject)=>{
  let map,done=false;
  const fail=e=>{if(done)return;done=true;clearTimeout(timer);reject(e)};
  const timer=setTimeout(()=>fail(Error('Chargement de la carte trop long')),12000);
- try{map=new maplibregl.Map({container:host,style:MOTO_GL_STYLE,center:[2.35,48.85],zoom:12,attributionControl:false,dragRotate:false,pitchWithRotate:false,touchPitch:false,maxPitch:70,fadeDuration:0})}catch(e){return fail(e)}
+ try{map=new maplibregl.Map({container:host,style:MOTO_GL_STYLE,center:[2.35,48.85],zoom:12,attributionControl:false,touchPitch:false,maxPitch:70,fadeDuration:0})}catch(e){return fail(e)}
  motoGL=map;
- try{map.addControl(new maplibregl.AttributionControl({compact:true}));map.touchZoomRotate.disableRotation()}catch(e){}
+ try{map.addControl(new maplibregl.AttributionControl({compact:true}))}catch(e){}
  map.on('error',e=>{if(!done&&!map.isStyleLoaded())fail(e.error||Error('Style indisponible'))});
  map.on('dragstart',()=>{motoGPSNavMode='free';motoGPSNavButtons()});
+ map.on('rotatestart',e=>{if(e.originalEvent){motoGPSNavMode='free';motoGPSNavButtons()}});
  map.on('zoomstart',e=>{if(e.originalEvent){motoGPSNavManualZoom=true;motoGPSNavMode='free';motoGPSNavButtons()}});
  map.on('load',()=>{if(done)return;done=true;clearTimeout(timer);
   try{
@@ -527,13 +528,11 @@ function motoGLInit(){return new Promise((resolve,reject)=>{
 async function motoGPSInitMap(){
  if(!document.getElementById('moto-gps-map'))return;
  if(motoGLEnabled()){
-  try{await motoLoadMapLibre();if(!document.getElementById('moto-gps-map'))return;await motoGLInit();motoGPSEngineLabel();return}
+  try{await motoLoadMapLibre();if(!document.getElementById('moto-gps-map'))return;await motoGLInit();return}
   catch(e){console.warn('Carte moderne indisponible :',e&&e.message);motoGLDestroy();const h=document.getElementById('moto-gps-map');if(h)h.replaceChildren('Chargement de la carte…');toast('Carte moderne indisponible : carte classique')}
  }
- motoGPSEngineLabel();
  return motoGPSInitLeaflet();
 }
-function motoGPSEngineLabel(){const b=document.getElementById('moto-gps-engine');if(b)b.textContent=motoGL?'Carte classique':'Carte moderne'}
 function motoMapMarker(ll){
  if(motoGL){if(!motoGLReady)return;if(!motoGLMarker){const el=document.createElement('div');el.className='moto-gl-dot';motoGLMarker=new maplibregl.Marker({element:el}).setLngLat([ll[1],ll[0]]).addTo(motoGL)}else motoGLMarker.setLngLat([ll[1],ll[0]]);return}
  if(!motoGPSMap)return;if(!motoGPSMarker)motoGPSMarker=L.circleMarker(ll,{radius:9,color:'#fff',weight:3,fillColor:'#278aff',fillOpacity:1}).addTo(motoGPSMap);else motoGPSMarker.setLatLng(ll)}
@@ -561,11 +560,6 @@ function motoGLCamera(immediate){
 async function motoWakeOn(){try{if(navigator.wakeLock&&!motoWakeLock){motoWakeLock=await navigator.wakeLock.request('screen');motoWakeLock.addEventListener('release',()=>{motoWakeLock=null})}}catch(e){motoWakeLock=null}}
 function motoWakeOff(){try{motoWakeLock?.release()}catch(e){}motoWakeLock=null}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&document.body.classList.contains('moto-gps-fullscreen'))motoWakeOn()});
-function motoGPSToggleEngine(){
- if(motoGPSWatch!==null){toast('Termine d’abord l’enregistrement en cours');return}
- put('motoModernMap',!motoGL);
- motoGPSNavStop();motoGLDestroy();if(motoGPSMap){motoGPSMap.remove();motoGPSMap=null}motoGPSMarker=null;motoGPSLine=null;motoGPSRouteLine=null;motoGPSDestinationMarker=null;motoGPSCurrentDestination=null;
- motoGPSOpen()}
 function motoGPSBearing(a,b){const r=Math.PI/180,dl=(b.lng-a.lng)*r,y=Math.sin(dl)*Math.cos(b.lat*r),x=Math.cos(a.lat*r)*Math.sin(b.lat*r)-Math.sin(a.lat*r)*Math.cos(b.lat*r)*Math.cos(dl);return (Math.atan2(y,x)/r+360)%360}
 function motoGPSNavButtons(){const n=document.getElementById('moto-gps-north'),r=document.getElementById('moto-gps-recenter');if(n){n.textContent=motoGPSNavMode==='north'?'↗ Suivi':'N ↑ Nord';n.setAttribute('aria-pressed',String(motoGPSNavMode==='north'))}if(r)r.hidden=motoGPSNavMode==='follow'&&!motoGPSNavManualZoom}
 function motoGPSNavNorth(){motoGPSNavMode=motoGPSNavMode==='north'?'follow':'north';motoGPSNavManualZoom=false;motoGPSNavButtons();motoGPSNavRender(true)}
@@ -604,7 +598,7 @@ function motoGPSNavStop(){if(motoGPSNavWatch!==null)navigator.geolocation.clearW
 function motoGPSOpen(){
  document.body.classList.add('moto-gps-fullscreen');
  setHead('Roadtrip Moto','GPS et télémétrie · version test');
- content(`<div class="moto-gps-screen"><button class="moto-gps-exit" onclick="motoGPSLeave()">← Retour</button><div class="moto-gps-shell"><div id="moto-gps-map" class="moto-gps-map">Chargement de la carte…</div><div class="moto-gps-search"><div class="moto-gps-search-row"><input id="moto-gps-destination" type="search" placeholder="Où veux-tu aller ?" aria-label="Adresse de destination" onkeydown="if(event.key==='Enter')motoGPSFindDestination()"><button onclick="motoGPSFindDestination()" id="moto-gps-find">Chercher</button></div><div id="moto-gps-search-results" class="moto-gps-search-results" hidden></div><div id="moto-gps-route-summary" class="moto-gps-route-summary" hidden></div></div><div class="moto-gps-nav-controls"><button id="moto-gps-north" onclick="motoGPSNavNorth()" aria-label="Basculer orientation Nord">N ↑ Nord</button><button id="moto-gps-recenter" onclick="motoGPSNavRecenter()" aria-label="Recentrer sur la moto" hidden>◎ Recentrer</button><button id="moto-gps-engine" onclick="motoGPSToggleEngine()" aria-label="Changer de type de carte">${motoGLEnabled()?'Carte classique':'Carte moderne'}</button></div><div class="moto-gps-panel"><div class="moto-gps-speed"><button class="moto-gps-lean" onclick="motoGPSCalibrate()" title="Toucher pour recalibrer"><small>Inclinaison ↻</small><strong id="moto-gps-angle">—</strong><span id="moto-gps-side">Capteur non activé</span></button><div><small>Vitesse GPS</small><strong id="moto-gps-speed">0</strong><small>km/h</small></div><div><small>Limitation</small><span class="moto-gps-limit" id="moto-gps-limit">—</span><small>Non disponible</small></div></div><div class="moto-gps-stats"><span id="moto-gps-distance">0,00 km</span><span id="moto-gps-duration">00:00</span><span id="moto-gps-max">Max 0 km/h</span></div><div class="moto-gps-actions"><button class="btn primary" id="moto-gps-start" onclick="motoGPSStart()">● Démarrer</button><button class="btn danger" id="moto-gps-stop" onclick="motoGPSStop()" disabled>■ Terminer et enregistrer</button></div><p class="small moto-gps-help">GPS et capteurs indicatifs. Gardez l'écran actif : le suivi en arrière-plan n'est pas garanti sur iPhone. Les limitations de vitesse et le guidage vocal ne sont pas disponibles dans cette première version. Ne manipulez pas l'écran en roulant. Cartes © OpenStreetMap, OpenMapTiles, OpenFreeMap.</p></div></div>`);
+ content(`<div class="moto-gps-screen"><button class="moto-gps-exit" onclick="motoGPSLeave()">← Retour</button><div class="moto-gps-shell"><div id="moto-gps-map" class="moto-gps-map">Chargement de la carte…</div><div class="moto-gps-search"><div class="moto-gps-search-row"><input id="moto-gps-destination" type="search" placeholder="Où veux-tu aller ?" aria-label="Adresse de destination" onkeydown="if(event.key==='Enter')motoGPSFindDestination()"><button onclick="motoGPSFindDestination()" id="moto-gps-find">Chercher</button></div><div id="moto-gps-search-results" class="moto-gps-search-results" hidden></div><div id="moto-gps-route-summary" class="moto-gps-route-summary" hidden></div></div><div class="moto-gps-nav-controls"><button id="moto-gps-north" onclick="motoGPSNavNorth()" aria-label="Basculer orientation Nord">N ↑ Nord</button><button id="moto-gps-recenter" onclick="motoGPSNavRecenter()" aria-label="Recentrer sur la moto" hidden>◎ Recentrer</button></div><div class="moto-gps-panel"><div class="moto-gps-speed"><button class="moto-gps-lean" onclick="motoGPSCalibrate()" title="Toucher pour recalibrer"><small>Inclinaison ↻</small><strong id="moto-gps-angle">—</strong><span id="moto-gps-side">Capteur non activé</span></button><div><small>Vitesse GPS</small><strong id="moto-gps-speed">0</strong><small>km/h</small></div><div><small>Limitation</small><span class="moto-gps-limit" id="moto-gps-limit">—</span><small>Non disponible</small></div></div><div class="moto-gps-stats"><span id="moto-gps-distance">0,00 km</span><span id="moto-gps-duration">00:00</span><span id="moto-gps-max">Max 0 km/h</span></div><div class="moto-gps-actions"><button class="btn primary" id="moto-gps-start" onclick="motoGPSStart()">● Démarrer</button><button class="btn danger" id="moto-gps-stop" onclick="motoGPSStop()" disabled>■ Terminer et enregistrer</button></div><p class="small moto-gps-help">GPS et capteurs indicatifs. Gardez l'écran actif : le suivi en arrière-plan n'est pas garanti sur iPhone. Les limitations de vitesse et le guidage vocal ne sont pas disponibles dans cette première version. Ne manipulez pas l'écran en roulant. Cartes © OpenStreetMap, OpenMapTiles, OpenFreeMap.</p></div></div>`);
  motoWakeOn();
  motoGPSInitMap();
 }
