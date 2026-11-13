@@ -18,6 +18,8 @@ async function pvFetchTopo(msg){
  throw Error('Planisphère indisponible : connecte-toi une première fois à Internet.')
 }
 /* ---- décodage TopoJSON ---- */
+function pvM(lat){const l=Math.max(-85,Math.min(85,lat));return Math.log(Math.tan(Math.PI/4+l*Math.PI/360))*180/Math.PI}
+function pvInvM(m){return (2*Math.atan(Math.exp(m*Math.PI/180))-Math.PI/2)*180/Math.PI}
 function pvRingArea(r){let a=0;for(let i=0,j=r.length-1;i<r.length;j=i++)a+=(r[j][0]*r[i][1]-r[i][0]*r[j][1]);return a/2}
 function pvInRing(r,x,y){let ins=false;for(let i=0,j=r.length-1;i<r.length;j=i++){const xi=r[i][0],yi=r[i][1],xj=r[j][0],yj=r[j][1];if((yi>y)!==(yj>y)&&x<(xj-xi)*(y-yi)/(yj-yi)+xi)ins=!ins}return ins}
 function pvInPoly(p,x,y){if(x<p.box[0]||x>p.box[2]||y<p.box[1]||y>p.box[3])return false;if(!pvInRing(p.rings[0],x,y))return false;for(let i=1;i<p.rings.length;i++)if(pvInRing(p.rings[i],x,y))return false;return true}
@@ -35,25 +37,36 @@ function pvCentroid(p){
 function pvParse(topo){
  const tf=topo.transform,sx=tf?tf.scale[0]:1,sy=tf?tf.scale[1]:1,tx=tf?tf.translate[0]:0,ty=tf?tf.translate[1]:0;
  const arcs=topo.arcs.map(a=>{let x=0,y=0;const o=new Array(a.length);for(let i=0;i<a.length;i++){if(tf){x+=a[i][0];y+=a[i][1];o[i]=[x*sx+tx,y*sy+ty]}else o[i]=[a[i][0],a[i][1]]}return o});
- const ring=ids=>{const out=[];for(const id of ids){if(id<0){const a=arcs[~id];for(let i=out.length?a.length-2:a.length-1;i>=0;i--)out.push(a[i])}else{const a=arcs[id];for(let i=out.length?1:0;i<a.length;i++)out.push(a[i])}}return out};
+ const ring0=ids=>{const out=[];for(const id of ids){if(id<0){const a=arcs[~id];for(let i=out.length?a.length-2:a.length-1;i>=0;i--)out.push(a[i])}else{const a=arcs[id];for(let i=out.length?1:0;i<a.length;i++)out.push(a[i])}}return out};
+ const ring=(ids,shift)=>{const out=ring0(ids);let cross=false;for(let i=1;i<out.length;i++)if(Math.abs(out[i][0]-out[i-1][0])>180){cross=true;break}return {pts:out,cross}};
  const obj=topo.objects.countries||Object.values(topo.objects)[0];
  const list=[];
  for(const g of obj.geometries||[]){
   const name=(g.properties&&g.properties.name)||'';if(name==='Antarctica')continue;
   const rawPolys=g.type==='Polygon'?[g.arcs]:g.type==='MultiPolygon'?g.arcs:[];if(!rawPolys.length)continue;
-  const polys=rawPolys.map(pa=>{const rings=pa.map(ring).filter(r=>r.length>2);if(!rings.length)return null;let x0=180,y0=90,x1=-180,y1=-90;for(const q of rings[0]){if(q[0]<x0)x0=q[0];if(q[0]>x1)x1=q[0];if(q[1]<y0)y0=q[1];if(q[1]>y1)y1=q[1]}return {rings,box:[x0,y0,x1,y1],area:Math.abs(pvRingArea(rings[0]))}}).filter(Boolean);
+  const polys=rawPolys.map(pa=>{const rs=pa.map(a=>ring(a));const shifted=rs[0]&&rs[0].cross;let rings=rs.map((o,i)=>{const r=o.pts;if(o.cross||(shifted&&i>0))for(const q of r)if(q[0]<0)q[0]+=360;return r}).filter(r=>r.length>2);if(!rings.length)return null;for(const r of rings)for(const q of r)q[2]=pvM(q[1]);let x0=360,y0=90,x1=-360,y1=-90;for(const q of rings[0]){if(q[0]<x0)x0=q[0];if(q[0]>x1)x1=q[0];if(q[1]<y0)y0=q[1];if(q[1]>y1)y1=q[1]}return {rings,box:[x0,y0,x1,y1],area:Math.abs(pvRingArea(rings[0]))}}).filter(Boolean);
   if(!polys.length)continue;
   const num=parseInt(g.id,10);let a2=PV_NUM2A2[num]||(name==='Kosovo'?'XK':null);
   const key=a2||('N:'+name);
   let big=polys[0];for(const p of polys)if(p.area>big.area)big=p;
-  let x0=180,y0=90,x1=-180,y1=-90;for(const p of polys){x0=Math.min(x0,p.box[0]);y0=Math.min(y0,p.box[1]);x1=Math.max(x1,p.box[2]);y1=Math.max(y1,p.box[3])}
+  let x0=360,y0=90,x1=-360,y1=-90;for(const p of polys){x0=Math.min(x0,p.box[0]);y0=Math.min(y0,p.box[1]);x1=Math.max(x1,p.box[2]);y1=Math.max(y1,p.box[3])}
   const ex=list.find(c=>c.key===key);
   if(ex){ex.polys.push(...polys);continue}
-  list.push({key,a2,name,polys,box:[x0,y0,x1,y1],main:big.box,pin:pvCentroid(big)});
+  const pin=pvCentroid(big);if(pin[0]>180)pin[0]-=360;list.push({key,a2,name,polys,box:[x0,y0,x1,y1],main:big.box,pin});
  }
  return list;
 }
+/* Territoires sans contour propre dans le fond de carte : points cliquables */
+const PV_TERR=[['MQ','Martinique',14.64,-61.0],['GP','Guadeloupe',16.25,-61.55],['GF','Guyane',4.0,-53.0],['RE','La Réunion',-21.12,55.53],['YT','Mayotte',-12.82,45.15],['PF','Polynésie française',-17.68,-149.45],['NC','Nouvelle-Calédonie',-21.3,165.5],['MF','Saint-Martin',18.08,-63.06],['BL','Saint-Barthélemy',17.9,-62.83],['PM','Saint-Pierre-et-Miquelon',46.83,-56.3],['WF','Wallis-et-Futuna',-13.77,-177.15]];
+function pvAddTerritories(){
+ for(const [a2,name,lat,lon] of PV_TERR){
+  if(pv.byKey.has(a2))continue;
+  const c={key:a2,a2,name,fr:name,polys:[],pt:true,box:[lon,lat,lon,lat],main:[lon-1.2,lat-1.2,lon+1.2,lat+1.2],pin:[lon,lat]};
+  pv.countries.push(c);pv.byKey.set(a2,c);
+ }
+}
 function pvFrName(c){
+ if(c.fr)return c.fr;
  if(c.a2){try{pv.dn=pv.dn||new Intl.DisplayNames(['fr'],{type:'region'});const n=pv.dn.of(c.a2);if(n&&n!==c.a2)return n}catch(_){}}
  return ({'N. Cyprus':'Chypre du Nord','Somaliland':'Somaliland'})[c.name]||c.name;
 }
@@ -63,53 +76,52 @@ function pvSave(){put(PV_KEY,pv.visited)}
 function pvStatus(){const n=Object.keys(pv.visited).length,e=document.getElementById('pv-chip');if(e)e.innerHTML=`<strong>${n}</strong> pays visité${n>1?'s':''} <small>· ${Math.min(100,Math.round(n/195*100))} % du monde</small>`}
 /* ---- projection (équirectangulaire) ---- */
 function pvSize(){const r=pv.canvas.getBoundingClientRect();return [r.width,r.height]}
-function pvToScr(lon,lat,w,h){const v=pv.view;return [w/2+(lon-v.cx)*v.s,h/2-(lat-v.cy)*v.s]}
-function pvFromScr(x,y,w,h){const v=pv.view;return [v.cx+(x-w/2)/v.s,v.cy-(y-h/2)/v.s]}
-function pvClamp(){const [w]=pvSize(),v=pv.view;v.s=Math.max(w/360,Math.min(80,v.s));v.cx=Math.max(-180,Math.min(180,v.cx));v.cy=Math.max(-80,Math.min(85,v.cy))}
+function pvToScr(lon,lat,w,h){const v=pv.view;return [w/2+(lon-v.cx)*v.s,h/2-(pvM(lat)-pvM(v.cy))*v.s]}
+function pvFromScr(x,y,w,h){const v=pv.view;return [v.cx+(x-w/2)/v.s,pvInvM(pvM(v.cy)-(y-h/2)/v.s)]}
+function pvClamp(){const [w]=pvSize(),v=pv.view;v.s=Math.max(w/360,Math.min(80,v.s));v.cx=Math.max(-180,Math.min(180,v.cx));v.cy=Math.max(-58,Math.min(80,v.cy))}
 function pvRedraw(){if(pv.raf)return;pv.raf=requestAnimationFrame(()=>{pv.raf=0;pvDraw()})}
-function pvPin(ctx,x,y,k){const r=9*k,cy=y-r*2.2;ctx.save();ctx.shadowColor='#0005';ctx.shadowBlur=5;ctx.shadowOffsetY=2;ctx.beginPath();ctx.moveTo(x,y);ctx.bezierCurveTo(x-r*.25,y-r*1.1,x-r,y-r*1.5,x-r,cy);ctx.arc(x,cy,r,Math.PI,0,false);ctx.bezierCurveTo(x+r,y-r*1.5,x+r*.25,y-r*1.1,x,y);ctx.closePath();ctx.fillStyle='#e5322d';ctx.fill();ctx.shadowColor='transparent';ctx.lineWidth=1.6;ctx.strokeStyle='#fff';ctx.stroke();ctx.beginPath();ctx.arc(x,cy,r*.4,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();ctx.restore()}
 function pvDraw(){
  const can=pv.canvas;if(!can||!pv.countries)return;
  const dpr=Math.min(devicePixelRatio||1,2),[w,h]=pvSize();if(!w||!h)return;
  if(can.width!==Math.round(w*dpr)||can.height!==Math.round(h*dpr)){can.width=Math.round(w*dpr);can.height=Math.round(h*dpr)}
  const ctx=can.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);
  ctx.fillStyle='#cfe5f4';ctx.fillRect(0,0,w,h);
- const v=pv.view,[lonA,latA]=pvFromScr(0,0,w,h),[lonB,latB]=pvFromScr(w,h,w,h);
+ const v=pv.view,vm=pvM(v.cy),[lonA,latA]=pvFromScr(0,0,w,h),[lonB,latB]=pvFromScr(w,h,w,h);
  const strokeW=v.s>10?1:.6;
- const drawSet=(visitedPass)=>{
+ const addPoly=(p,off)=>{
+  if(p.box[2]+off<lonA||p.box[0]+off>lonB||p.box[1]>latA||p.box[3]<latB)return;
+  for(const r of p.rings){let lx=-1e9,ly=-1e9,first=true;
+   for(let i=0;i<r.length;i++){const x=w/2+(r[i][0]+off-v.cx)*v.s,y=h/2-(r[i][2]-vm)*v.s;if(!first&&Math.abs(x-lx)<.6&&Math.abs(y-ly)<.6&&i<r.length-1)continue;if(first){ctx.moveTo(x,y);first=false}else ctx.lineTo(x,y);lx=x;ly=y}
+   ctx.closePath()}
+ };
+ const pathOf=c=>{for(const p of c.polys){addPoly(p,0);if(p.box[2]>180)addPoly(p,-360)}};
+ const drawSet=visitedPass=>{
   for(const c of pv.countries){
-   const vis=!!pv.visited[c.key];if(vis!==visitedPass)continue;
-   if(c.box[2]<lonA||c.box[0]>lonB||c.box[1]>latA||c.box[3]<latB)continue;
-   ctx.beginPath();
-   for(const p of c.polys){
-    if(p.box[2]<lonA||p.box[0]>lonB||p.box[1]>latA||p.box[3]<latB)continue;
-    for(const r of p.rings){let lx=-1e9,ly=-1e9,first=true;
-     for(let i=0;i<r.length;i++){const x=w/2+(r[i][0]-v.cx)*v.s,y=h/2-(r[i][1]-v.cy)*v.s;if(!first&&Math.abs(x-lx)<.6&&Math.abs(y-ly)<.6&&i<r.length-1)continue;if(first){ctx.moveTo(x,y);first=false}else ctx.lineTo(x,y);lx=x;ly=y}
-     ctx.closePath()}
-   }
+   const vis=!!pv.visited[c.key];if(vis!==visitedPass||c.pt)continue;
+   ctx.beginPath();pathOf(c);
    ctx.fillStyle=vis?'#38a56f':'#f2efe6';ctx.fill('evenodd');
    ctx.lineWidth=strokeW;ctx.strokeStyle=vis?'#1f7a4d':'#b8b3a3';ctx.lineJoin='round';ctx.stroke();
   }
  };
  drawSet(false);drawSet(true);
+ for(const c of pv.countries){if(!c.pt)continue;const vis=!!pv.visited[c.key];if(!vis&&v.s<3)continue;const [x,y]=pvToScr(c.pin[0],c.pin[1],w,h);if(x<-20||x>w+20||y<-20||y>h+20)continue;ctx.beginPath();ctx.arc(x,y,vis?7:4.5,0,Math.PI*2);ctx.fillStyle=vis?'#38a56f':'#f2efe6';ctx.fill();ctx.lineWidth=vis?2:1;ctx.strokeStyle=vis?'#1f7a4d':'#8d8878';ctx.stroke()}
  const sel=pv.sel&&pv.byKey.get(pv.sel);
- if(sel){ctx.beginPath();for(const p of sel.polys)for(const r of p.rings){r.forEach((q,i)=>{const [x,y]=pvToScr(q[0],q[1],w,h);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.closePath()}ctx.lineWidth=2.4;ctx.strokeStyle='#1779ed';ctx.stroke()}
- const k=v.s>6?1.15:1;
- const pins=pv.countries.filter(c=>pv.visited[c.key]).map(c=>({c,p:pvToScr(c.pin[0],c.pin[1],w,h)})).sort((a,b)=>a.p[1]-b.p[1]);
- for(const {c,p} of pins){if(p[0]<-30||p[0]>w+30||p[1]<-10||p[1]>h+50)continue;pvPin(ctx,p[0],p[1],k)}
- if(v.s>=7){ctx.font='600 12px -apple-system,system-ui,sans-serif';ctx.textAlign='center';for(const {c,p} of pins){if(p[0]<0||p[0]>w||p[1]<0||p[1]>h)continue;const n=c.fr||(c.fr=pvFrName(c));ctx.lineWidth=3.5;ctx.strokeStyle='#fffd';ctx.strokeText(n,p[0],p[1]+15);ctx.fillStyle='#15263b';ctx.fillText(n,p[0],p[1]+15)}}
+ if(sel){if(sel.pt){const [x,y]=pvToScr(sel.pin[0],sel.pin[1],w,h);ctx.beginPath();ctx.arc(x,y,11,0,Math.PI*2);ctx.lineWidth=2.4;ctx.strokeStyle='#1779ed';ctx.stroke()}else{ctx.beginPath();pathOf(sel);ctx.lineWidth=2.4;ctx.strokeStyle='#1779ed';ctx.stroke()}}
+ if(true){ctx.font='600 12px -apple-system,system-ui,sans-serif';ctx.textAlign='center';
+  for(const c of pv.countries){if(!pv.visited[c.key])continue;if(v.s<7&&!c.pt)continue;const [x,y]=pvToScr(c.pin[0],c.pin[1],w,h);if(x<0||x>w||y<0||y>h)continue;const n=c.fr||(c.fr=pvFrName(c));ctx.lineWidth=3.5;ctx.strokeStyle='#fffd';ctx.strokeText(n,x,y+(c.pt?20:0));ctx.fillStyle='#15263b';ctx.fillText(n,x,y+(c.pt?20:0))}}
  ctx.textAlign='left';ctx.fillStyle='#4a5a6c';ctx.font='10px system-ui';ctx.fillText('Fond de carte © Natural Earth',8,h-8);
 }
 /* ---- interactions ---- */
 function pvHit(x,y){
  const [w,h]=pvSize();
+ for(const c of pv.countries){if(!c.pt)continue;if(!pv.visited[c.key]&&pv.view.s<3)continue;const [px,py]=pvToScr(c.pin[0],c.pin[1],w,h);if(Math.hypot(px-x,py-y)<=16)return c}
  for(const [dx,dy] of [[0,0],[9,0],[-9,0],[0,9],[0,-9]]){
   const [lon,lat]=pvFromScr(x+dx,y+dy,w,h);
-  for(const c of pv.countries){if(lon<c.box[0]||lon>c.box[2]||lat<c.box[1]||lat>c.box[3])continue;for(const p of c.polys)if(pvInPoly(p,lon,lat))return c}
+  for(const c of pv.countries){if(lat<c.box[1]||lat>c.box[3])continue;for(const p of c.polys)if(pvInPoly(p,lon,lat)||(p.box[2]>180&&pvInPoly(p,lon+360,lat)))return c}
  }
  return null;
 }
-function pvZoomAt(x,y,f){const [w,h]=pvSize(),v=pv.view,[lon,lat]=pvFromScr(x,y,w,h);v.s*=f;pvClamp();v.cx=lon-(x-w/2)/v.s;v.cy=lat+(y-h/2)/v.s;pvClamp();pvRedraw()}
+function pvZoomAt(x,y,f){const [w,h]=pvSize(),v=pv.view,[lon,lat]=pvFromScr(x,y,w,h);v.s*=f;pvClamp();v.cx=lon-(x-w/2)/v.s;v.cy=pvInvM(pvM(lat)+(y-h/2)/v.s);pvClamp();pvRedraw()}
 function pvZoomBtn(f){const [w,h]=pvSize();pvZoomAt(w/2,h/2,f)}
 function pvSetup(can){
  can.style.touchAction='none';
@@ -122,7 +134,7 @@ function pvSetup(can){
   if(pv.pointers.size===1){
    if(pv.tap&&Math.hypot(e.clientX-pv.tap.x,e.clientY-pv.tap.y)>7)pv.tap.moved=true;
    if(pv.tap&&!pv.tap.moved)return;
-   v.cx-=(e.clientX-old.x)/v.s;v.cy+=(e.clientY-old.y)/v.s;pvClamp();pvRedraw();
+   v.cx-=(e.clientX-old.x)/v.s;v.cy=pvInvM(pvM(v.cy)+(e.clientY-old.y)/v.s);pvClamp();pvRedraw();
   }else if(pv.pointers.size===2){
    pv.tap=null;const now=[...pv.pointers.values()],d=a=>Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y),pd=d(prev),nd=d(now);
    if(pd>10)pvZoomAt((now[0].x+now[1].x)/2-r.left,(now[0].y+now[1].y)/2-r.top,nd/pd);
@@ -140,20 +152,20 @@ function pvTap(x,y){const c=pvHit(x,y);if(c)pvSelect(c.key);else{pv.sel=null;pvS
 /* ---- fiche pays ---- */
 function pvSelect(key,focus){
  const c=pv.byKey.get(key);if(!c)return;pv.sel=key;
- if(focus){const [w,h]=pvSize(),b=c.main,bw=Math.max(b[2]-b[0],.5),bh=Math.max(b[3]-b[1],.5),v=pv.view;v.s=Math.min(w*.55/bw,h*.3/bh,14);v.s=Math.max(v.s,w/200);v.cx=(b[0]+b[2])/2;v.cy=(b[1]+b[3])/2-(h*.18)/v.s;pvClamp()}
+ if(focus){const [w,h]=pvSize(),b=c.main,bw=Math.max(b[2]-b[0],.5),bh=Math.max(pvM(b[3])-pvM(b[1]),.5),v=pv.view;v.s=Math.min(w*.55/bw,h*.3/bh,14);v.s=Math.max(v.s,w/130);v.cx=(b[0]+b[2])/2;if(v.cx>180)v.cx-=360;v.cy=pvInvM((pvM(b[1])+pvM(b[3]))/2-(h*.18)/v.s);pvClamp()}
  pvSheet(c);pvRedraw();
 }
 function pvSheet(c){
  const host=document.getElementById('pv-sheet');if(!host)return;
  const rec=pv.visited[c.key],name=c.fr||(c.fr=pvFrName(c));
- host.innerHTML=`<div class="pv-sheet-in"><div class="pv-sheet-head"><span class="pv-flag">${pvFlag(c.a2)}</span><div><strong>${pvEsc(name)}</strong><small>${rec?'📍 Pays visité':'Pas encore visité'}</small></div><button class="pv-x" onclick="pvSheetClose()" aria-label="Fermer">✕</button></div><label>Quand ?</label><input id="pv-when" maxlength="40" placeholder="Ex. été 2023" value="${pvEsc(rec?.when||'')}"><label>Souvenir / note</label><textarea id="pv-note" rows="2" maxlength="300" placeholder="Ce que tu as aimé…">${pvEsc(rec?.note||'')}</textarea><div class="nx-map-buttons">${rec?`<button onclick="pvRemove('${c.key}')">Retirer le pin</button>`:''}<button class="nx-primary" onclick="pvMark('${c.key}')">${rec?'Enregistrer':'📍 Épingler ce pays'}</button></div></div>`;
+ host.innerHTML=`<div class="pv-sheet-in"><div class="pv-sheet-head"><span class="pv-flag">${pvFlag(c.a2)}</span><div><strong>${pvEsc(name)}</strong><small>${rec?'✓ Pays visité':'Pas encore visité'}</small></div><button class="pv-x" onclick="pvSheetClose()" aria-label="Fermer">✕</button></div><label>Quand ?</label><input id="pv-when" maxlength="40" placeholder="Ex. été 2023" value="${pvEsc(rec?.when||'')}"><label>Souvenir / note</label><textarea id="pv-note" rows="2" maxlength="300" placeholder="Ce que tu as aimé…">${pvEsc(rec?.note||'')}</textarea><div class="nx-map-buttons">${rec?`<button onclick="pvRemove('${c.key}')">Retirer</button>`:''}<button class="nx-primary" onclick="pvMark('${c.key}')">${rec?'Enregistrer':'✓ Marquer comme visité'}</button></div></div>`;
  host.hidden=false;
 }
 function pvSheetClose(){const h=document.getElementById('pv-sheet');if(h){h.hidden=true;h.innerHTML=''}pv.sel=null;pvRedraw()}
 function pvMark(key){
  const prev=pv.visited[key];
  pv.visited[key]={when:(document.getElementById('pv-when')?.value||'').trim(),note:(document.getElementById('pv-note')?.value||'').trim(),ts:prev?.ts||Date.now()};
- pvSave();pvStatus();const c=pv.byKey.get(key);pvSheet(c);pvRedraw();toast(prev?'Enregistré':'📍 '+(c.fr||c.name)+' épinglé')
+ pvSave();pvStatus();const c=pv.byKey.get(key);pvSheet(c);pvRedraw();toast(prev?'Enregistré':'✓ '+(c.fr||c.name)+' marqué visité')
 }
 function pvRemove(key){delete pv.visited[key];pvSave();pvStatus();const c=pv.byKey.get(key);pvSheet(c);pvRedraw()}
 /* ---- recherche & liste ---- */
@@ -161,18 +173,18 @@ function pvSearch(q){
  const box=document.getElementById('pv-results');if(!box)return;
  const n=pvNorm(q);if(!n){box.hidden=true;box.innerHTML='';return}
  const res=pv.countries.map(c=>({c,fr:c.fr||(c.fr=pvFrName(c))})).filter(x=>pvNorm(x.fr).includes(n)||pvNorm(x.c.name).includes(n)).sort((a,b)=>pvNorm(a.fr).indexOf(n)-pvNorm(b.fr).indexOf(n)||a.fr.localeCompare(b.fr,'fr')).slice(0,8);
- box.innerHTML=res.length?res.map(x=>`<button type="button" onclick="pvPick('${x.c.key.replace(/'/g,"\\'")}')">${pvFlag(x.c.a2)} ${pvEsc(x.fr)}${pv.visited[x.c.key]?' <small>📍</small>':''}</button>`).join(''):'<div class="pv-none">Aucun pays trouvé</div>';
+ box.innerHTML=res.length?res.map(x=>`<button type="button" onclick="pvPick('${x.c.key.replace(/'/g,"\\'")}')">${pvFlag(x.c.a2)} ${pvEsc(x.fr)}${pv.visited[x.c.key]?' <small>✓</small>':''}</button>`).join(''):'<div class="pv-none">Aucun pays trouvé</div>';
  box.hidden=false;
 }
 function pvPick(key){const i=document.getElementById('pv-search');if(i){i.value='';i.blur()}pvSearch('');pvSelect(key,true)}
 function pvList(){
  const items=Object.keys(pv.visited).map(k=>pv.byKey.get(k)).filter(Boolean).map(c=>({c,fr:c.fr||(c.fr=pvFrName(c))})).sort((a,b)=>a.fr.localeCompare(b.fr,'fr'));
  const m=document.getElementById('pv-modal');if(!m)return;
- m.innerHTML=`<div class="nx-map-dialog" role="dialog" aria-modal="true"><h3>Mes pays visités (${items.length})</h3>${items.length?items.map(x=>`<div class="nx-map-zone pv-row"><span class="pv-flag">${pvFlag(x.c.a2)}</span><div><strong>${pvEsc(x.fr)}</strong><small>${pvEsc(pv.visited[x.c.key].when||'')}</small></div><button onclick="pvListGo('${x.c.key.replace(/'/g,"\\'")}')">Voir</button></div>`).join(''):'<p>Aucun pays épinglé pour l’instant. Touche un pays sur la carte, ou cherche-le en haut.</p>'}<div class="nx-map-buttons"><button class="nx-primary" onclick="pvModalClose()">Fermer</button></div></div>`;m.hidden=false;
+ m.innerHTML=`<div class="nx-map-dialog" role="dialog" aria-modal="true"><h3>Mes pays visités (${items.length})</h3>${items.length?items.map(x=>`<div class="nx-map-zone pv-row"><span class="pv-flag">${pvFlag(x.c.a2)}</span><div><strong>${pvEsc(x.fr)}</strong><small>${pvEsc(pv.visited[x.c.key].when||'')}</small></div><button onclick="pvListGo('${x.c.key.replace(/'/g,"\\'")}')">Voir</button></div>`).join(''):'<p>Aucun pays marqué pour l’instant. Touche un pays sur la carte, ou cherche-le en haut.</p>'}<div class="nx-map-buttons"><button class="nx-primary" onclick="pvModalClose()">Fermer</button></div></div>`;m.hidden=false;
 }
 function pvListGo(key){pvModalClose();pvSelect(key,true)}
 function pvModalClose(){const m=document.getElementById('pv-modal');if(m){m.hidden=true;m.innerHTML=''}}
-function pvRecenter(){const [w]=pvSize();pv.view={cx:10,cy:25,s:Math.max(w/360,w/190)};pvClamp();pvRedraw()}
+function pvRecenter(){const [w]=pvSize();pv.view={cx:12,cy:35,s:Math.max(w/360,w/120)};pvClamp();pvRedraw()}
 function pvLeave(){document.body.classList.remove('moto-gps-fullscreen','nx-map-screen-on');pv.canvas=null;pv.pointers.clear();gen2Home()}
 /* ---- ouverture ---- */
 async function pvOpen(){
@@ -186,7 +198,7 @@ async function pvOpen(){
   if(!pv.countries){
    let topo=await pvCacheGet();
    if(!topo){topo=await pvFetchTopo(say);pvCachePut(topo)}
-   pv.countries=pvParse(topo);pv.byKey=new Map(pv.countries.map(c=>[c.key,c]));
+   pv.countries=pvParse(topo);pv.byKey=new Map(pv.countries.map(c=>[c.key,c]));pvAddTerritories();
   }
   if(!pv.canvas)return;
   msg.hidden=true;pvRecenter();pvStatus();

@@ -1,4 +1,4 @@
-/* NEXO Carte GPS v2.8.102. Les anciens roadtrips restent intacts dans le stockage. */
+/* NEXO Carte GPS v2.8.104. Les anciens roadtrips restent intacts dans le stockage. */
 'use strict';
 const nxMap={db:null,live:false,offline:null,selection:false,watch:null,fix:null,canvas:null,view:null,pointers:new Map(),lastTouch:null};
 function nxMapDB(){return new Promise((resolve,reject)=>{const req=indexedDB.open('nexo_offline_maps_v1',1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('zones'))req.result.createObjectStore('zones',{keyPath:'id'})};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
