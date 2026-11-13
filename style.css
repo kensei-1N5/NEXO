@@ -1408,3 +1408,6 @@ body.nx-map-screen-on:has(#pv-canvas) .nx-map-top{top:29px!important;}
 
 /* v2.8.115 : informations des capitales sur deux lignes dans la fiche pays. */
 .pv-sheet-head small{display:block;line-height:1.35}
+
+/* NEXO v2.8.116 — compact original icon control */
+.nx-default-icon-row{display:flex;justify-content:center;margin:4px 0 2px}.nx-default-icon-button{font:inherit;font-size:12px;color:var(--nx-accent,#3B82F6);background:transparent;border:1px solid currentColor;border-radius:9px;padding:7px 12px;cursor:pointer;opacity:.82}.nx-default-icon-button:active{opacity:1;background:rgba(59,130,246,.12)}
