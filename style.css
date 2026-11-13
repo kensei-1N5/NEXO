@@ -1356,3 +1356,8 @@ body.nx-map-screen-on{padding:0!important;overflow:hidden}
 .nx-map-zone{display:flex;align-items:center;gap:8px;padding:11px 0;border-bottom:1px solid #dae2e9}
 .nx-map-zone>div{flex:1;min-width:0}.nx-map-zone strong,.nx-map-zone small{display:block;overflow-wrap:anywhere}.nx-map-zone small{margin-top:4px;color:#67758a}
 .nx-map-zone button{border:0;background:#e6effa;color:#155caa;padding:10px;border-radius:9px}
+
+/* v2.8.98 : pop-up carte au-dessus de la carte plein écran */
+.nx-map-shell .nx-map-modal-back{z-index:110!important;}
+.nx-map-shell .nx-map-dialog{position:relative;z-index:111;}
+#nx-map-modal.nx-map-modal-back{z-index:110!important;}
