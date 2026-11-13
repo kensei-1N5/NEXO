@@ -1417,7 +1417,7 @@ body.nx-map-screen-on:has(#pv-canvas) .nx-map-top{top:29px!important;}
 /* Mes objectifs */
 .goal-page{display:grid;gap:13px;padding-bottom:20px}.goal-page .card{border-radius:16px}.goal-page .card h2,.goal-page .card h3{margin-top:0}.goal-top{display:grid;grid-template-columns:1fr 1fr;gap:10px}.goal-top>div{background:rgba(128,145,174,.10);border-radius:12px;padding:13px;min-width:0}.goal-top small,.goal-top strong{display:block}.goal-top small{font-size:12px;color:var(--muted,#9ca8bd);margin-bottom:5px}.goal-top strong{font-size:18px;overflow-wrap:anywhere}.goal-card{cursor:pointer;padding:17px}.goal-card-title,.goal-card-amount,.goal-meta,.goal-toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px}.goal-card-title strong{font-size:17px}.goal-card-title span{font-size:24px;opacity:.6}.goal-card-amount{margin:13px 0 10px}.goal-card-amount strong{font-size:22px}.goal-card-amount span,.goal-hero span{opacity:.6;font-size:14px}.goal-track{height:10px;border-radius:30px;background:rgba(128,145,174,.22);overflow:hidden}.goal-track>div{background:#28b775;height:100%;border-radius:30px;transition:width .2s}.goal-meta{font-size:12px;opacity:.8;margin-top:8px}.goal-hero{font-weight:800;font-size:27px;letter-spacing:-.6px;overflow-wrap:anywhere}.goal-plan{border-radius:13px;background:rgba(128,145,174,.1);padding:14px;line-height:1.6}.goal-tips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.goal-tips div{min-width:0}.goal-tips small,.goal-tips strong{display:block}.goal-tips small{font-size:11px;opacity:.75}.goal-tips strong{font-size:14px;overflow-wrap:anywhere}.goal-history{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(128,145,174,.14);padding:10px 0;gap:10px}.goal-history>div{min-width:0}.goal-history strong,.goal-history small{display:block}.goal-history small{font-size:12px;opacity:.72;margin-top:4px;overflow-wrap:anywhere}.goal-history button{min-width:34px;padding:7px 10px}.goal-toolbar{justify-content:space-between}
 
-/* Mes objectifs 2.8.120 — champs uniformes, centrés et sans retour de ligne */
+/* Objectifs financiers — champs uniformes, centrés et sans retour de ligne */
 .goal-editor .field{display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;height:48px!important;min-height:48px!important;line-height:normal;text-align:center;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;padding:0 12px!important;border-radius:14px;}
 .goal-editor input.field,.goal-editor select.field{font-size:16px!important;}
 .goal-editor .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:end;}
@@ -1441,3 +1441,17 @@ body.nx-map-screen-on:has(#pv-canvas) .nx-map-top{top:29px!important;}
 .goal-status-early .goal-status-head,.goal-status-success .goal-status-head,.goal-list-early,.goal-list-success{color:#36bc86;}
 .goal-list-status{font-size:12px;font-weight:650;margin-top:10px;}
 @media(max-width:380px){.goal-editor .goal-actions>.btn{font-size:13px;padding:0 9px}.goal-editor label{font-size:12px}}
+
+
+/* Objectifs financiers 2.8.121 — homogénéisation éditeur + mouvements */
+.goal-page .field{display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;height:48px!important;min-height:48px!important;padding:0 14px!important;border-radius:14px;line-height:normal;}
+.goal-page input.field,.goal-page select.field{font-size:16px!important;}
+.goal-page input[type="date"].field{appearance:none;-webkit-appearance:none;text-align:center;text-align-last:center;}
+.goal-page select.field{text-align-last:center;}
+.goal-page .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:end;}
+.goal-page .two>div,.goal-page .goal-grid>div,#goalDateBox,#goalBudgetBox{min-width:0;}
+.goal-page label{display:block;margin-bottom:6px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.goal-editor #goalDeadline,.goal-move-card #goalMoveDate{width:100%!important;max-width:100%!important;min-width:0!important;}
+.goal-move-card .field{text-align:center;}
+.goal-move-card .goal-move-submit{width:100%;height:46px;display:flex;align-items:center;justify-content:center;}
+.goal-module-icon{display:inline-flex;align-items:center;justify-content:center;min-width:1em;}
