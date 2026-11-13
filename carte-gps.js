@@ -1,4 +1,4 @@
-/* NEXO Carte GPS v2.8.100. Les anciens roadtrips restent intacts dans le stockage. */
+/* NEXO Carte GPS v2.8.102. Les anciens roadtrips restent intacts dans le stockage. */
 'use strict';
 const nxMap={db:null,live:false,offline:null,selection:false,watch:null,fix:null,canvas:null,view:null,pointers:new Map(),lastTouch:null};
 function nxMapDB(){return new Promise((resolve,reject)=>{const req=indexedDB.open('nexo_offline_maps_v1',1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('zones'))req.result.createObjectStore('zones',{keyPath:'id'})};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
@@ -44,7 +44,7 @@ function nxMapOverpassQuery(b,light=false){
  const bbox=b.map(x=>Number(x.toFixed(6))).join(',');
  const base=`way[highway](${bbox});way[waterway](${bbox});`;
  const detail=light?'':`way[building](${bbox});way[natural=water](${bbox});way[landuse](${bbox});way[leisure=park](${bbox});way[railway](${bbox});`;
- return `[out:json][timeout:25];(${base}${detail});out geom;`;
+ return `[out:json][timeout:15];(${base}${detail});out geom;`;
 }
 function nxMapSplitBounds(b,parts){
  const result=[];
@@ -64,7 +64,7 @@ let nxOverpassPref=0;
 async function nxMapFetchOne(url,bounds,signal,light){
  const request=new AbortController();const onCancel=()=>request.abort();
  signal.addEventListener('abort',onCancel,{once:true});
- let timedOut=false;const timer=setTimeout(()=>{timedOut=true;request.abort()},40000);
+ let timedOut=false;const timer=setTimeout(()=>{timedOut=true;request.abort()},20000);
  try{
    const response=await fetch(url,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:new URLSearchParams({data:nxMapOverpassQuery(bounds,light)}),signal:request.signal,cache:'no-store'});
    if(!response.ok){const err=new Error(response.status===429?'Service saturé (429)':`Serveur de cartes : erreur ${response.status}`);err.status=response.status;throw err}
@@ -83,7 +83,7 @@ async function nxMapFetchPart(bounds,signal,light=false){
  let lastErr=null;
  for(let i=0;i<NX_OVERPASS.length;i++){
    const idx=(nxOverpassPref+i)%NX_OVERPASS.length;
-   try{const els=await nxMapFetchOne(NX_OVERPASS[idx],bounds,signal,light);nxOverpassPref=idx;return els}
+   try{nxMap.note&&nxMap.note(NX_OVERPASS[idx].split('/')[2],i);const els=await nxMapFetchOne(NX_OVERPASS[idx],bounds,signal,light);nxOverpassPref=idx;return els}
    catch(e){
      if(signal.aborted||e.name==='AbortError')throw e;
      lastErr=e;
@@ -102,15 +102,15 @@ async function nxMapDownload(){
  const btn=document.getElementById('nx-map-download-button');if(btn)btn.disabled=true;
  const prog=document.getElementById('nx-map-progress');
  const ctrl=new AbortController();nxMap.abort=ctrl;
- const totalArea=nxMapArea(bounds);const parts=Math.max(1,Math.ceil(Math.sqrt(totalArea/2.5)));
+ const totalArea=nxMapArea(bounds);const parts=Math.max(1,Math.ceil(Math.sqrt(totalArea/0.6)));
  let queue=nxMapSplitBounds(bounds,parts).map(b=>({bounds:b,depth:0}));let skipped=0;
- let completed=0;const featureMap=new Map();let estimatedSize=0;
+ let completed=0,curPart='',curHost='',t0=Date.now();const tick=setInterval(()=>{if(prog&&curPart)prog.textContent=curPart+' · '+curHost+' · '+Math.round((Date.now()-t0)/1000)+' s'},1000);nxMap.note=h=>{curHost=h;t0=Date.now()};const featureMap=new Map();let estimatedSize=0;
  try{
    if(prog)prog.textContent=`Préparation : ${queue.length} portions…`;
    while(queue.length){
      if(ctrl.signal.aborted)throw new DOMException('Annulé','AbortError');
      const part=queue.shift();
-     if(prog)prog.textContent=`Portion ${completed+1}/${completed+queue.length+1} · ${Math.round(100*completed/(completed+queue.length+1))}% · ${featureMap.size} éléments`;
+     curPart=`Portion ${completed+1}/${completed+queue.length+1} · ${Math.round(100*completed/(completed+queue.length+1))}% · ${featureMap.size} éléments`;t0=Date.now();if(prog)prog.textContent=curPart;
      let elements;
      try{elements=await nxMapFetchPart(part.bounds,ctrl.signal,part.depth>=1)}
      catch(e){
@@ -149,7 +149,7 @@ async function nxMapDownload(){
  }catch(e){
    if(prog)prog.textContent=ctrl.signal.aborted?'Téléchargement annulé':`Téléchargement impossible : ${e.message}. Essaie une zone plus petite (1 à 4 km²) ou plus tard.`;
    if(btn)btn.disabled=false;
- }finally{nxMap.abort=null}
+ }finally{clearInterval(tick);nxMap.note=null;nxMap.abort=null}
 }
 function nxMapGeomColor(tags){if(tags.building)return {fill:'#c7c5bf',line:'#b1afa9',width:.6};if(tags.natural==='water'||tags.waterway)return {fill:'#add6ee',line:'#93c6e3',width:2};if(tags.landuse||tags.leisure)return {fill:'#cfe4bf',line:'#aed29a',width:.7};if(tags.railway)return {line:'#777a82',width:1.5};if(tags.highway){const kind=tags.highway;const major=['motorway','trunk','primary','secondary'].includes(kind);return {line:major?'#efa75f':['tertiary','residential','unclassified'].includes(kind)?'#fdfcf8':'#ded6c9',edge:major?'#ffffff':'#c7c8c7',width:major?4.4:['tertiary','residential','unclassified'].includes(kind)?3:1.6}}return {line:'#a8b3ad',width:1}}
 function nxMapDraw(){const can=nxMap.canvas,z=nxMap.offline;if(!can||!z)return;const dpr=Math.min(devicePixelRatio||1,2),r=can.getBoundingClientRect();if(!r.width||!r.height)return;can.width=Math.round(r.width*dpr);can.height=Math.round(r.height*dpr);const ctx=can.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);const w=r.width,h=r.height,v=nxMap.view,b=z.bounds;ctx.fillStyle='#f1f1ec';ctx.fillRect(0,0,w,h);const cos=Math.cos(v.center[1]*Math.PI/180),scale=v.scale;const p=([lng,lat])=>[w/2+(lng-v.center[0])*111200*cos*scale,h/2-(lat-v.center[1])*111200*scale];

@@ -1361,3 +1361,21 @@ body.nx-map-screen-on{padding:0!important;overflow:hidden}
 .nx-map-shell .nx-map-modal-back{z-index:110!important;}
 .nx-map-shell .nx-map-dialog{position:relative;z-index:111;}
 #nx-map-modal.nx-map-modal-back{z-index:110!important;}
+/* Pays visités */
+.pv-results{margin:7px 0;background:#fff;color:#15263b;border-radius:12px;overflow:auto;max-height:38dvh;box-shadow:0 6px 20px #0003}
+.pv-results[hidden],.pv-sheet[hidden],.pv-msg[hidden]{display:none!important}
+body.moto-gps-fullscreen .pv-results button{display:block;width:100%;text-align:left;padding:13px 14px;background:transparent;color:#15263b;border:0;border-bottom:1px solid #e6ebf1;font-size:15px}
+.pv-none{padding:13px 14px;font-size:14px;color:#657080}
+.pv-chip{position:absolute;left:12px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:5;background:#fffE;color:#15263b;border-radius:14px;padding:10px 14px;font-size:14px;box-shadow:0 2px 10px #0002}
+.pv-chip strong{font-size:18px}.pv-chip small{color:#657080;font-size:12px}
+.pv-msg{position:absolute;left:24px;right:24px;top:42%;z-index:4;text-align:center;background:#fffE;color:#15263b;border-radius:14px;padding:16px;font-size:14px;line-height:1.5}
+.pv-msg button{margin-top:10px;background:#237bec;color:#fff;border:0;border-radius:11px;padding:11px 18px;font-weight:700}
+.pv-sheet{position:absolute;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:9;background:#fff;color:#182b43;border-radius:19px;padding:16px;box-shadow:0 10px 36px #0005;max-height:62dvh;overflow-y:auto}
+.pv-sheet-head{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.pv-sheet-head>div{flex:1;min-width:0}.pv-sheet-head strong{display:block;font-size:19px}.pv-sheet-head small{color:#657080;font-size:13px}
+.pv-flag{font-size:34px;line-height:1}
+.pv-x{border:0;background:#eff3f9;color:#173b6a;border-radius:11px;width:38px;height:38px;font-size:16px}
+.pv-sheet label{font-size:13px;font-weight:700;display:block;margin:10px 0 5px}
+.pv-sheet input,.pv-sheet textarea{width:100%;box-sizing:border-box;background:#f6f8fa;border:1px solid #cbd5e1;border-radius:11px;padding:11px;color:#183047;font-size:16px;font-family:inherit;resize:none}
+.pv-row{display:flex;align-items:center;gap:11px}
+.pv-row>div{flex:1;min-width:0}.pv-row small{display:block;color:#657080}
