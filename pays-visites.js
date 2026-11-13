@@ -54,16 +54,74 @@ function pvParse(topo){
   if(ex){ex.polys.push(...polys);continue}
   const pin=pvCentroid(big);if(pin[0]>180)pin[0]-=360;list.push({key,a2,name,polys,box:[x0,y0,x1,y1],main:big.box,pin});
  }
+ /* Fusion d'affichage personnalisée : Israël et Palestine sont une seule entrée « Palestine ». */
+ pvMergePalestine(list);
  return list;
 }
-/* Territoires sans contour propre dans le fond de carte : points cliquables */
+function pvMergePalestine(list){
+ const parts=list.filter(c=>c.key==='IL'||c.key==='PS'||c.name==='Israel'||c.name==='Palestine');
+ if(!parts.length)return;
+ const all=parts.flatMap(c=>c.polys);
+ const target=parts.find(c=>c.key==='PS')||parts[0];
+ for(const c of parts){const i=list.indexOf(c);if(i>=0)list.splice(i,1)}
+ target.key='PS';target.a2='PS';target.name='Palestine';target.fr='Palestine';
+ pvSetPolys(target,all);
+ list.push(target);
+}
+/* Les territoires français restent des destinations indépendantes. Pas de marqueurs circulaires. */
 const PV_TERR=[['MQ','Martinique',14.64,-61.0],['GP','Guadeloupe',16.25,-61.55],['GF','Guyane',4.0,-53.0],['RE','La Réunion',-21.12,55.53],['YT','Mayotte',-12.82,45.15],['PF','Polynésie française',-17.68,-149.45],['NC','Nouvelle-Calédonie',-21.3,165.5],['MF','Saint-Martin',18.08,-63.06],['BL','Saint-Barthélemy',17.9,-62.83],['PM','Saint-Pierre-et-Miquelon',46.83,-56.3],['WF','Wallis-et-Futuna',-13.77,-177.15]];
+const PV_FR_GEO='https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/regions-avec-outre-mer.geojson';
+const PV_FR_CODES={'01':'GP','02':'MQ','03':'GF','04':'RE','06':'YT','971':'GP','972':'MQ','973':'GF','974':'RE','976':'YT'};
+function pvGeomPolys(geom){
+ const groups=geom.type==='Polygon'?[geom.coordinates]:geom.type==='MultiPolygon'?geom.coordinates:[];
+ return groups.map(g=>{
+  const rings=g.map(r=>r.map(pt=>[pt[0],pt[1],pvM(pt[1])]));if(!rings.length||!rings[0].length)return null;
+  const lons=rings[0].map(p=>p[0]),lats=rings[0].map(p=>p[1]);
+  const box=[Math.min(...lons),Math.min(...lats),Math.max(...lons),Math.max(...lats)];
+  return {rings,box,area:Math.abs(pvRingArea(rings[0]))};
+ }).filter(Boolean);
+}
+function pvSetPolys(c,polys){
+ if(!polys.length)return;c.polys=polys;c.pt=false;
+ let biggest=polys[0];for(const p of polys)if(p.area>biggest.area)biggest=p;
+ c.main=biggest.box;c.pin=pvCentroid(biggest);
+ c.box=[Math.min(...polys.map(p=>p.box[0])),Math.min(...polys.map(p=>p.box[1])),Math.max(...polys.map(p=>p.box[2])),Math.max(...polys.map(p=>p.box[3]))];
+}
 function pvAddTerritories(){
  for(const [a2,name,lat,lon] of PV_TERR){
   if(pv.byKey.has(a2))continue;
-  const c={key:a2,a2,name,fr:name,polys:[],pt:true,box:[lon,lat,lon,lat],main:[lon-1.2,lat-1.2,lon+1.2,lat+1.2],pin:[lon,lat]};
+  const c={key:a2,a2,name,fr:name,polys:[],pt:false,box:[lon,lat,lon,lat],main:[lon-1.2,lat-1.2,lon+1.2,lat+1.2],pin:[lon,lat]};
   pv.countries.push(c);pv.byKey.set(a2,c);
  }
+ /* Si le planisphère intègre les DOM à la France, séparer les morceaux. */
+ const fr=pv.byKey.get('FR');if(fr){
+  const metro=[];
+  for(const p of fr.polys){
+   const x=(p.box[0]+p.box[2])/2,y=(p.box[1]+p.box[3])/2;
+   const terr=PV_TERR.find(t=>Math.abs(t[3]-x)<6&&Math.abs(t[2]-y)<6);
+   if(terr){const c=pv.byKey.get(terr[0]);if(c)c.polys.push(p)}else metro.push(p);
+  }
+  if(metro.length)pvSetPolys(fr,metro);
+  for(const t of PV_TERR){const c=pv.byKey.get(t[0]);if(c&&c.polys.length)pvSetPolys(c,c.polys)}
+ }
+}
+async function pvFetchTerritoryOutlines(){
+ /* Un seul téléchargement initial, conservé dans IndexedDB ensuite. */
+ let data=null;
+ try{const db=await pvDB();data=await new Promise(resolve=>{const q=db.transaction('kv').objectStore('kv').get('fr_outline');q.onsuccess=()=>resolve(q.result||null);q.onerror=()=>resolve(null)})}catch(_){}
+ if(!data){
+  try{const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),20000);
+   const resp=await fetch(PV_FR_GEO,{signal:ctrl.signal});clearTimeout(timer);
+   if(resp.ok){data=await resp.json();const db=await pvDB();await new Promise(resolve=>{const tx=db.transaction('kv','readwrite');tx.objectStore('kv').put(data,'fr_outline');tx.oncomplete=resolve;tx.onerror=resolve})}
+  }catch(_){}
+ }
+ if(!data||!data.features)return;
+ for(const f of data.features){
+  const prop=f.properties||{},nm=pvNorm(prop.nom||prop.name||''),code=String(prop.code||'').padStart(2,'0');
+  const a2=PV_FR_CODES[code]||({'martinique':'MQ','guadeloupe':'GP','guyane':'GF','la reunion':'RE','mayotte':'YT'})[nm];
+  const c=a2&&pv.byKey.get(a2);if(c&&f.geometry)pvSetPolys(c,pvGeomPolys(f.geometry));
+ }
+ pvRedraw();
 }
 function pvFrName(c){
  if(c.fr)return c.fr;
@@ -71,7 +129,15 @@ function pvFrName(c){
  return ({'N. Cyprus':'Chypre du Nord','Somaliland':'Somaliland'})[c.name]||c.name;
 }
 /* ---- stockage ---- */
-function pvLoadVisited(){const v=get(PV_KEY,{});pv.visited=v&&typeof v==='object'&&!Array.isArray(v)?v:{}}
+function pvLoadVisited(){
+ const v=get(PV_KEY,{});pv.visited=v&&typeof v==='object'&&!Array.isArray(v)?v:{};
+ /* Conserver les anciennes visites : une seule entrée PS ; ne pas écraser une visite existante. */
+ if(pv.visited.IL){
+  if(!pv.visited.PS)pv.visited.PS=pv.visited.IL;
+  else if(!pv.visited.PS.when&&pv.visited.IL.when)pv.visited.PS.when=pv.visited.IL.when;
+  delete pv.visited.IL;pvSave();
+ }
+}
 function pvSave(){put(PV_KEY,pv.visited)}
 function pvStatus(){const n=Object.keys(pv.visited).length,e=document.getElementById('pv-chip');if(e)e.innerHTML=`<strong>${n}</strong> pays visité${n>1?'s':''} <small>· ${Math.min(100,Math.round(n/195*100))} % du monde</small>`}
 /* ---- projection (équirectangulaire) ---- */
@@ -104,20 +170,19 @@ function pvDraw(){
   }
  };
  drawSet(false);drawSet(true);
- for(const c of pv.countries){if(!c.pt)continue;const vis=!!pv.visited[c.key];if(!vis&&v.s<3)continue;const [x,y]=pvToScr(c.pin[0],c.pin[1],w,h);if(x<-20||x>w+20||y<-20||y>h+20)continue;ctx.beginPath();ctx.arc(x,y,vis?7:4.5,0,Math.PI*2);ctx.fillStyle=vis?'#38a56f':'#f2efe6';ctx.fill();ctx.lineWidth=vis?2:1;ctx.strokeStyle=vis?'#1f7a4d':'#8d8878';ctx.stroke()}
+ 
  const sel=pv.sel&&pv.byKey.get(pv.sel);
- if(sel){if(sel.pt){const [x,y]=pvToScr(sel.pin[0],sel.pin[1],w,h);ctx.beginPath();ctx.arc(x,y,11,0,Math.PI*2);ctx.lineWidth=2.4;ctx.strokeStyle='#1779ed';ctx.stroke()}else{ctx.beginPath();pathOf(sel);ctx.lineWidth=2.4;ctx.strokeStyle='#1779ed';ctx.stroke()}}
+ if(sel&&sel.polys.length){ctx.beginPath();pathOf(sel);ctx.lineWidth=2.4;ctx.strokeStyle='#1779ed';ctx.stroke()}
  if(true){ctx.font='600 12px -apple-system,system-ui,sans-serif';ctx.textAlign='center';
-  for(const c of pv.countries){if(!pv.visited[c.key])continue;if(v.s<7&&!c.pt)continue;const [x,y]=pvToScr(c.pin[0],c.pin[1],w,h);if(x<0||x>w||y<0||y>h)continue;const n=c.fr||(c.fr=pvFrName(c));ctx.lineWidth=3.5;ctx.strokeStyle='#fffd';ctx.strokeText(n,x,y+(c.pt?20:0));ctx.fillStyle='#15263b';ctx.fillText(n,x,y+(c.pt?20:0))}}
+  for(const c of pv.countries){if(!pv.visited[c.key])continue;if(v.s<7)continue;const [x,y]=pvToScr(c.pin[0],c.pin[1],w,h);if(x<0||x>w||y<0||y>h)continue;const n=c.fr||(c.fr=pvFrName(c));ctx.lineWidth=3.5;ctx.strokeStyle='#fffd';ctx.strokeText(n,x,y);ctx.fillStyle='#15263b';ctx.fillText(n,x,y)}}
  ctx.textAlign='left';ctx.fillStyle='#4a5a6c';ctx.font='10px system-ui';ctx.fillText('Fond de carte © Natural Earth',8,h-8);
 }
 /* ---- interactions ---- */
 function pvHit(x,y){
  const [w,h]=pvSize();
- for(const c of pv.countries){if(!c.pt)continue;if(!pv.visited[c.key]&&pv.view.s<3)continue;const [px,py]=pvToScr(c.pin[0],c.pin[1],w,h);if(Math.hypot(px-x,py-y)<=16)return c}
  for(const [dx,dy] of [[0,0],[9,0],[-9,0],[0,9],[0,-9]]){
   const [lon,lat]=pvFromScr(x+dx,y+dy,w,h);
-  for(const c of pv.countries){if(lat<c.box[1]||lat>c.box[3])continue;for(const p of c.polys)if(pvInPoly(p,lon,lat)||(p.box[2]>180&&pvInPoly(p,lon+360,lat)))return c}
+  for(const c of pv.countries){if(!c.polys.length||lat<c.box[1]||lat>c.box[3])continue;for(const p of c.polys)if(pvInPoly(p,lon,lat)||(p.box[2]>180&&pvInPoly(p,lon+360,lat)))return c}
  }
  return null;
 }
@@ -172,6 +237,13 @@ function pvRemove(key){delete pv.visited[key];pvSave();pvStatus();const c=pv.byK
 function pvSearch(q){
  const box=document.getElementById('pv-results');if(!box)return;
  const n=pvNorm(q);if(!n){box.hidden=true;box.innerHTML='';return}
+ if(n==='israel'){
+  box.hidden=true;box.innerHTML='';
+  const i=document.getElementById('pv-search');if(i)i.blur();
+  const m=document.getElementById('pv-modal');
+  if(m){m.innerHTML='<div class="nx-map-dialog" role="alertdialog" aria-modal="true" aria-label="Pays introuvable"><h3>Pays introuvable</h3><div class="nx-map-buttons"><button type="button" class="nx-primary" onclick="pvModalClose()">Fermer</button></div></div>';m.hidden=false}
+  return;
+ }
  const res=pv.countries.map(c=>({c,fr:c.fr||(c.fr=pvFrName(c))})).filter(x=>pvNorm(x.fr).includes(n)||pvNorm(x.c.name).includes(n)).sort((a,b)=>pvNorm(a.fr).indexOf(n)-pvNorm(b.fr).indexOf(n)||a.fr.localeCompare(b.fr,'fr')).slice(0,8);
  box.innerHTML=res.length?res.map(x=>`<button type="button" onclick="pvPick('${x.c.key.replace(/'/g,"\\'")}')">${pvFlag(x.c.a2)} ${pvEsc(x.fr)}${pv.visited[x.c.key]?' <small>✓</small>':''}</button>`).join(''):'<div class="pv-none">Aucun pays trouvé</div>';
  box.hidden=false;
@@ -190,7 +262,7 @@ function pvLeave(){document.body.classList.remove('moto-gps-fullscreen','nx-map-
 async function pvOpen(){
  try{motoGPSNavStop();motoGLDestroy()}catch(_){}
  document.body.classList.add('moto-gps-fullscreen','nx-map-screen-on');setHead('Pays visités','');
- content(`<div class="nx-map-shell"><div id="pv-map" class="nx-map-base"><canvas id="pv-canvas" aria-label="Carte du monde"></canvas></div><div class="nx-map-top"><div class="nx-map-toolbar"><button type="button" onclick="pvLeave()" aria-label="Retour">←</button><input id="pv-search" type="search" placeholder="Chercher un pays" autocomplete="off" oninput="pvSearch(this.value)"><button type="button" onclick="pvList()" aria-label="Liste des pays visités">☰</button></div><div id="pv-results" class="pv-results" hidden></div></div><div class="nx-map-floating"><button onclick="pvZoomBtn(1.6)" aria-label="Zoom avant">＋</button><button onclick="pvZoomBtn(1/1.6)" aria-label="Zoom arrière">－</button><button onclick="pvRecenter()" aria-label="Vue monde">🌍</button></div><div class="pv-chip" id="pv-chip"></div><div id="pv-msg" class="pv-msg">Chargement du planisphère…</div><div id="pv-sheet" class="pv-sheet" hidden></div><div id="pv-modal" class="nx-map-modal-back" hidden></div></div>`);
+ content(`<div class="nx-map-shell"><div id="pv-map" class="nx-map-base"><canvas id="pv-canvas" aria-label="Carte du monde"></canvas></div><div class="nx-map-top"><div class="nx-map-toolbar"><button type="button" onclick="pvLeave()" aria-label="Retour">←</button><input id="pv-search" type="search" placeholder="Chercher un pays" autocomplete="off" oninput="pvSearch(this.value)"><button type="button" onclick="pvList()" aria-label="Liste des pays visités">☰</button></div><div id="pv-results" class="pv-results" hidden></div></div><div class="pv-chip" id="pv-chip"></div><div id="pv-msg" class="pv-msg">Chargement du planisphère…</div><div id="pv-sheet" class="pv-sheet" hidden></div><div id="pv-modal" class="nx-map-modal-back" hidden></div></div>`);
  pvLoadVisited();pvStatus();
  pv.canvas=document.getElementById('pv-canvas');pvSetup(pv.canvas);
  const msg=document.getElementById('pv-msg'),say=t=>{if(msg)msg.textContent=t};
@@ -201,7 +273,7 @@ async function pvOpen(){
    pv.countries=pvParse(topo);pv.byKey=new Map(pv.countries.map(c=>[c.key,c]));pvAddTerritories();
   }
   if(!pv.canvas)return;
-  msg.hidden=true;pvRecenter();pvStatus();
+  msg.hidden=true;pvRecenter();pvStatus();pvFetchTerritoryOutlines();
  }catch(e){
   if(msg)msg.innerHTML=`${pvEsc(e.message)}<br><button onclick="pvOpen()">Réessayer</button>`;
  }
