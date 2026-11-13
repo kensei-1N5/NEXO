@@ -1405,3 +1405,6 @@ body.nx-map-screen-on:has(#pv-canvas)::before{content:""!important;display:block
 
 /* v2.8.113 — Mes pays visités uniquement : décaler la recherche de 0,5 cm (≈19 px) vers le bas, sans déplacer le GPS. */
 body.nx-map-screen-on:has(#pv-canvas) .nx-map-top{top:29px!important;}
+
+/* v2.8.115 : informations des capitales sur deux lignes dans la fiche pays. */
+.pv-sheet-head small{display:block;line-height:1.35}
