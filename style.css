@@ -1465,3 +1465,36 @@ body.nx-map-screen-on:has(#pv-canvas) .nx-map-top{top:29px!important;}
 .goal-editor #goalDeadline,.goal-move-card #goalMoveDate{display:block;text-align:center!important;text-align-last:center!important;direction:ltr;}
 .goal-editor #goalDeadline::-webkit-date-and-time-value,.goal-move-card #goalMoveDate::-webkit-date-and-time-value{text-align:center!important;min-height:1lh;width:100%;}
 .goal-editor #goalDeadline::-webkit-datetime-edit,.goal-move-card #goalMoveDate::-webkit-datetime-edit{display:inline-flex;justify-content:center;text-align:center;width:100%;padding:0;}
+
+/* v2.8.123 — dates Objectifs financiers : centrage vertical natif iOS */
+.goal-editor input#goalDeadline.field,
+.goal-move-card input#goalMoveDate.field{
+  height:48px!important;
+  min-height:48px!important;
+  box-sizing:border-box;
+  padding-top:0!important;
+  padding-bottom:0!important;
+  line-height:normal!important;
+  vertical-align:middle;
+  text-align:center!important;
+}
+.goal-editor input#goalDeadline::-webkit-date-and-time-value,
+.goal-move-card input#goalMoveDate::-webkit-date-and-time-value{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:100%;
+  min-height:0;
+  line-height:normal;
+  box-sizing:border-box;
+}
+.goal-editor input#goalDeadline::-webkit-datetime-edit,
+.goal-move-card input#goalMoveDate::-webkit-datetime-edit{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:100%;
+  min-height:0;
+  line-height:normal;
+  box-sizing:border-box;
+}
