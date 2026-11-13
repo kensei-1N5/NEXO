@@ -309,7 +309,7 @@ window.nxSearchGo=function(i){
 /* NEXO settings redesign 2.8.88 — non-destructive, keeps original modules and keys. */
 const NX_SETTING_ICONS=['📋','✅','📝','📌','📅','🗓️','📁','🗂️','📒','📚','🔖','⏰','💰','💳','💵','💶','🪙','🏦','📈','📉','📊','🧾','💸','💎','✈️','🧳','🌍','🗺️','🧭','🏝️','🏕️','⛺','🎯','🎟️','🎮','🎨','🚗','🏎️','🏍️','🛵','🚲','⛽','🛞','🔧','⚙️','🛠️','🚦','🛣️','❤️','💊','🩺','🩹','💉','💪','🏋️','🏃','🚴','🏊','🥗','💧','🏠','🛒','🛍️','🍽️','🍳','🥘','🧹','🧺','🪴','🔑','📦','🛏️','💻','📱','⌚','⌨️','🖥️','📷','🔋','🔌','💡','🔐','🛜','📡','🧮','🔢','📐','📏','⚖️','🌡️','⏱️','⏳','🔍','📍','🧲','☀️','🌙','⭐','🌈','☁️','🌧️','❄️','🔥','🌊','🌳','🌸','🍀'];
 let nxSettingsPage='home',nxSettingsTab='modules',nxSettingsSort='sizeDesc',nxSettingsSearch='',nxSettingsExpanded=new Set(),nxSettingsModal=null,nxCategoryDrag=null;
-const NX_VERSION='2.8.91';
+const NX_VERSION='2.8.92';
 const nxAccentColors=[['Bleu','#3B82F6'],['Violet','#8B5CF6'],['Vert','#10B981'],['Orange','#F97316'],['Rouge','#EF4444'],['Rose','#EC4899']];
 function nxAccent(){return get('nxAccent','#3B82F6')}
 function nxApplyAccent(){document.documentElement.style.setProperty('--nx-accent',nxAccent())}
@@ -322,7 +322,7 @@ function nxShowSettings(page){
  let html=nxSettingsHeader(titles[page]||'Paramètres');
  if(page==='home')html+=nxSettingsNavRow('👤','Profil','Nom, photo et message','profile')+nxSettingsNavRow('🎨','Apparence','Thème et couleur principale','appearance')+nxSettingsNavRow('▦','Gestion des modules','Archivage, catégories et modules','manage')+nxSettingsNavRow('💾','Stockage','Espace utilisé et sauvegardes','storage')+nxSettingsNavRow('⚡','Raccourcis','Personnaliser le raccourci du bas','shortcuts')+nxSettingsNavRow('ℹ','À propos','Version et informations','about');
  if(page==='profile')html+=`<div class="nx-profile-photo"><span id="nx-profile-thumb" class="nx-avatar"></span><div class="nx-btn-row"><label class="btn nx-file-button">Ajouter / remplacer<input type="file" accept="image/*" style="display:none" onchange="nxProfilePicture(this)"></label><button type="button" class="btn" onclick="nxRemoveProfilePicture()">Supprimer</button></div></div><label class="nx-field-label">Nom ou pseudonyme<input class="field" id="nx-profile-name" maxlength="60" value="${esc(get('firstName',''))}" placeholder="Ton nom"></label><label class="nx-switch-row"><span>Afficher le message sur l’accueil</span><input type="checkbox" id="nx-welcome-on" ${get('nxWelcomeEnabled',false)?'checked':''} onchange="put('nxWelcomeEnabled',this.checked)"></label><label class="nx-field-label">Message de bienvenue<textarea class="field" id="nx-welcome-text" rows="2" maxlength="180" placeholder="Bienvenue sur NEXO !">${esc(get('nxWelcomeText','Bienvenue sur NEXO !'))}</textarea></label><button class="btn primary nx-full" onclick="nxSaveProfile()">Enregistrer</button>`;
- if(page==='appearance')html+=`<h3>Thème de l’application</h3><div class="theme-options">${[['light','☀','Clair'],['dark','☾','Sombre'],['system','◐','Auto']].map(a=>`<button class="theme-option" data-mode="${a[0]}" onclick="setTheme('${a[0]}')"><span class="theme-symbol">${a[1]}</span>${a[2]}</button>`).join('')}</div><h3>Couleur principale</h3><div class="nx-accent-grid">${nxAccentColors.map(([name,hex])=>`<button class="nx-accent-choice ${nxAccent()===hex?'selected':''}" onclick="put('nxAccent','${hex}');nxApplyAccent();nxShowSettings('appearance')"><span style="background:${hex}">${nxAccent()===hex?'✓':''}</span><small>${name}</small></button>`).join('')}</div><h3>Aperçu</h3><div class="nx-theme-preview"><div class="nx-theme-preview-title">NEXO <span>⌕</span></div><div class="nx-theme-category">✅ Organisation</div><div class="nx-theme-category nx-theme-finance">💰 Finances</div><button class="btn primary nx-full" type="button">Bouton principal</button></div><button class="btn nx-full" onclick="nxResetAppearance()">Réinitialiser l’apparence</button>`;
+ if(page==='appearance')html+=`<h3>Thème de l’application</h3><div class="theme-options">${[['light','☀','Clair'],['dark','☾','Sombre'],['system','◐','Auto']].map(a=>`<button class="theme-option" data-mode="${a[0]}" onclick="setTheme('${a[0]}')"><span class="theme-symbol">${a[1]}</span>${a[2]}</button>`).join('')}</div><h3>Couleur principale</h3><div class="nx-accent-grid">${nxAccentColors.map(([name,hex])=>`<button class="nx-accent-choice ${nxAccent()===hex?'selected':''}" onclick="put('nxAccent','${hex}');nxApplyAccent();nxShowSettings('appearance')"><span style="background:${hex}">${nxAccent()===hex?'✓':''}</span><small>${name}</small></button>`).join('')}</div><h3>Aperçu</h3><div class="nx-theme-preview"><div class="nx-theme-preview-title">NEXO <span>⌕</span></div><div class="nx-theme-category">✅ Organisation</div><div class="nx-theme-category nx-theme-finance">💰 Finances</div><button class="btn primary nx-full" type="button">Bouton principal</button></div>`;
  if(page==='manage')html+=nxSettingsNavRow('📦','Archivage','Archiver ou réactiver un module','archive')+nxSettingsNavRow('🗂️','Catégories','Nom, icône et ordre','categories')+nxSettingsNavRow('▦','Modules','Icône et catégorie de chaque module','modules');
  if(page==='archive')html+=`<div id="nx-archive-content"></div>`;
  if(page==='categories')html+=`<div class="nx-category-create"><input class="field" id="nx-new-cat" placeholder="Nom de la nouvelle catégorie" maxlength="45"><button class="btn primary" onclick="nxCreateCategory()">Créer</button></div><p class="nx-hint">Maintiens les trois barres pour déplacer une catégorie. Le stylo modifie son nom et son icône.</p><div id="nx-categories-list"></div><div class="nx-btn-row"><button class="btn primary" onclick="nxSaveCategoryOrder()">Enregistrer l’ordre</button><button class="btn" onclick="nxDefaultCategoryOrder()">Ordre par défaut</button></div>`;
@@ -344,7 +344,6 @@ function nxRenderProfileThumb(){document.querySelectorAll('#nx-profile-thumb').f
 function nxProfilePicture(input){const file=input.files?.[0];if(!file)return;if(file.size>8e6){toast('Photo trop volumineuse');return}const img=new Image();const url=URL.createObjectURL(file);img.onload=()=>{const cv=document.createElement('canvas');let side=Math.min(img.width,img.height),scale=Math.min(1,320/side);cv.width=cv.height=Math.round(side*scale);cv.getContext('2d').drawImage(img,(img.width-side)/2,(img.height-side)/2,side,side,0,0,cv.width,cv.height);try{put('nxProfileImage',cv.toDataURL('image/jpeg',.72));nxRenderProfileThumb();toast('Photo enregistrée')}catch(e){toast('Espace insuffisant pour cette photo')}URL.revokeObjectURL(url)};img.onerror=()=>{URL.revokeObjectURL(url);toast('Image non reconnue')};img.src=url}
 function nxRemoveProfilePicture(){put('nxProfileImage','');nxRenderProfileThumb();toast('Photo supprimée')}
 function nxSaveProfile(){put('firstName',document.getElementById('nx-profile-name').value.trim());put('nxWelcomeText',document.getElementById('nx-welcome-text').value.trim());put('nxWelcomeEnabled',document.getElementById('nx-welcome-on').checked);toast('Profil enregistré')}
-function nxResetAppearance(){if(!confirm('Rétablir le thème et la couleur principale par défaut ?'))return;setTheme('dark');put('nxAccent','#3B82F6');nxApplyAccent();nxShowSettings('appearance')}
 function nxSaveShortcut(){const v=document.getElementById('navChoice1')?.value;if(!v)return;put('bottomNav',[v,navChoices()[1]]);renderBottomNav();toast('Raccourci enregistré')}
 function nxModal(inner){nxCloseModal();const el=document.createElement('div');el.className='nx-setting-modal-backdrop';el.id='nx-setting-modal';el.innerHTML=`<section class="nx-setting-modal" role="dialog" aria-modal="true" aria-label="Personnalisation">${inner}</section>`;document.body.appendChild(el);el.addEventListener('click',e=>{if(e.target===el)nxCloseModal()});nxSettingsModal=el}
 function nxCloseModal(){document.getElementById('nx-setting-modal')?.remove();nxSettingsModal=null}
@@ -371,8 +370,55 @@ function nxEditSettingsModule(id){const d=defs.find(x=>x[0]===id);if(!d)return;c
 function nxSaveSettingsModule(id){const d=defs.find(x=>x[0]===id),cat=document.getElementById('nx-edit-module-cat').value,icon=nxChosenEmoji();if(!d)return;const a={...moduleGroupAssignments()};a[id]=cat;put('moduleGroupAssignments',a);if(icon){const icons=get('nxModuleIcons',{});icons[id]=icon;put('nxModuleIcons',icons)}nxCloseModal();nxRenderSettingsModules();toast('Module personnalisé')}
 function nxLastBackupLabel(){const d=get('nxLastBackup','');if(!d)return 'Aucune sauvegarde enregistrée';const t=new Date(d);return isNaN(t)?'Aucune sauvegarde enregistrée':t.toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'})}
 function nxFmtSize(n){return n>=1048576?(n/1048576).toLocaleString('fr-FR',{maximumFractionDigits:2})+' Mo':n>=1024?(n/1024).toLocaleString('fr-FR',{maximumFractionDigits:1})+' Ko':Math.round(n)+' o'}
-function nxEstimateModuleBytes(){const arr=defs.filter(d=>groups.some(g=>g.tools.includes(d[0]))).map(d=>({id:d[0],name:d[2],bytes:0,icon:nxModuleIcon(d[0],d[1])}));const unassigned={id:'other',name:'Données communes / autres',bytes:0,icon:'📦'};for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i),value=localStorage.getItem(key)||'';if(!key?.startsWith('tb_'))continue;const bytes=new Blob([key,value]).size;const matches=arr.filter(m=>key.toLowerCase().includes(m.id.toLowerCase())&&m.id.length>=4);if(matches.length===1)matches[0].bytes+=bytes;else unassigned.bytes+=bytes}return [...arr,unassigned]}
-function nxRenderStorageTab(){const host=document.getElementById('nx-storage-tab');if(!host)return;document.querySelectorAll('.nx-tabs button').forEach((x,i)=>x.classList.toggle('selected',i===(nxSettingsTab==='modules'?0:1)));if(nxSettingsTab==='backup'){host.innerHTML=`<div class="nx-storage-actions"><button class="btn primary nx-full" onclick="backupAllData()">Exporter une sauvegarde</button><button class="btn nx-full" onclick="restoreAllData()">Restaurer une sauvegarde</button><p class="nx-hint">Sauvegarde JSON complète des données prises en charge. Les documents du coffre-fort chiffré nécessitent leur export séparé.</p></div>`;return}const options=[['sizeDesc','Poids décroissant'],['sizeAsc','Poids croissant'],['nameAsc','Nom A → Z'],['nameDesc','Nom Z → A']];const items=nxEstimateModuleBytes().sort((a,b)=>nxSettingsSort==='nameAsc'?a.name.localeCompare(b.name,'fr'):nxSettingsSort==='nameDesc'?b.name.localeCompare(a.name,'fr'):nxSettingsSort==='sizeAsc'?a.bytes-b.bytes:b.bytes-a.bytes);const max=Math.max(1,...items.map(m=>m.bytes));host.innerHTML=`<select class="field nx-sort" onchange="nxSettingsSort=this.value;nxRenderStorageTab()">${options.map(([v,l])=>`<option value="${v}" ${v===nxSettingsSort?'selected':''}>${l}</option>`).join('')}</select>${items.map(m=>`<div class="nx-storage-module"><div><span>${esc(m.name)}</span><strong>${nxFmtSize(m.bytes)}</strong></div><div class="nx-bar"><span style="width:${m.bytes/max*100}%"></span></div></div>`).join('')}<p class="nx-hint">Mesure indicative des données locales identifiables. Les ressources partagées, les caches et certaines bases IndexedDB ne peuvent pas être attribués précisément à un module.</p>`}
+const NX_STORAGE_RULES=[
+ [/^(expense|incomeEntries|incomeFold|removedExpense)/i,'expenses'],[/^savings/i,'savings'],
+ [/^garage(Vehicles|Records|Plans)/i,'garage'],[/^moto_/i,'moto'],
+ [/^(nexoRecipes|nexoClassicRecipes)/i,'recipes'],[/^nexoLoyalty/i,'loyalty'],[/^nexoHealth/i,'healthcard'],
+ [/^nxQr/i,'qrcode'],[/^tasks$/i,'todo'],[/^notes$/i,'notes'],[/^shopping$/i,'shopping'],[/^nutrition/i,'nutrition'],
+ [/^sportSessions/i,'sport'],[/^nexoParking/i,'parking'],[/^nexoFx/i,'fx'],[/^nxWorld/i,'worldclock'],
+ [/^nxSound/i,'sonometer'],[/^travel_v10$/i,'travel'],[/^nxLife/i,'lifetimes']
+];
+const NX_STORAGE_PLAIN_KEYS={'nexo_lifetime_v1':'lifetimes','nexoMindsetDailyStatus_v1':'mindset'};
+function nxApproxSize(v,depth=0){if(v==null)return 0;if(typeof v==='string')return v.length;if(typeof v==='number'||typeof v==='boolean')return 8;if(v instanceof Blob)return v.size;if(v instanceof ArrayBuffer||ArrayBuffer.isView(v))return v.byteLength;if(depth>6)return 0;if(Array.isArray(v))return v.reduce((t,x)=>t+nxApproxSize(x,depth+1),0);if(typeof v==='object')return Object.keys(v).reduce((t,k)=>t+k.length+nxApproxSize(v[k],depth+1),0);return 0}
+async function nxIdbSize(name){
+ try{
+  if(!indexedDB.databases)return 0;
+  const list=await indexedDB.databases();if(!list.some(d=>d.name===name))return 0;
+  const db=await new Promise((ok,ko)=>{const r=indexedDB.open(name);r.onupgradeneeded=e=>{try{e.target.transaction.abort()}catch(_){}};r.onsuccess=()=>ok(r.result);r.onerror=()=>ko(r.error);r.onblocked=()=>ko(Error('bloqué'))});
+  try{
+   const stores=[...db.objectStoreNames];if(!stores.length)return 0;
+   const tx=db.transaction(stores,'readonly');let total=0;
+   await Promise.all(stores.map(st=>new Promise((ok,ko)=>{const r=tx.objectStore(st).openCursor();r.onsuccess=()=>{const c=r.result;if(!c)return ok();total+=nxApproxSize(c.value);c.continue()};r.onerror=()=>ko(r.error)})));
+   return total;
+  }finally{db.close()}
+ }catch(e){return 0}
+}
+async function nxEstimateModuleBytes(){
+ const arr=defs.filter(d=>groups.some(g=>g.tools.includes(d[0]))).map(d=>({id:d[0],name:d[2],bytes:0,icon:nxModuleIcon(d[0],d[1])}));
+ const byId=Object.fromEntries(arr.map(m=>[m.id,m]));
+ const unassigned={id:'other',name:'Données communes / autres',bytes:0,icon:'📦'};
+ const add=(id,bytes)=>{(byId[id]||unassigned).bytes+=bytes};
+ let legacyTravel=0;
+ for(let i=0;i<localStorage.length;i++){
+  const key=localStorage.key(i);if(!key)continue;
+  const plain=NX_STORAGE_PLAIN_KEYS[key];
+  if(!plain&&!key.startsWith('tb_'))continue;
+  const bytes=new Blob([key,localStorage.getItem(key)||'']).size;
+  if(plain){add(plain,bytes);continue}
+  const short=key.slice(3);
+  if(short==='travel_v10'){legacyTravel+=bytes;continue}
+  const rule=NX_STORAGE_RULES.find(r=>r[0].test(short));
+  if(rule){add(rule[1],bytes);continue}
+  const matches=arr.filter(m=>key.toLowerCase().includes(m.id.toLowerCase())&&m.id.length>=4);
+  if(matches.length===1)matches[0].bytes+=bytes;else unassigned.bytes+=bytes;
+ }
+ let trips=0;try{const t=await nxTravelRead();if(Array.isArray(t)&&t.length)trips=new Blob([JSON.stringify(t)]).size}catch(e){}
+ add('travel',trips||legacyTravel);
+ add('vault',await nxIdbSize('nexo-vault-v1'));
+ add('password-manager',await nxIdbSize('nexo-password-manager-v1'));
+ return [...arr,unassigned];
+}
+async function nxRenderStorageTab(){const host=document.getElementById('nx-storage-tab');if(!host)return;document.querySelectorAll('.nx-tabs button').forEach((x,i)=>x.classList.toggle('selected',i===(nxSettingsTab==='modules'?0:1)));if(nxSettingsTab==='backup'){host.innerHTML=`<div class="nx-storage-actions"><button class="btn primary nx-full" onclick="backupAllData()">Exporter une sauvegarde</button><button class="btn nx-full" onclick="restoreAllData()">Restaurer une sauvegarde</button><p class="nx-hint">Sauvegarde JSON complète des données prises en charge. Les documents du coffre-fort chiffré nécessitent leur export séparé.</p></div>`;return}const options=[['sizeDesc','Poids décroissant'],['sizeAsc','Poids croissant'],['nameAsc','Nom A → Z'],['nameDesc','Nom Z → A']];host.innerHTML='<p class="nx-hint">Calcul en cours…</p>';const raw=await nxEstimateModuleBytes();if(document.getElementById('nx-storage-tab')!==host)return;const items=raw.sort((a,b)=>nxSettingsSort==='nameAsc'?a.name.localeCompare(b.name,'fr'):nxSettingsSort==='nameDesc'?b.name.localeCompare(a.name,'fr'):nxSettingsSort==='sizeAsc'?a.bytes-b.bytes:b.bytes-a.bytes);const max=Math.max(1,...items.map(m=>m.bytes));host.innerHTML=`<select class="field nx-sort" onchange="nxSettingsSort=this.value;nxRenderStorageTab()">${options.map(([v,l])=>`<option value="${v}" ${v===nxSettingsSort?'selected':''}>${l}</option>`).join('')}</select>${items.map(m=>`<div class="nx-storage-module"><div><span>${esc(m.name)}</span><strong>${nxFmtSize(m.bytes)}</strong></div><div class="nx-bar"><span style="width:${m.bytes/max*100}%"></span></div></div>`).join('')}<p class="nx-hint">Mesure indicative des données locales de chaque module (y compris voyages, coffre-fort et mots de passe). « Données communes / autres » regroupe les réglages et ce qui ne peut pas être rattaché à un module.</p>`}
 const nxOriginalAllGroups=allModuleGroups;
 allModuleGroups=function(){const names=get('nxCategoryNames',{});return nxOriginalAllGroups().map(g=>({...g,title:names[g.id]||g.title}))};
 const nxOriginalGen2Home=gen2Home;
