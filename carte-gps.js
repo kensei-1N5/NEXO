@@ -1,4 +1,4 @@
-/* NEXO Carte GPS v2.8.97. Les anciens roadtrips restent intacts dans le stockage. */
+/* NEXO Carte GPS v2.8.99. Les anciens roadtrips restent intacts dans le stockage. */
 'use strict';
 const nxMap={db:null,live:false,offline:null,selection:false,watch:null,fix:null,canvas:null,view:null,pointers:new Map(),lastTouch:null};
 function nxMapDB(){return new Promise((resolve,reject)=>{const req=indexedDB.open('nexo_offline_maps_v1',1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('zones'))req.result.createObjectStore('zones',{keyPath:'id'})};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
@@ -23,16 +23,104 @@ function nxMapModal(html){const node=document.querySelector('#nx-map-modal');if(
 function nxMapCancelDownload(){if(nxMap.abort){nxMap.abort.abort();nxMap.abort=null}nxMapClose()}
 function nxMapClose(){const node=document.querySelector('#nx-map-modal');if(node){node.hidden=true;node.innerHTML=''}}
 function nxMapSelectConfirm(){const b=nxMapBounds();if(!b)return;if(nxMapArea(b)>25)return nxMapStatus('Zone trop grande : zoome davantage (maximum 25 km²)');if(nxMapArea(b)<.005)return nxMapStatus('Zone trop petite : dézoome légèrement');nxMap.bounds=b;nxMapCancelSelect();nxMapModal(`<h3>Télécharger une zone</h3><label>Nom</label><input id="nx-map-name" value="Ma zone" maxlength="60"><p>Mode détaillé : rues, routes, bâtiments, chemins et espaces naturels disponibles dans OpenStreetMap.</p><label class="nx-map-wifi"><input id="nx-map-wifi" type="checkbox" checked> Préférence Wi-Fi (confirmation manuelle sur iPhone)</label><p>Surface : ${nxMapArea(b).toFixed(2)} km² · téléchargement limité à 25 km². Taille exacte inconnue avant réception.</p><div class="nx-map-progress" id="nx-map-progress"></div><div class="nx-map-buttons"><button onclick="nxMapCancelDownload()">Annuler</button><button class="nx-primary" id="nx-map-download-button" onclick="nxMapDownload()">Télécharger</button></div>`)}
-function nxMapOverpassQuery(b){const bbox=b.map(x=>Number(x.toFixed(6))).join(',');return `[out:json][timeout:40];(way[highway](${bbox});way[building](${bbox});way[natural=water](${bbox});way[waterway](${bbox});way[landuse](${bbox});way[leisure=park](${bbox});way[railway](${bbox}););out geom;`}
-async function nxMapDownload(){const name=document.getElementById('nx-map-name')?.value.trim()||'Ma zone',wifi=document.getElementById('nx-map-wifi')?.checked;
+/* Téléchargement progressif : requêtes modérées, sans parallélisme sur Overpass. */
+function nxMapOverpassQuery(b,light=false){
+ const bbox=b.map(x=>Number(x.toFixed(6))).join(',');
+ const base=`way[highway](${bbox});way[waterway](${bbox});`;
+ const detail=light?'':`way[building](${bbox});way[natural=water](${bbox});way[landuse](${bbox});way[leisure=park](${bbox});way[railway](${bbox});`;
+ return `[out:json][timeout:25];(${base}${detail});out geom;`;
+}
+function nxMapSplitBounds(b,parts){
+ const result=[];
+ for(let row=0;row<parts;row++)for(let col=0;col<parts;col++){
+   result.push([b[0]+(b[2]-b[0])*row/parts,b[1]+(b[3]-b[1])*col/parts,b[0]+(b[2]-b[0])*(row+1)/parts,b[1]+(b[3]-b[1])*(col+1)/parts]);
+ }
+ return result;
+}
+function nxMapDelay(ms,signal){return new Promise((resolve,reject)=>{
+ if(signal.aborted)return reject(new DOMException('Annulé','AbortError'));
+ const t=setTimeout(()=>{signal.removeEventListener('abort',cancel);resolve()},ms);
+ const cancel=()=>{clearTimeout(t);reject(new DOMException('Annulé','AbortError'))};
+ signal.addEventListener('abort',cancel,{once:true});
+})}
+async function nxMapFetchPart(bounds,signal,light=false){
+ // Le délai serveur et le délai réseau sont distincts. Une seule requête à la fois.
+ const request=new AbortController();const onCancel=()=>request.abort();
+ signal.addEventListener('abort',onCancel,{once:true});
+ const timer=setTimeout(()=>request.abort(),38000);
+ try{
+   const response=await fetch('https://overpass.private.coffee/api/interpreter',{
+     method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
+     body:new URLSearchParams({data:nxMapOverpassQuery(bounds,light)}),signal:request.signal,cache:'no-store'
+   });
+   if(!response.ok){const err=new Error(response.status===429?'Service saturé (429) : réessaie plus tard':`Serveur de cartes : erreur ${response.status}`);err.status=response.status;throw err}
+   const raw=await response.json();
+   if(raw.remark){const err=new Error('Serveur Overpass : '+raw.remark);err.overpass=true;throw err}
+   if(!Array.isArray(raw.elements))throw Error('Réponse cartographique invalide');
+   return raw.elements;
+ }catch(e){
+   if(signal.aborted)throw new DOMException('Annulé','AbortError');
+   if(e.name==='AbortError') {const err=new Error('Délai serveur dépassé pour cette portion');err.overpass=true;throw err}
+   throw e;
+ }finally{clearTimeout(timer);signal.removeEventListener('abort',onCancel)}
+}
+async function nxMapDownload(){
+ const name=document.getElementById('nx-map-name')?.value.trim()||'Ma zone';
+ const wifi=document.getElementById('nx-map-wifi')?.checked;
  if(wifi&&!confirm('Vérifie que ton iPhone est connecté au Wi-Fi. Continuer le téléchargement ?'))return;
- const btn=document.getElementById('nx-map-download-button');if(btn)btn.disabled=true;const prog=document.getElementById('nx-map-progress');if(prog)prog.textContent='Téléchargement des données OpenStreetMap…';
- const ctrl=new AbortController();nxMap.abort=ctrl;const timeout=setTimeout(()=>ctrl.abort(),80000);
- try{const endpoint='https://overpass.private.coffee/api/interpreter';let res=await fetch(endpoint,{method:'POST',body:new URLSearchParams({data:nxMapOverpassQuery(nxMap.bounds)}),signal:ctrl.signal});if(!res.ok)throw Error('Serveur cartographique indisponible ('+res.status+')');
- let bytes=0,raw;if(res.body&&res.body.getReader){const reader=res.body.getReader(),chunks=[];while(true){const {done,value}=await reader.read();if(done)break;bytes+=value.length;if(bytes>35*1024*1024)throw Error('Zone trop volumineuse : sélectionne une plus petite zone');chunks.push(value);if(prog)prog.textContent=(bytes/1024/1024).toFixed(1)+' Mo reçus…'}const merged=new Uint8Array(bytes);let offset=0;for(const c of chunks){merged.set(c,offset);offset+=c.length}raw=JSON.parse(new TextDecoder().decode(merged))}else{raw=await res.json();bytes=JSON.stringify(raw).length}
- const features=(raw.elements||[]).filter(e=>Array.isArray(e.geometry)&&e.geometry.length>1).map(e=>({id:e.id,props:e.tags||{},coords:e.geometry.map(p=>[p.lon,p.lat])}));if(!features.length)throw Error('Aucune donnée cartographique sur cette zone');
- const zone={id:'nx'+Date.now(),name,mode:'detail',bounds:nxMap.bounds.slice(),date:new Date().toISOString(),size:bytes,features};await nxMapPut(zone);nxMapClose();nxMapStatus('Carte « '+name+' » enregistrée · '+(bytes/1024/1024).toFixed(1)+' Mo');await nxMapOpenZone(zone.id)
- }catch(e){if(prog)prog.textContent='Échec : '+(e.name==='AbortError'?'délai dépassé ou interruption':e.message);if(btn)btn.disabled=false}finally{clearTimeout(timeout);nxMap.abort=null}}
+ if(nxMap.abort)return;
+ const bounds=nxMap.bounds?.slice();if(!bounds)return nxMapStatus('Sélectionne une zone');
+ const btn=document.getElementById('nx-map-download-button');if(btn)btn.disabled=true;
+ const prog=document.getElementById('nx-map-progress');
+ const ctrl=new AbortController();nxMap.abort=ctrl;
+ const totalArea=nxMapArea(bounds);const parts=Math.max(1,Math.ceil(Math.sqrt(totalArea/2.5)));
+ let queue=nxMapSplitBounds(bounds,parts).map(b=>({bounds:b,depth:0}));
+ let completed=0;const featureMap=new Map();let estimatedSize=0;
+ try{
+   if(prog)prog.textContent=`Préparation : ${queue.length} portions…`;
+   while(queue.length){
+     if(ctrl.signal.aborted)throw new DOMException('Annulé','AbortError');
+     const part=queue.shift();
+     if(prog)prog.textContent=`Portion ${completed+1}/${completed+queue.length+1} · ${Math.round(100*completed/(completed+queue.length+1))}% · ${featureMap.size} éléments`;
+     let elements;
+     try{elements=await nxMapFetchPart(part.bounds,ctrl.signal)}
+     catch(e){
+       if(ctrl.signal.aborted)throw e;
+       // Si le serveur refuse une portion, rediviser une seule fois ; éviter les boucles de timeout.
+       if(part.depth<1 && (e.overpass || e.status===504 || e.status===502)){
+         const smaller=nxMapSplitBounds(part.bounds,2).map(b=>({bounds:b,depth:1}));
+         queue.unshift(...smaller);
+         if(prog)prog.textContent='Serveur occupé : zone découpée en portions plus petites…';
+         await nxMapDelay(900,ctrl.signal);continue;
+       }
+       throw e;
+     }
+     for(const el of elements){
+       if(!Array.isArray(el.geometry)||el.geometry.length<2)continue;
+       const id=el.type+':'+el.id;
+       if(featureMap.has(id))continue;
+       const feat={id:el.id,props:el.tags||{},coords:el.geometry.map(p=>[p.lon,p.lat])};
+       featureMap.set(id,feat);
+       estimatedSize+=JSON.stringify(feat).length*2; // estimation haute (UTF-16 en mémoire)
+       if(estimatedSize>35*1024*1024)throw Error('Données trop volumineuses (35 Mo). Sélectionne une zone plus petite.');
+     }
+     completed++;
+     if(queue.length)await nxMapDelay(650,ctrl.signal); // limiter la charge de l'API publique
+   }
+   if(!featureMap.size)throw Error('Aucune route ou bâtiment trouvé dans cette zone');
+   if(prog)prog.textContent='Enregistrement local…';
+   const features=[...featureMap.values()];
+   const bytes=new Blob([JSON.stringify(features)]).size;
+   if(bytes>35*1024*1024)throw Error('Carte trop volumineuse (35 Mo). Réduis la sélection.');
+   const zone={id:'nx'+Date.now(),name,mode:'detail',bounds,date:new Date().toISOString(),size:bytes,features};
+   await nxMapPut(zone);
+   nxMapClose();nxMapStatus('Carte « '+name+' » enregistrée · '+(bytes/1024/1024).toFixed(1)+' Mo');
+   await nxMapOpenZone(zone.id);
+ }catch(e){
+   if(prog)prog.textContent=ctrl.signal.aborted?'Téléchargement annulé':`Téléchargement impossible : ${e.message}. Essaie une zone plus petite (1 à 4 km²) ou plus tard.`;
+   if(btn)btn.disabled=false;
+ }finally{nxMap.abort=null}
+}
 function nxMapGeomColor(tags){if(tags.building)return {fill:'#c7c5bf',line:'#b1afa9',width:.6};if(tags.natural==='water'||tags.waterway)return {fill:'#add6ee',line:'#93c6e3',width:2};if(tags.landuse||tags.leisure)return {fill:'#cfe4bf',line:'#aed29a',width:.7};if(tags.railway)return {line:'#777a82',width:1.5};if(tags.highway){const kind=tags.highway;const major=['motorway','trunk','primary','secondary'].includes(kind);return {line:major?'#efa75f':['tertiary','residential','unclassified'].includes(kind)?'#fdfcf8':'#ded6c9',edge:major?'#ffffff':'#c7c8c7',width:major?4.4:['tertiary','residential','unclassified'].includes(kind)?3:1.6}}return {line:'#a8b3ad',width:1}}
 function nxMapDraw(){const can=nxMap.canvas,z=nxMap.offline;if(!can||!z)return;const dpr=Math.min(devicePixelRatio||1,2),r=can.getBoundingClientRect();if(!r.width||!r.height)return;can.width=Math.round(r.width*dpr);can.height=Math.round(r.height*dpr);const ctx=can.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);const w=r.width,h=r.height,v=nxMap.view,b=z.bounds;ctx.fillStyle='#f1f1ec';ctx.fillRect(0,0,w,h);const cos=Math.cos(v.center[1]*Math.PI/180),scale=v.scale;const p=([lng,lat])=>[w/2+(lng-v.center[0])*111200*cos*scale,h/2-(lat-v.center[1])*111200*scale];
  const ordered=[...z.features].sort((a,b)=>Number(!!a.props.highway)-Number(!!b.props.highway));for(const f of ordered){const style=nxMapGeomColor(f.props),coords=f.coords;if(!coords.length)continue;ctx.beginPath();coords.forEach((coord,i)=>{const [x,y]=p(coord);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});const closed=coords.length>3&&Math.abs(coords[0][0]-coords.at(-1)[0])<1e-6&&Math.abs(coords[0][1]-coords.at(-1)[1])<1e-6;if(closed&&style.fill){ctx.fillStyle=style.fill;ctx.fill()}if(style.edge){ctx.strokeStyle=style.edge;ctx.lineWidth=style.width+2.5;ctx.stroke()}ctx.strokeStyle=style.line||style.fill||'#bbb';ctx.lineWidth=style.width||1;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke()}
