@@ -1518,3 +1518,27 @@ body.nx-map-screen-on:has(#pv-canvas) .nx-map-top{top:29px!important;}
 .garage-history-entry[hidden],#garageHistorySearchEmpty[hidden]{display:none!important}
 /* Icône Calculatrice personnalisée : mêmes dimensions et palette que les autres tuiles */
 .group-grid .tile .emoji:not(.calc-symbol){letter-spacing:normal}
+
+/* v2.8.128 — corrige la règle générique garage-entry>div:first-child
+   qui imposait une colonne au bandeau titre / statut / + */
+.garage-maintenance-entry>.garage-maintenance-head{
+  display:flex!important;
+  flex-direction:row!important;
+  flex-wrap:nowrap!important;
+  justify-content:space-between!important;
+  align-items:center!important;
+  text-align:left!important;
+  width:100%;
+  min-width:0;
+  flex:0 0 auto!important;
+}
+.garage-maintenance-entry .garage-maintenance-title{
+  flex:1 1 auto;
+  min-width:0;
+  text-align:left!important;
+}
+.garage-maintenance-entry .garage-maintenance-side{
+  flex:0 0 auto;
+  margin-left:auto;
+  align-self:center;
+}
