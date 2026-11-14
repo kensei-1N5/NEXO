@@ -1,4 +1,4 @@
-/* NEXO · Objectifs financiers · v2.8.126 · données locales indépendantes */
+/* NEXO · Objectifs financiers · v2.8.127 · données locales indépendantes */
 'use strict';
 const GOAL_KEY='goals_v1';
 let goalActive=null;
