@@ -1786,7 +1786,7 @@ function fx(){
  const cached=nxFxGetCachedEntry(from,to);
  const rateValue=from===to?'1':(cached?.rate>0?String(cached.rate):'');
  const amountValue=s.amount??'100';
- nxDisplay(`<section class="fx-screen"><div class="fx-head"><h2>Convertisseur de devises</h2><span id="nxFxOnlineBadge" class="fx-badge online">En ligne</span></div><div class="fx-hero"><div class="fx-topline"><select class="fx-currency-select" id="nxFxFrom" onchange="nxFxPairChanged()">${nxFxCodes.map(c=>`<option ${c===from?'selected':''}>${c}</option>`).join('')}</select><span class="fx-arrow">→</span><select class="fx-currency-select" id="nxFxTo" onchange="nxFxPairChanged()">${nxFxCodes.map(c=>`<option ${c===to?'selected':''}>${c}</option>`).join('')}</select></div><div class="fx-main"><input class="fx-amount-input" id="nxFxAmount" type="number" inputmode="decimal" step="0.01" value="${esc(String(amountValue))}" aria-label="Montant source"><button class="fx-swap-btn" type="button" onclick="nxFxSwap()" aria-label="Inverser les devises">⇄</button></div><div class="fx-separator"></div><div class="fx-result-wrap"><div id="nxFxResult" class="fx-result">—</div><div id="nxFxRateLine" class="fx-rate-line">—</div></div></div><div class="fx-cache"><div id="nxFxCacheIcon" class="fx-cache-icon">✓</div><div class="fx-cache-copy"><div id="nxFxCacheTitle" class="fx-cache-title">Taux enregistré en cache</div><div id="nxFxCacheSubtitle" class="fx-cache-subtitle">Dernière mise à jour : ${esc(nxFxFormatUpdatedAt(cached))}</div></div></div><button id="nxFxRefreshBtn" class="fx-refresh-btn" type="button" onclick="nxFxFetch()"><span class="fx-refresh-icon" aria-hidden="true">↻</span>Actualiser les taux</button><input type="hidden" id="nxFxRate" value="${esc(String(rateValue))}"><input type="hidden" id="nxFxFee" value="0"></section>`);
+ nxDisplay(`<section class="fx-screen"><div class="fx-head"><h2>Convertisseur de devises</h2><span id="nxFxOnlineBadge" class="fx-badge online">En ligne</span></div><div class="fx-hero"><div class="fx-topline"><select class="fx-currency-select" id="nxFxFrom" onchange="nxFxPairChanged()">${nxFxCodes.map(c=>`<option ${c===from?'selected':''}>${c}</option>`).join('')}</select><span class="fx-arrow">→</span><select class="fx-currency-select" id="nxFxTo" onchange="nxFxPairChanged()">${nxFxCodes.map(c=>`<option ${c===to?'selected':''}>${c}</option>`).join('')}</select></div><div class="fx-main"><input class="fx-amount-input" id="nxFxAmount" type="number" inputmode="decimal" step="0.01" value="${esc(String(amountValue))}" aria-label="Montant source"><button class="fx-swap-btn" type="button" onclick="nxFxSwap()" aria-label="Inverser les devises">⇄</button></div><div class="fx-separator"></div><div class="fx-result-wrap"><div id="nxFxResult" class="fx-result">—</div><div id="nxFxRateLine" class="fx-rate-line">—</div></div></div><div class="fx-cache"><div class="fx-cache-copy"><div id="nxFxCacheTitle" class="fx-cache-title">Taux enregistré en cache</div><div id="nxFxCacheSubtitle" class="fx-cache-subtitle">Dernière mise à jour : ${esc(nxFxFormatUpdatedAt(cached))}</div></div></div><button id="nxFxRefreshBtn" class="fx-refresh-btn" type="button" onclick="nxFxFetch()"><span class="fx-refresh-icon" aria-hidden="true">↻</span><span>Actualiser les taux</span></button><input type="hidden" id="nxFxRate" value="${esc(String(rateValue))}"><input type="hidden" id="nxFxFee" value="0"></section>`);
  nxFxBindOnlineStatus();
  nxFxUpdateOnlineBadge();
  document.getElementById('nxFxAmount')?.addEventListener('input',()=>nxFxCalculate(true));
@@ -1810,20 +1810,16 @@ function nxFxPairChanged(fetchIfOnline=true){
  if(fetchIfOnline&&from!==to&&navigator.onLine)nxFxFetch(true)
 }
 function nxFxRefreshCacheUi(){
- const from=nxVal('nxFxFrom'),to=nxVal('nxFxTo'),cached=nxFxGetCachedEntry(from,to),title=document.getElementById('nxFxCacheTitle'),sub=document.getElementById('nxFxCacheSubtitle'),icon=document.getElementById('nxFxCacheIcon'),rate=Number(nxVal('nxFxRate'));
- if(!title||!sub||!icon)return;
+ const from=nxVal('nxFxFrom'),to=nxVal('nxFxTo'),cached=nxFxGetCachedEntry(from,to),title=document.getElementById('nxFxCacheTitle'),sub=document.getElementById('nxFxCacheSubtitle'),rate=Number(nxVal('nxFxRate'));
+ if(!title||!sub)return;
  if(from===to){
   title.textContent='Même devise';
   sub.textContent='Aucune conversion nécessaire pour cette paire';
-  icon.textContent='✓';
-  icon.className='fx-cache-icon';
   return;
  }
  if(cached){
   title.textContent='Taux enregistré en cache';
   sub.textContent='Dernière mise à jour : '+nxFxFormatUpdatedAt(cached);
-  icon.textContent='✓';
-  icon.className='fx-cache-icon';
   return;
  }
  if(rate>0){
@@ -1833,8 +1829,6 @@ function nxFxRefreshCacheUi(){
   title.textContent='Aucun taux en cache';
   sub.textContent=navigator.onLine?'Appuie sur « Actualiser les taux »':'Connexion requise pour récupérer un taux';
  }
- icon.textContent='!';
- icon.className='fx-cache-icon warning'
 }
 function nxFxCalculate(save=false,notify=false){
  const from=nxVal('nxFxFrom'),to=nxVal('nxFxTo');
