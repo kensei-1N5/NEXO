@@ -407,7 +407,7 @@ const key=String(expenseViewYear)+'-'+String(budgetMonth+1).padStart(2,'0'),budg
 const budgetSpent=sum(all.filter(x=>{const d=expenseDateParts(x);return d&&d.year===expenseViewYear&&d.month===budgetMonth}));
 const pct=budget>0?Math.min(100,Math.round(budgetSpent/budget*100)):0;
 const formFold=document.getElementById("expenseFold");const existingSlot=document.getElementById("expenseFoldSlot");const formContents=formFold?Array.from(formFold.querySelector(".stack").children):existingSlot?Array.from(existingSlot.children):[];const oldOpen=document.getElementById('expenseDashFold')?.open??get('expenseDashFoldOpen',false);const oldIncomeOpen=document.getElementById('incomeFold')?.open??get('incomeFoldOpen',false);const oldHistoryOpen=document.getElementById('expenseHistoryFold')?.open??get('expenseHistoryFoldOpen',true);
-host.innerHTML=`<section class="card stack"><div class="exp-dash-header"><h2>Tableau de bord</h2></div><div class="exp-dash-tabs"><button type="button" class="${expenseViewMode==='monthly'?'active':''}" onclick="expenseSetMode('monthly')">Mensuel</button><button type="button" class="${expenseViewMode==='yearly'?'active':''}" onclick="expenseSetMode('yearly')">Annuel</button></div><div class="exp-dash-controls exp-dash-period exp-dash-three-filters"><label class="exp-dash-filter"><span>Mois</span><select id="expDashMonth" class="field" aria-label="Mois" onchange="expenseSetMonth(this.value)"><option value="all" ${expenseViewMonth==='all'?'selected':''}>Tous les mois</option>${expenseMonthNames.map((m,i)=>`<option value="${i}" ${i===expenseViewMonth?'selected':''}>${m}</option>`).join('')}</select></label><label class="exp-dash-filter"><span>Année</span><select id="expDashYear" class="field" aria-label="Année" onchange="expenseSetYear(this.value)">${years.map(y=>`<option value="${y}" ${y===expenseViewYear?'selected':''}>${y}</option>`).join('')}</select></label><label class="exp-dash-filter"><span>Catégorie</span><select id="expFilter" class="field" aria-label="Catégorie" onchange="expenseSetCategory(this.value)"><option value="all" ${expenseViewCategory==='all'?'selected':''}>Toutes</option>${expenseCategories().slice().sort((a,b)=>a.localeCompare(b,'fr',{sensitivity:'base'})).map(c=>`<option value="${esc(c)}" ${c===expenseViewCategory?'selected':''}>${esc(c)}</option>`).join('')}</select></label></div><div class="muted">Total ${expensePeriodLabel()}</div><div class="exp-summary">${money(total)}</div><div class="exp-money-summary"><div><small>Entrées</small><strong>${money(incomeTotal)}</strong></div><div><small>Sorties</small><strong>${money(total)}</strong></div><div><small>Solde</small><strong class="${balance<0?'exp-negative':'exp-positive'}">${balance>=0?'+':''}${money(balance)}</strong></div></div><div class="exp-chart-legend"><span><i class="exp-legend-income"></i> Entrées</span><span><i class="exp-legend-expense"></i> Sorties</span></div><div class="save-bars exp-savings-chart" role="group" aria-label="Graphique des dépenses">${bars}</div></section>
+host.innerHTML=`<section class="card stack"><div class="exp-dash-header"><h2>Tableau de bord</h2></div><div class="exp-dash-tabs"><button type="button" class="${expenseViewMode==='monthly'?'active':''}" onclick="expenseSetMode('monthly')">Mensuel</button><button type="button" class="${expenseViewMode==='yearly'?'active':''}" onclick="expenseSetMode('yearly')">Annuel</button></div><div class="exp-dash-controls exp-dash-period exp-dash-three-filters"><label class="exp-dash-filter"><span>Mois</span><select id="expDashMonth" class="field" aria-label="Mois" onchange="expenseSetMonth(this.value)"><option value="all" ${expenseViewMonth==='all'?'selected':''}>Tous les mois</option>${expenseMonthNames.map((m,i)=>`<option value="${i}" ${i===expenseViewMonth?'selected':''}>${m}</option>`).join('')}</select></label><label class="exp-dash-filter"><span>Année</span><select id="expDashYear" class="field" aria-label="Année" onchange="expenseSetYear(this.value)">${years.map(y=>`<option value="${y}" ${y===expenseViewYear?'selected':''}>${y}</option>`).join('')}</select></label><label class="exp-dash-filter"><span>Catégorie</span><select id="expFilter" class="field" aria-label="Catégorie" onchange="expenseSetCategory(this.value)"><option value="all" ${expenseViewCategory==='all'?'selected':''}>Toutes</option>${expenseCategories().map(c=>`<option value="${esc(c)}" ${c===expenseViewCategory?'selected':''}>${esc(c)}</option>`).join('')}</select></label></div><div class="muted">Total ${expensePeriodLabel()}</div><div class="exp-summary">${money(total)}</div><div class="exp-money-summary"><div><small>Entrées</small><strong>${money(incomeTotal)}</strong></div><div><small>Sorties</small><strong>${money(total)}</strong></div><div><small>Solde</small><strong class="${balance<0?'exp-negative':'exp-positive'}">${balance>=0?'+':''}${money(balance)}</strong></div></div><div class="exp-chart-legend"><span><i class="exp-legend-income"></i> Entrées</span><span><i class="exp-legend-expense"></i> Sorties</span></div><div class="save-bars exp-savings-chart" role="group" aria-label="Graphique des dépenses">${bars}</div></section>
 <section class="card stack"><h2>Budget de ${expenseMonthNames[budgetMonth]} ${expenseViewYear}</h2><div class="row"><input id="expMonthlyBudget" class="field grow" type="number" min="0" step="0.01" inputmode="decimal" value="${budget??''}" placeholder="Budget mensuel (€)" aria-label="Budget mensuel en euros"><button class="btn primary" onclick="expenseSetBudget()">Enregistrer</button></div>${budget>0?`<div class="row" style="justify-content:space-between"><strong>${money(budgetSpent)} / ${money(budget)}</strong><span class="muted">${Math.round(budgetSpent/budget*100)} %</span></div><div class="exp-track"><div style="width:${pct}%"></div></div><div class="muted">${budgetSpent>budget?'Dépassement : '+money(budgetSpent-budget):'Disponible : '+money(budget-budgetSpent)}</div>`:'<p class="exp-muted">Définis un budget pour suivre ta progression.</p>'}</section>
 <details class="card nexo-fold" id="expenseDashFold"><summary>↗ Dépenses</summary><div class="stack" id="expenseFoldSlot"></div>
 </div></details><details class="card nexo-fold nexo-expense-global-history" id="expenseHistoryFold"><summary>Historique des dépenses (${selected.length})</summary><div class="stack"><p class="muted">${expensePeriodLabel()}</p>${selected.map(x=>`<div class="exp-dash-op"><div class="grow"><strong>${esc(x.desc||x.category||'Dépense')}</strong><small>${esc(x.category||'Autre')} · ${esc(nexoDisplayDate(x.date)||'Date inconnue')}</small></div><strong>${money(x.amount)}</strong><button type="button" class="btn" onclick="expenseEdit('${x.id}')" aria-label="Modifier">✎</button><button type="button" class="btn danger" onclick="deleteExpense('${x.id}')" aria-label="Supprimer">×</button></div>`).join('')||'<p class="exp-muted">Aucune opération pour cette sélection.</p>'}</div></details>
@@ -1750,7 +1750,134 @@ function nxParkingRoute(provider='apple'){const x=get('nexoParking',null);if(x?.
 function nxParkingEnd(){if(confirm('Terminer ce stationnement ?')){put('nexoParking',null);parking()}}
 // Currency conversion: rates updated explicitly via public reference API; manual offline fallback.
 const nxFxCodes=['EUR','THB','USD','GBP','CHF','JPY','CAD','AUD','CNY','KRW','MAD','TND','TRY','INR','SGD'];
-let nxFxRequestId=0;
+let nxFxRequestId=0,nxFxStatusBound=false;
+function nxFxGetState(){return get('nexoFx',{})||{}}
+function nxFxGetCache(){return get('nexoFxRates',{})||{}}
+function nxFxGetCachedEntry(from,to){return nxFxGetCache()[from+'_'+to]||null}
+function nxFxFormatUpdatedAt(entry){
+ if(!entry)return 'Aucune mise à jour enregistrée';
+ const raw=entry.fetchedAt||entry.updatedAt||entry.timestamp||entry.date||'';
+ if(!raw)return 'Aucune mise à jour enregistrée';
+ let d=null;
+ if(/^\d{4}-\d{2}-\d{2}T/.test(raw))d=new Date(raw);
+ else if(/^\d{4}-\d{2}-\d{2}$/.test(raw))d=new Date(raw+'T12:00:00');
+ else {const parsed=new Date(raw);if(!Number.isNaN(parsed.getTime()))d=parsed}
+ return d&&!Number.isNaN(d.getTime())?d.toLocaleDateString('fr-FR')+' à '+d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}):String(raw)
+}
+function nxFxFormatRate(v){
+ const n=Number(v);
+ return Number.isFinite(n)?new Intl.NumberFormat('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:6}).format(n):'—'
+}
+function nxFxBindOnlineStatus(){
+ if(nxFxStatusBound)return;
+ nxFxStatusBound=true;
+ window.addEventListener('online',nxFxUpdateOnlineBadge);
+ window.addEventListener('offline',nxFxUpdateOnlineBadge);
+}
+function nxFxUpdateOnlineBadge(){
+ const badge=document.getElementById('nxFxOnlineBadge');
+ if(!badge)return;
+ const online=!!navigator.onLine;
+ badge.textContent=online?'En ligne':'Hors ligne';
+ badge.className='fx-badge '+(online?'online':'offline');
+}
+function fx(){
+ const s=nxFxGetState(),from=s.from||'EUR',to=s.to||'THB';
+ const cached=nxFxGetCachedEntry(from,to);
+ const rateValue=from===to?'1':(s.rate??(cached?.rate>0?String(cached.rate):''));
+ const amountValue=s.amount??'100';
+ nxDisplay(`<section class="fx-screen"><div class="fx-head"><h2>Convertisseur de devises</h2><span id="nxFxOnlineBadge" class="fx-badge online">En ligne</span></div><p class="fx-sub">Aperçu illustratif — taux fictif</p><div class="fx-hero"><div class="fx-topline"><select class="fx-currency-select" id="nxFxFrom" onchange="nxFxPairChanged()">${nxFxCodes.map(c=>`<option ${c===from?'selected':''}>${c}</option>`).join('')}</select><span class="fx-arrow">→</span><select class="fx-currency-select" id="nxFxTo" onchange="nxFxPairChanged()">${nxFxCodes.map(c=>`<option ${c===to?'selected':''}>${c}</option>`).join('')}</select></div><div class="fx-main"><input class="fx-amount-input" id="nxFxAmount" type="number" inputmode="decimal" step="0.01" value="${esc(String(amountValue))}" aria-label="Montant source"><button class="fx-swap-btn" type="button" onclick="nxFxSwap()" aria-label="Inverser les devises">⇄</button></div><div class="fx-separator"></div><div class="fx-result-wrap"><div id="nxFxResult" class="fx-result">—</div><div id="nxFxRateLine" class="fx-rate-line">—</div></div></div><div class="fx-cache"><div id="nxFxCacheIcon" class="fx-cache-icon">✓</div><div class="fx-cache-copy"><div id="nxFxCacheTitle" class="fx-cache-title">Taux enregistré en cache</div><div id="nxFxCacheSubtitle" class="fx-cache-subtitle">Dernière mise à jour : ${esc(nxFxFormatUpdatedAt(cached))}</div></div></div><button id="nxFxRefreshBtn" class="fx-refresh-btn" type="button" onclick="nxFxFetch()"><span class="fx-refresh-icon" aria-hidden="true">↻</span>Actualiser les taux</button><input type="hidden" id="nxFxRate" value="${esc(String(rateValue))}"><input type="hidden" id="nxFxFee" value="0"></section>`);
+ nxFxBindOnlineStatus();
+ nxFxUpdateOnlineBadge();
+ document.getElementById('nxFxAmount')?.addEventListener('input',()=>nxFxCalculate(true));
+ nxFxPairChanged(false);
+}
+function nxFxSwap(){
+ const fromEl=document.getElementById('nxFxFrom'),toEl=document.getElementById('nxFxTo'),rateEl=document.getElementById('nxFxRate');
+ if(!fromEl||!toEl)return;
+ const previousRate=Number(rateEl?.value);
+ [fromEl.value,toEl.value]=[toEl.value,fromEl.value];
+ nxFxPairChanged(false);
+ if(rateEl && !(Number(rateEl.value)>0) && previousRate>0)rateEl.value=String(1/previousRate);
+ nxFxCalculate(true);
+ const from=nxVal('nxFxFrom'),to=nxVal('nxFxTo');
+ if(from!==to&&navigator.onLine)nxFxFetch(true)
+}
+function nxFxPairChanged(fetchIfOnline=true){
+ const from=nxVal('nxFxFrom'),to=nxVal('nxFxTo'),cache=nxFxGetCache(),direct=cache[from+'_'+to],inverse=cache[to+'_'+from];
+ nxFxRequestId++;
+ const rate=document.getElementById('nxFxRate');
+ if(rate)rate.value=from===to?'1':direct?.rate>0?String(direct.rate):inverse?.rate>0?String(1/Number(inverse.rate)):'';
+ nxFxCalculate(true);
+ if(fetchIfOnline&&from!==to&&navigator.onLine)nxFxFetch(true)
+}
+function nxFxRefreshCacheUi(){
+ const from=nxVal('nxFxFrom'),to=nxVal('nxFxTo'),cached=nxFxGetCachedEntry(from,to),title=document.getElementById('nxFxCacheTitle'),sub=document.getElementById('nxFxCacheSubtitle'),icon=document.getElementById('nxFxCacheIcon'),rate=Number(nxVal('nxFxRate'));
+ if(!title||!sub||!icon)return;
+ if(from===to){
+  title.textContent='Même devise';
+  sub.textContent='Aucune conversion nécessaire pour cette paire';
+  icon.textContent='✓';
+  icon.className='fx-cache-icon';
+  return;
+ }
+ if(cached){
+  title.textContent='Taux enregistré en cache';
+  sub.textContent='Dernière mise à jour : '+nxFxFormatUpdatedAt(cached);
+  icon.textContent='✓';
+  icon.className='fx-cache-icon';
+  return;
+ }
+ if(rate>0){
+  title.textContent='Taux manuel utilisé';
+  sub.textContent='Aucune mise à jour en cache pour cette paire';
+ }else{
+  title.textContent='Aucun taux en cache';
+  sub.textContent=navigator.onLine?'Appuie sur « Actualiser les taux »':'Connexion requise pour récupérer un taux';
+ }
+ icon.textContent='!';
+ icon.className='fx-cache-icon warning'
+}
+function nxFxCalculate(save=false,notify=false){
+ const from=nxVal('nxFxFrom'),to=nxVal('nxFxTo');
+ const amount=Number(nxVal('nxFxAmount'));
+ const rate=Number(nxVal('nxFxRate'));
+ const fee=Number(nxVal('nxFxFee'));
+ const cached=nxFxGetCachedEntry(from,to);
+ const r=from===to?1:rate>0?rate:0;
+ const out=document.getElementById('nxFxResult'),line=document.getElementById('nxFxRateLine');
+ if(out)out.textContent=Number.isFinite(amount)&&Number.isFinite(fee)&&fee>=0&&fee<=100&&r>0?(amount*r*(1-fee/100)).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' '+to:'Taux non disponible';
+ if(line)line.textContent=r>0?('1 '+from+' = '+nxFxFormatRate(r)+' '+to):'Sélectionne « Actualiser les taux »';
+ nxFxRefreshCacheUi();
+ nxFxUpdateOnlineBadge();
+ if(save){
+  try{put('nexoFx',{amount:nxVal('nxFxAmount'),from,to,rate:nxVal('nxFxRate'),fee:nxVal('nxFxFee')});if(notify)toast('Conversion enregistrée')}catch{toast('Enregistrement impossible')}}
+}
+async function nxFxFetch(automatic=false){
+ const from=nxVal('nxFxFrom'),to=nxVal('nxFxTo'),requestId=++nxFxRequestId,btn=document.getElementById('nxFxRefreshBtn');
+ if(from===to){const rate=document.getElementById('nxFxRate');if(rate)rate.value='1';nxFxCalculate(true);return}
+ if(btn){btn.disabled=true;btn.classList.add('loading')}
+ try{
+  const response=await fetch('https://api.frankfurter.dev/v1/latest?base='+encodeURIComponent(from)+'&symbols='+encodeURIComponent(to),{cache:'no-store'});
+  if(!response.ok)throw Error('Service indisponible');
+  const data=await response.json(),rate=Number(data.rates?.[to]);
+  if(!(rate>0))throw Error('Devise non prise en charge');
+  const rates=nxFxGetCache();
+  rates[from+'_'+to]={rate,date:data.date,fetchedAt:new Date().toISOString()};
+  put('nexoFxRates',rates);
+  if(requestId!==nxFxRequestId||nxVal('nxFxFrom')!==from||nxVal('nxFxTo')!==to)return;
+  const rateInput=document.getElementById('nxFxRate');
+  if(rateInput)rateInput.value=String(rate);
+  nxFxCalculate(true);
+  if(!automatic)toast('Taux mis à jour');
+ }catch(e){
+  if(requestId!==nxFxRequestId||nxVal('nxFxFrom')!==from||nxVal('nxFxTo')!==to)return;
+  if(!automatic)toast('Actualisation impossible : utilise un taux manuel');
+  nxFxCalculate(true);
+ }finally{
+  if(btn){btn.disabled=false;btn.classList.remove('loading')}
+ }
+}
 
 /* NEXO GEN 2.6.41 — Sonomètre local : aucune donnée audio enregistrée ou envoyée. */
 let nxSoundStream=null,nxSoundContext=null,nxSoundAnalyser=null,nxSoundBuffer=null,nxSoundRAF=0,nxSoundLast=0,nxSoundValues=[],nxSoundRaw=-100,nxSoundActive=false,nxSoundPaused=false,nxSoundOffset=get('nxSoundCalibration',null),nxSoundGraph=[];
