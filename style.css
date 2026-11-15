@@ -1559,13 +1559,13 @@ body.nx-map-screen-on:has(#pv-canvas) .nx-map-top{top:29px!important;}
 .fx-currency-select option{background:#232427;color:#fff}
 .fx-currency-select:focus,.fx-currency-select:active{background-color:transparent!important}
 .fx-main{display:block}
-.fx-amount-input{display:block;width:100%;min-width:0;background:transparent;border:0;color:#fff;font-size:clamp(3.7rem,12vw,4.6rem);font-weight:800;line-height:1.03;padding:0;margin:0}
+.fx-amount-input{display:block;width:100%;min-width:0;background:transparent;border:0;color:#fff;font-size:clamp(2.59rem,8.4vw,3.22rem);font-weight:800;line-height:1.03;padding:0;margin:0}
 .fx-amount-input:focus{outline:none}
 .fx-amount-input::-webkit-outer-spin-button,.fx-amount-input::-webkit-inner-spin-button{appearance:none;-webkit-appearance:none;margin:0}
 .fx-swap-btn{width:50px;height:50px;flex:none;border:0;border-radius:18px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.72);font-size:28px;display:grid;place-items:center;box-shadow:none;margin-top:2px}
 .fx-separator{height:1px;background:rgba(255,255,255,.09);margin:22px 0 20px}
 .fx-result-wrap{display:grid;gap:10px}
-.fx-result{font-size:clamp(3.7rem,12vw,4.6rem);font-weight:800;line-height:1.03;color:#fff}
+.fx-result{font-size:clamp(2.59rem,8.4vw,3.22rem);font-weight:800;line-height:1.03;color:#fff}
 .fx-rate-line{font-size:20px;color:rgba(255,255,255,.72)}
 .fx-cache-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:0 4px}
 .fx-cache{display:block;flex:1;min-width:0;padding:0}
@@ -1592,4 +1592,4 @@ body.nx-map-screen-on:has(#pv-canvas) .nx-map-top{top:29px!important;}
 }
 
 /* Fix: global input 16px !important was overriding the source amount */
-#tool .fx-screen input.fx-amount-input{font-size:clamp(3.7rem,12vw,4.6rem)!important;font-weight:800!important;line-height:1.03!important;letter-spacing:-.02em!important;min-height:1.15em!important;height:auto!important;box-shadow:none!important;text-align:left!important;}
+#tool .fx-screen input.fx-amount-input{font-size:clamp(2.59rem,8.4vw,3.22rem)!important;font-weight:800!important;line-height:1.03!important;letter-spacing:-.02em!important;min-height:1.15em!important;height:auto!important;box-shadow:none!important;text-align:left!important;}
