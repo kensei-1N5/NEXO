@@ -1590,3 +1590,6 @@ body.nx-map-screen-on:has(#pv-canvas) .nx-map-top{top:29px!important;}
  .fx-cache-subtitle{font-size:14px}
  .fx-refresh-icon-only{width:56px;height:56px;min-height:56px;border-radius:18px}
 }
+
+/* Fix: global input 16px !important was overriding the source amount */
+#tool .fx-screen input.fx-amount-input{font-size:clamp(3.7rem,12vw,4.6rem)!important;font-weight:800!important;line-height:1.03!important;letter-spacing:-.02em!important;min-height:1.15em!important;height:auto!important;box-shadow:none!important;text-align:left!important;}
