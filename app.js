@@ -189,7 +189,7 @@ function gen2Card(id){
    const state=garageStatus(plan,v).state;
    if(state==='late')due++;else if(state==='soon')soon++;
   }
-  return `<article class="gen2-widget gen2-garage gen2644-garage"><button type="button" class="gen2644-garage-button" onclick="openTool('garage')" aria-label="Ouvrir Mon garage : ${due} entretiens à faire, ${soon} à prévoir"><span class="gen2644-garage-title"><span class="gen2-widget-icon">${nxModuleIcon(spec[0],spec[2])}</span><strong>${esc(spec[1])}</strong><span class="gen2644-garage-arrow">↗</span></span><span class="gen2644-garage-counts"><span><b class="gen2644-due">${due}</b> à faire</span><span><b class="gen2644-soon">${soon}</b> à prévoir</span></span></button></article>`;
+  return `<article class="gen2-widget gen2-garage gen2644-garage"><button type="button" class="gen2644-garage-button" onclick="openTool('garage')" aria-label="Ouvrir Mon garage : ${due} entretiens à faire, ${soon} à prévoir"><span class="gen2644-garage-title"><span class="gen2-widget-icon">${allModuleGroups().find(g=>g.id==='garage-group')?.icon||spec[2]}</span><strong>${esc(spec[1])}</strong><span class="gen2644-garage-arrow">↗</span></span><span class="gen2644-garage-counts"><span><b class="gen2644-due">${due}</b> à faire</span><span><b class="gen2644-soon">${soon}</b> à prévoir</span></span></button></article>`;
  }
  const d=gen2Data(id),hidden=(id==='savings'&&!gen2VisibleSavings())||(id==='expenses'&&!gen2VisibleExpenses());
  return `<article class="gen2-widget gen2-${id}">
