@@ -290,6 +290,11 @@ nav .nexo-todo-icon{width:25px;height:25px;stroke:currentColor;vertical-align:mi
 .garage-chart .save-bar-cell{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center}
 .garage-chart .save-bar-track{height:150px;width:100%;display:flex;align-items:flex-end;justify-content:center}
 .garage-chart .save-bar-cell span{font-size:10px}
+/* Montants visibles au-dessus des barres (sans modifier les filtres ni les calculs). */
+.garage-chart .save-bar-track{position:relative}
+.garage-chart .garage-bar{width:65%;background:var(--accent,#348cff);border-radius:5px 5px 0 0}
+.garage-chart .garage-bar-amount{position:absolute;left:50%;transform:translateX(-50%);width:max-content;max-width:none;white-space:nowrap;text-align:center;color:var(--text,#edf3ff);font-weight:700;font-size:clamp(8px,2.2vw,13px);line-height:1.2;pointer-events:none;font-variant-numeric:tabular-nums}
+
 
 
 /* Garage : champs alignés et contenus dans leur grille sur iPhone */
