@@ -1621,3 +1621,9 @@ html[data-theme="dark"] .nexo-expense-edit-panel{background:#172233;color:#f1f5f
 html[data-theme="dark"] .nexo-expense-edit-close{background:#25344b;color:#f1f5fc}
 html[data-theme="dark"] .nexo-expense-edit-panel .field{background:#1b293c;border-color:#34445c;color:#f3f7fc;color-scheme:dark}
 @media(max-height:620px){.nexo-expense-edit-backdrop{align-items:flex-start}}
+
+/* v2.8.135 : unify the date control with the other expense edit fields on iOS */
+.nexo-expense-edit-panel .field{display:block;width:100%;min-width:0;max-width:100%;height:50px;min-height:50px;max-height:50px;box-sizing:border-box;padding:12px 14px;line-height:24px;border-radius:17px;}
+.nexo-expense-edit-panel input[type="date"].field{-webkit-appearance:none;appearance:none;overflow:hidden;text-align:left;}
+.nexo-expense-edit-panel input[type="date"].field::-webkit-date-and-time-value{min-height:24px;line-height:24px;text-align:left;}
+.nexo-expense-edit-panel input[type="date"].field::-webkit-datetime-edit{padding:0;line-height:24px;text-align:left;}
