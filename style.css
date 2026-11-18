@@ -1627,3 +1627,24 @@ html[data-theme="dark"] .nexo-expense-edit-panel .field{background:#1b293c;borde
 .nexo-expense-edit-panel input[type="date"].field{-webkit-appearance:none;appearance:none;overflow:hidden;text-align:left;}
 .nexo-expense-edit-panel input[type="date"].field::-webkit-date-and-time-value{min-height:24px;line-height:24px;text-align:left;}
 .nexo-expense-edit-panel input[type="date"].field::-webkit-datetime-edit{padding:0;line-height:24px;text-align:left;}
+
+/* v2.8.137 - liste de courses minimaliste */
+.nexo-shopping-panel{gap:13px}
+.nexo-shopping-title{margin:0;font-size:21px}
+.nexo-shopping-progress-top{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px;color:#7c889b}
+.nexo-shopping-progress-top strong{font-size:14px;color:#267df0;font-variant-numeric:tabular-nums}
+.nexo-shopping-track{height:9px;width:100%;background:#e7edf5;border-radius:99px;overflow:hidden}
+.nexo-shopping-fill{height:100%;width:0;background:#2684ff;border-radius:99px;transition:width .2s ease}
+.nexo-shopping-entry .field{min-width:0}
+.nexo-shopping-entry .btn{width:48px;min-width:48px;font-size:26px;padding:8px 0}
+.nexo-shopping-clear{width:100%;background:#eaf2ff;color:#1765cc;font-size:13px}
+.nexo-shopping-clear:disabled{opacity:.4}
+.nexo-shopping-list{padding-top:4px;padding-bottom:4px}
+.nexo-shopping-item{min-height:52px;gap:14px}
+.nexo-shopping-item input[type=checkbox]{flex:0 0 22px;width:22px;height:22px;margin:0}
+.nexo-shopping-item .itemtext{font-size:16px}
+.nexo-shopping-delete{border:0;background:transparent;color:#8b97a9;padding:5px 9px;font-size:23px;line-height:1}
+.nexo-shopping-empty{margin:13px 0;color:#8793a5;text-align:center;font-size:14px}
+html[data-theme="dark"] .nexo-shopping-track{background:#2a3a51}
+html[data-theme="dark"] .nexo-shopping-progress-top{color:#a8b6c9}
+html[data-theme="dark"] .nexo-shopping-delete{color:#b5c2d3}
