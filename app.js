@@ -409,21 +409,22 @@ function expenseSetBudget(){const key=String(expenseViewYear)+'-'+String(expense
 function incomeAdd(){const amount=Number($('#incomeAmount')?.value),date=$('#incomeDate')?.value,category=$('#incomeCategory')?.value,desc=$('#incomeDesc')?.value.trim();if(!Number.isFinite(amount)||amount<=0||!date)return toast('Vérifie le montant et la date');put('incomeEntries',[...get('incomeEntries',[]),{id:crypto.randomUUID(),amount:Math.round(amount*100)/100,date:expenseDateDisplay(date),category,desc}]);renderExpenseDashboard();toast('Entrée ajoutée')}
 function incomeDelete(id){if(!confirm('Supprimer cette entrée ?'))return;put('incomeEntries',get('incomeEntries',[]).filter(x=>x.id!==id));renderExpenseDashboard()}
 function clearIncomeDisplayed(){const all=get('incomeEntries',[]),period=expensePeriodLabel();const selected=all.filter(expensePeriodMatch);if(!selected.length)return toast('Aucune entrée affichée à supprimer');if(!confirm(`Supprimer définitivement les ${selected.length} entrées affichées (${period}) ? Les autres entrées seront conservées.`))return;const ids=new Set(selected.map(x=>x.id));put('incomeEntries',all.filter(x=>!ids.has(x.id)));renderExpenseDashboard();toast(`${selected.length} entrées affichées supprimées`)}
-function incomeEdit(id){const x=get('incomeEntries',[]).find(e=>e.id===id);if(!x)return;const desc=prompt('Libellé',x.desc||'');if(desc===null)return;const raw=prompt('Montant (€)',String(x.amount));if(raw===null)return;const amount=Number(raw.replace(',','.'));if(!Number.isFinite(amount)||amount<=0)return toast('Montant invalide');const category=prompt('Source',x.category||'Autre');if(category===null||!category.trim())return;const date=prompt('Date (JJ/MM/AAAA)',x.date);if(date===null)return;const iso=expenseDateISO(date);if(!iso)return toast('Date invalide');put('incomeEntries',get('incomeEntries',[]).map(e=>e.id===id?{...e,desc:desc.trim(),amount:Math.round(amount*100)/100,category:category.trim(),date:expenseDateDisplay(iso)}:e));renderExpenseDashboard();toast('Entrée modifiée')}
-function expenseEdit(id){
- const original=get('expenses',[]).find(e=>e.id===id);
+function incomeEdit(id){expenseEdit(id,true)}
+function expenseEdit(id,isIncome=false){
+ const storageKey=isIncome?'incomeEntries':'expenses';
+ const original=get(storageKey,[]).find(e=>e.id===id);
  if(!original)return;
  document.getElementById('nexo-expense-edit')?.remove();
- const categories=expenseCategories();
+ const categories=isIncome?['Salaire','Prime','Remboursement','Vente','Autre']:expenseCategories();
  if(!categories.includes(original.category||'Autre'))categories.push(original.category||'Autre');
  const overlay=document.createElement('div');
  overlay.id='nexo-expense-edit';
  overlay.className='nexo-expense-edit-backdrop';
  overlay.innerHTML=`<form class="nexo-expense-edit-panel" role="dialog" aria-modal="true" aria-labelledby="nexo-expense-edit-title">
-  <div class="nexo-expense-edit-head"><h2 id="nexo-expense-edit-title">Modifier la dépense</h2><button type="button" class="nexo-expense-edit-close" aria-label="Fermer">×</button></div>
-  <label for="nexo-edit-desc">Description</label><input class="field" id="nexo-edit-desc" type="text" value="${esc(original.desc||'')}" autocomplete="off" required>
+  <div class="nexo-expense-edit-head"><h2 id="nexo-expense-edit-title">${isIncome?"Modifier l’entrée":"Modifier la dépense"}</h2><button type="button" class="nexo-expense-edit-close" aria-label="Fermer">×</button></div>
+  <label for="nexo-edit-desc">${isIncome?'Libellé':'Description'}</label><input class="field" id="nexo-edit-desc" type="text" value="${esc(original.desc||'')}" autocomplete="off" ${isIncome?'':'required'}>
   <label for="nexo-edit-amount">Montant (€)</label><input class="field" id="nexo-edit-amount" type="text" inputmode="decimal" value="${esc(String(original.amount))}" required>
-  <label for="nexo-edit-cat">Catégorie</label><select class="field" id="nexo-edit-cat">${categories.map(c=>`<option value="${esc(c)}" ${c===(original.category||'Autre')?'selected':''}>${esc(c)}</option>`).join('')}</select>
+  <label for="nexo-edit-cat">${isIncome?'Source':'Catégorie'}</label><select class="field" id="nexo-edit-cat">${categories.map(c=>`<option value="${esc(c)}" ${c===(original.category||'Autre')?'selected':''}>${esc(c)}</option>`).join('')}</select>
   <label for="nexo-edit-date">Date</label><input class="field" id="nexo-edit-date" type="date" value="${esc(expenseDateISO(original.date)||expenseToday())}" required>
   <div class="nexo-expense-edit-actions"><button type="button" class="btn nexo-expense-edit-cancel">Annuler</button><button type="submit" class="btn primary">Enregistrer</button></div>
  </form>`;
@@ -438,12 +439,12 @@ function expenseEdit(id){
   const amount=Number(amountText);
   const category=overlay.querySelector('#nexo-edit-cat').value;
   const date=overlay.querySelector('#nexo-edit-date').value;
-  if(!desc)return toast('Description obligatoire');
+  if(!isIncome&&!desc)return toast('Description obligatoire');
   if(!amountText||!Number.isFinite(amount)||amount<=0)return toast('Montant invalide');
   if(!category)return toast('Catégorie invalide');
   if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||Number.isNaN(new Date(date+'T12:00:00').getTime())||new Date(date+'T12:00:00').toISOString().slice(0,10)!==date)return toast('Date invalide');
-  put('expenses',get('expenses',[]).map(item=>item.id===id?{...item,desc,amount:Math.round(amount*100)/100,category,date:expenseDateDisplay(date)}:item));
-  close();refreshExpenseCategories();drawExpenses();toast('Dépense modifiée');
+  put(storageKey,get(storageKey,[]).map(item=>item.id===id?{...item,desc,amount:Math.round(amount*100)/100,category,date:expenseDateDisplay(date)}:item));
+  close();if(isIncome){renderExpenseDashboard();toast('Entrée modifiée')}else{refreshExpenseCategories();drawExpenses();toast('Dépense modifiée')}
  });
  document.body.appendChild(overlay);
 }
